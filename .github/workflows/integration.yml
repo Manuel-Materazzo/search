@@ -1,10 +1,10 @@
 name: Integration
 
 on:  # yamllint disable-line rule:truthy
-  push:
-    branches: ["master"]
-  pull_request:
-    branches: ["master"]
+ # push:
+    #branches: ["master"]
+  #pull_request:
+    #branches: ["master"]
 
 permissions:
   contents: read

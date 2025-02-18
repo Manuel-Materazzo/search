@@ -1,7 +1,7 @@
 name: "Checker"
 on:  # yamllint disable-line rule:truthy
-  schedule:
-    - cron: "0 4 * * 5"
+  #schedule:
+    #- cron: "0 4 * * 5"
   workflow_dispatch:
 
 jobs:

@@ -418,6 +418,7 @@ def render(template_name: str, **kwargs):
     kwargs['enable_metrics'] = get_setting('general.enable_metrics')
     kwargs['get_setting'] = get_setting
     kwargs['get_pretty_url'] = get_pretty_url
+    kwargs['get_pretty_host'] = get_pretty_host
 
     # values from settings: donation_url
     donation_url = get_setting('general.donation_url')

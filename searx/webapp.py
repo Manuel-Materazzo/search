@@ -334,7 +334,11 @@ def get_pretty_url(parsed_url: urllib.parse.ParseResult):
         return [parsed_url.netloc]
 
     path = parsed_url.path
+    # remove trailing /
     path = path[:-1] if len(path) > 0 and path[-1] == '/' else path
+    # truncate string
+    path = (path[:75] + '...') if len(path) > 75 else path
+    # replace slashes with stylish character
     path = unquote(path.replace("/", " › "))
     return [parsed_url.scheme + "://" + parsed_url.netloc, path]
 
@@ -342,9 +346,11 @@ def get_pretty_url(parsed_url: urllib.parse.ParseResult):
 def get_pretty_host(parsed_url: urllib.parse.ParseResult):
     url_formatting_pref = sxng_request.preferences.get_value('url_formatting')
 
+    # skip when showing only host
     if url_formatting_pref == 'host':
         return ''
 
+    # remove www
     host = parsed_url.netloc
     host = unquote(host.replace("www.", ""))
     return host

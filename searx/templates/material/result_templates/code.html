@@ -4,24 +4,24 @@
 {{- result_sub_header(result) -}}
 
 {%- if result.content -%}
-  <p class="content">
-    {{- result.content|safe -}}
-  </p>
+    <p class="content">
+        {{- result.content|safe -}}
+    </p>
 {%- endif -%}
 {%- if result.repository -%}
-  <p class="content">{{- '' -}}
-    {{ _('repo') }}: {{- ' ' -}}
-    <a href="{{ result.repository|safe }}"{{- ' ' -}}
-       {% if results_on_new_tab %}
-         target="_blank" {{- ' ' -}}
-         rel="noopener noreferrer"
-       {%- else -%}
-         rel="noreferrer"
-       {%- endif -%}
-       >
-       {{- result.repository -}}
-    </a>{{- '' -}}
-  </p>
+    <p class="content">{{- '' -}}
+        {{ _('repo') }}: {{- ' ' -}}
+        <a href="{{ result.repository|safe }}"{{- ' ' -}}
+            {% if results_on_new_tab %}
+           target="_blank" {{- ' ' -}}
+           rel="noopener noreferrer"
+            {%- else -%}
+           rel="noreferrer"
+            {%- endif -%}
+        >
+            {{- result.repository -}}
+        </a>{{- '' -}}
+    </p>
 {%- endif -%}
 
 <div dir="ltr" class="codelines">

@@ -12,5 +12,5 @@ module.exports = {
     },
     // make diff friendly
     'sortAttrs',
- ],
+  ],
 };

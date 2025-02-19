@@ -4,7 +4,7 @@ module.exports = function (grunt) {
 
   const eachAsync = require('each-async');
 
-  function file_exists (filepath) {
+  function file_exists(filepath) {
     // filter function to exit grunt task with error if a (src) file not exists
     if (!grunt.file.exists(filepath)) {
       grunt.fail.fatal('Could not find: ' + filepath, 42);
@@ -120,7 +120,10 @@ module.exports = function (grunt) {
         options: {
           paths: ["less"],
           sourceMap: true,
-          sourceMapURL: (name) => { const s = name.split('/'); return s[s.length - 1] + '.map'; },
+          sourceMapURL: (name) => {
+            const s = name.split('/');
+            return s[s.length - 1] + '.map';
+          },
           outputSourceFiles: true,
         },
         files: [
@@ -209,7 +212,7 @@ module.exports = function (grunt) {
     for (const iconName in this.data.src) {
       const svgFileName = this.data.src[iconName];
       try {
-        const svgContent = grunt.file.read(svgFileName, { encoding: 'utf8' })
+        const svgContent = grunt.file.read(svgFileName, {encoding: 'utf8'})
         const svgoResult = svgo.optimize(svgContent, {
           path: svgFileName,
           multipass: true,
@@ -224,7 +227,7 @@ module.exports = function (grunt) {
               name: "addAttributesToSVGElement",
               params: {
                 attributes: [
-                  { "class": "ionicon", "aria-hidden": "true" }
+                  {"class": "ionicon", "aria-hidden": "true"}
                 ]
               }
             }
@@ -254,8 +257,8 @@ module.exports = function (grunt) {
   {{ icons[action] | replace("ionicon", "ion-icon-big") | safe }}
 {%- endmacro %}
 `;
-    const result = ejs.render(template, { icons });
-    grunt.file.write(this.data.dest, result, { encoding: 'utf8' });
+    const result = ejs.render(template, {icons});
+    grunt.file.write(this.data.dest, result, {encoding: 'utf8'});
     grunt.log.ok(this.data.dest + " created");
   });
 

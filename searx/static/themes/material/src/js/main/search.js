@@ -7,14 +7,14 @@
 
   const isMobile = window.matchMedia("only screen and (max-width: 50em)").matches;
 
-  function submitIfQuery () {
-    if (qinput.value.length  > 0) {
+  function submitIfQuery() {
+    if (qinput.value.length > 0) {
       var search = document.getElementById('search');
       setTimeout(search.submit.bind(search), 0);
     }
   }
 
-  function createClearButton (qinput) {
+  function createClearButton(qinput) {
     var cs = document.getElementById('clear_search');
     var updateClearButton = function () {
       if (qinput.value.length === 0) {
@@ -54,7 +54,8 @@
           },
           MinChars: searxng.settings.autocomplete_min,
           Delay: 300,
-          _Position: function () {},
+          _Position: function () {
+          },
           _Open: function () {
             var params = this;
             Array.prototype.forEach.call(this.DOMResults.getElementsByTagName("li"), function (li) {
@@ -130,7 +131,9 @@
         * https://github.com/searxng/searxng/issues/1695
        */
       AutoComplete.prototype.ajax = function (params, request, timeout) {
-        if (timeout === void 0) { timeout = true; }
+        if (timeout === void 0) {
+          timeout = true;
+        }
         if (params.$AjaxTimer) {
           window.clearTimeout(params.$AjaxTimer);
         }
@@ -156,10 +159,10 @@
     // though)
     if (
       qinput !== null
-        && searxng.settings.search_on_category_select
+      && searxng.settings.search_on_category_select
       // If .search_filters is undefined (invisible) we are on the homepage and
       // hence don't have to set any listeners
-        && d.querySelector(".search_filters") != null
+      && d.querySelector(".search_filters") != null
     ) {
       searxng.on(d.getElementById('safesearch'), 'change', submitIfQuery);
       searxng.on(d.getElementById('time_range'), 'change', submitIfQuery);

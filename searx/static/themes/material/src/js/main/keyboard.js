@@ -3,7 +3,7 @@
 
 searxng.ready(function () {
 
-  function isElementInDetail (el) {
+  function isElementInDetail(el) {
     while (el !== undefined) {
       if (el.classList.contains('detail')) {
         return true;
@@ -18,7 +18,7 @@ searxng.ready(function () {
     return false;
   }
 
-  function getResultElement (el) {
+  function getResultElement(el) {
     while (el !== undefined) {
       if (el.classList.contains('result')) {
         return el;
@@ -28,7 +28,7 @@ searxng.ready(function () {
     return undefined;
   }
 
-  function isImageResult (resultElement) {
+  function isImageResult(resultElement) {
     return resultElement && resultElement.classList.contains('result-images');
   }
 
@@ -195,8 +195,8 @@ searxng.ready(function () {
     // check for modifiers so we don't break browser's hotkeys
     if (
       Object.prototype.hasOwnProperty.call(keyBindings, e.key)
-        && !e.ctrlKey && !e.altKey
-        && !e.shiftKey && !e.metaKey
+      && !e.ctrlKey && !e.altKey
+      && !e.shiftKey && !e.metaKey
     ) {
       var tagName = e.target.tagName.toLowerCase();
       if (e.key === 'Escape') {
@@ -210,7 +210,7 @@ searxng.ready(function () {
     }
   });
 
-  function highlightResult (which) {
+  function highlightResult(which) {
     return function (noScroll, keepFocus) {
       var current = document.querySelector('.result[data-vim-selected]'),
         effectiveWhich = which;
@@ -234,33 +234,33 @@ searxng.ready(function () {
         next = effectiveWhich;
       } else {
         switch (effectiveWhich) {
-        case 'visible':
-          var top = document.documentElement.scrollTop || document.body.scrollTop;
-          var bot = top + document.documentElement.clientHeight;
+          case 'visible':
+            var top = document.documentElement.scrollTop || document.body.scrollTop;
+            var bot = top + document.documentElement.clientHeight;
 
-          for (var i = 0; i < results.length; i++) {
-            next = results[i];
-            var etop = next.offsetTop;
-            var ebot = etop + next.clientHeight;
+            for (var i = 0; i < results.length; i++) {
+              next = results[i];
+              var etop = next.offsetTop;
+              var ebot = etop + next.clientHeight;
 
-            if ((ebot <= bot) && (etop > top)) {
-              break;
+              if ((ebot <= bot) && (etop > top)) {
+                break;
+              }
             }
-          }
-          break;
-        case 'down':
-          next = results[results.indexOf(current) + 1] || current;
-          break;
-        case 'up':
-          next = results[results.indexOf(current) - 1] || current;
-          break;
-        case 'bottom':
-          next = results[results.length - 1];
-          break;
-        case 'top':
+            break;
+          case 'down':
+            next = results[results.indexOf(current) + 1] || current;
+            break;
+          case 'up':
+            next = results[results.indexOf(current) - 1] || current;
+            break;
+          case 'bottom':
+            next = results[results.length - 1];
+            break;
+          case 'top':
           /* falls through */
-        default:
-          next = results[0];
+          default:
+            next = results[0];
         }
       }
 
@@ -280,11 +280,11 @@ searxng.ready(function () {
     };
   }
 
-  function reloadPage () {
+  function reloadPage() {
     document.location.reload(true);
   }
 
-  function removeFocus (e) {
+  function removeFocus(e) {
     const tagName = e.target.tagName.toLowerCase();
     if (document.activeElement && (tagName === 'input' || tagName === 'select' || tagName === 'textarea')) {
       document.activeElement.blur();
@@ -293,7 +293,7 @@ searxng.ready(function () {
     }
   }
 
-  function pageButtonClick (css_selector) {
+  function pageButtonClick(css_selector) {
     return function () {
       var button = document.querySelector(css_selector);
       if (button) {
@@ -302,15 +302,15 @@ searxng.ready(function () {
     };
   }
 
-  function GoToNextPage () {
+  function GoToNextPage() {
     return pageButtonClick('nav#pagination .next_page button[type="submit"]');
   }
 
-  function GoToPreviousPage () {
+  function GoToPreviousPage() {
     return pageButtonClick('nav#pagination .previous_page button[type="submit"]');
   }
 
-  function scrollPageToSelected () {
+  function scrollPageToSelected() {
     var sel = document.querySelector('.result[data-vim-selected]');
     if (sel === null) {
       return;
@@ -337,21 +337,21 @@ searxng.ready(function () {
     }
   }
 
-  function scrollPage (amount) {
+  function scrollPage(amount) {
     return function () {
       window.scrollBy(0, amount);
       highlightResult('visible')();
     };
   }
 
-  function scrollPageTo (position, nav) {
+  function scrollPageTo(position, nav) {
     return function () {
       window.scrollTo(0, position);
       highlightResult(nav)();
     };
   }
 
-  function searchInputFocus () {
+  function searchInputFocus() {
     window.scrollTo(0, 0);
     var q = document.querySelector('#q');
     q.focus();
@@ -361,7 +361,7 @@ searxng.ready(function () {
     }
   }
 
-  function openResult (newTab) {
+  function openResult(newTab) {
     return function () {
       var link = document.querySelector('.result[data-vim-selected] h3 a');
       if (link === null) {
@@ -378,7 +378,7 @@ searxng.ready(function () {
     };
   }
 
-  function initHelpContent (divElement) {
+  function initHelpContent(divElement) {
     var categories = {};
 
     for (var k in keyBindings) {
@@ -430,7 +430,7 @@ searxng.ready(function () {
     divElement.innerHTML = html;
   }
 
-  function toggleHelp () {
+  function toggleHelp() {
     var helpPanel = document.querySelector('#vim-hotkeys-help');
     if (helpPanel === undefined || helpPanel === null) {
       // first call
@@ -447,7 +447,7 @@ searxng.ready(function () {
     }
   }
 
-  function copyURLToClipboard () {
+  function copyURLToClipboard() {
     var currentUrlElement = document.querySelector('.result[data-vim-selected] h3 a');
     if (currentUrlElement === null) return;
 

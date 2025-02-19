@@ -8,7 +8,8 @@
 
   searxng.ready(function () {
     let engine_descriptions = null;
-    function load_engine_descriptions () {
+
+    function load_engine_descriptions() {
       if (engine_descriptions == null) {
         searxng.http("GET", "engine_descriptions.json").then(function (content) {
           engine_descriptions = JSON.parse(content);

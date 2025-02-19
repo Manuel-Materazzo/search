@@ -15,18 +15,18 @@ window.searxng = (function (w, d) {
   if (w.Element) {
     (function (ElementPrototype) {
       ElementPrototype.matches = ElementPrototype.matches ||
-      ElementPrototype.matchesSelector ||
-      ElementPrototype.webkitMatchesSelector ||
-      ElementPrototype.msMatchesSelector ||
-      function (selector) {
-        var node = this, nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
-        while (nodes[++i] && nodes[i] != node);
-        return !!nodes[i];
-      };
+        ElementPrototype.matchesSelector ||
+        ElementPrototype.webkitMatchesSelector ||
+        ElementPrototype.msMatchesSelector ||
+        function (selector) {
+          var node = this, nodes = (node.parentNode || node.document).querySelectorAll(selector), i = -1;
+          while (nodes[++i] && nodes[i] != node) ;
+          return !!nodes[i];
+        };
     })(Element.prototype);
   }
 
-  function callbackSafe (callback, el, e) {
+  function callbackSafe(callback, el, e) {
     try {
       callback.call(el, e);
     } catch (exception) {
@@ -150,7 +150,7 @@ window.searxng = (function (w, d) {
     this.parentNode.classList.add('invisible');
   });
 
-  function getEndpoint () {
+  function getEndpoint() {
     for (var className of d.getElementsByTagName('body')[0].classList.values()) {
       if (className.endsWith('_endpoint')) {
         return className.split('_')[0];

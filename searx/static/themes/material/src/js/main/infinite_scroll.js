@@ -22,23 +22,23 @@ searxng.ready(function () {
   let d = document;
   var onlyImages = d.getElementById('results').classList.contains('only_template_images');
 
-  function newLoadSpinner () {
+  function newLoadSpinner() {
     var loader = d.createElement('div');
     loader.classList.add('loader');
     return loader;
   }
 
-  function replaceChildrenWith (element, children) {
+  function replaceChildrenWith(element, children) {
     element.textContent = '';
     children.forEach(child => element.appendChild(child));
   }
 
-  function loadNextPage (callback) {
+  function loadNextPage(callback) {
     var form = d.querySelector('#pagination form.next_page');
     if (!form) {
       return
     }
-    replaceChildrenWith(d.querySelector('#pagination'), [ newLoadSpinner() ]);
+    replaceChildrenWith(d.querySelector('#pagination'), [newLoadSpinner()]);
     var formData = new FormData(form);
     searxng.http('POST', d.querySelector('#search').getAttribute('action'), formData).then(
       function (response) {
@@ -65,7 +65,7 @@ searxng.ready(function () {
         e.textContent = searxng.settings.translations.error_loading_next_page;
         e.classList.add('dialog-error');
         e.setAttribute('role', 'alert');
-        replaceChildrenWith(d.querySelector('#pagination'), [ e ]);
+        replaceChildrenWith(d.querySelector('#pagination'), [e]);
       }
     )
   }

@@ -3,7 +3,7 @@
   'use strict';
 
   // add data- properties
-  var script = d.currentScript  || (function () {
+  var script = d.currentScript || (function () {
     var scripts = d.getElementsByTagName('script');
     return scripts[scripts.length - 1];
   })();

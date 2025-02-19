@@ -24,7 +24,7 @@ export default [...compat.extends("eslint:recommended"), {
     },
 
     rules: {
-        indent: ["error", 2],
+        indent: ["error", 2, { "SwitchCase": 1 }],
 
         "keyword-spacing": ["error", {
             before: true,
@@ -32,7 +32,11 @@ export default [...compat.extends("eslint:recommended"), {
         }],
 
         "no-trailing-spaces": 2,
-        "space-before-function-paren": ["error", "always"],
+        "space-before-function-paren": ["error", {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+    }],
         "space-infix-ops": "error",
 
         "comma-spacing": ["error", {

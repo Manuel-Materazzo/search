@@ -1,4 +1,4 @@
-name: Deploy API Image to GHCR
+name: Deploy Nightly Image to GHCR
 
 on:
   workflow_dispatch:

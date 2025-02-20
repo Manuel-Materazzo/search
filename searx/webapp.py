@@ -20,7 +20,7 @@ import typing
 
 import urllib
 import urllib.parse
-from urllib.parse import urlencode, urlparse, unquote
+from urllib.parse import urlencode, urlparse, unquote, quote
 
 import warnings
 import httpx
@@ -261,19 +261,17 @@ def custom_url_for(endpoint: str, **values):
     return url_for(endpoint, **values) + suffix
 
 
-def morty_proxify(url: str):
+def url_proxify(url: str):
     if url.startswith('//'):
         url = 'https:' + url
 
     if not settings['result_proxy']['url']:
         return url
 
-    url_params = dict(mortyurl=url)
-
     if settings['result_proxy']['key']:
-        url_params['mortyhash'] = hmac.new(settings['result_proxy']['key'], url.encode(), hashlib.sha256).hexdigest()
+        url = hmac.new(settings['result_proxy']['key'], url.encode(), hashlib.sha256).hexdigest()
 
-    return '{0}?{1}'.format(settings['result_proxy']['url'], urlencode(url_params))
+    return '{0}{1}'.format(settings['result_proxy']['url'], quote(url))
 
 
 def image_proxify(url: str):
@@ -293,9 +291,6 @@ def image_proxify(url: str):
         ):
             return url
         return None
-
-    if settings['result_proxy']['url']:
-        return morty_proxify(url)
 
     h = new_hmac(settings['server']['secret_key'], url.encode())
 
@@ -436,7 +431,7 @@ def render(template_name: str, **kwargs):
     kwargs['url_for'] = custom_url_for  # override url_for function in templates
     kwargs['image_proxify'] = image_proxify
     kwargs['favicon_url'] = favicons.favicon_url
-    kwargs['proxify'] = morty_proxify if settings['result_proxy']['url'] is not None else None
+    kwargs['proxify'] = url_proxify if settings['result_proxy']['url'] is not None else None
     kwargs['proxify_results'] = settings['result_proxy']['proxify_results']
     kwargs['cache_url'] = settings['ui']['cache_url']
     kwargs['get_result_template'] = get_result_template

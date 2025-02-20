@@ -15,7 +15,10 @@
     </a>
 {%- endmacro %}
 
-{%- macro result_link(url, title, classes='') -%}
+{%- macro result_link(url, title, classes='', icon='') -%}
+    {% if icon %}
+        {{ icon_small(icon) }}
+    {% endif %}
     {{ result_open_link(url, classes) }}{{ title }}{{ result_close_link() }}
 {%- endmacro -%}
 
@@ -62,9 +65,10 @@
 {%- macro result_sub_footer(result, proxify) -%}
     <div class="engines">
         {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
-        {{ icon_small('ellipsis-vertical-outline') + result_link(cache_url + result.url, _('cached'), "cache_link") }}&lrm;
+        {{ result_link(cache_url + result.url, _('cached'), "cache_link", "save-outline") }}&lrm;
         {% if proxify and proxify_results %}
-            {{ result_link(proxify(result.url), _('proxied'), "proxyfied_link") }} {% endif %}
+            {{ result_link(proxify(result.url), _('proxied'), "proxyfied_link", "glasses-outline") }}
+        {% endif %}
     </div>{{- '' -}}
     <div class="break"></div>{{- '' -}}
 {%- endmacro -%}

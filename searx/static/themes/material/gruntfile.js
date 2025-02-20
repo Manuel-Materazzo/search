@@ -200,6 +200,8 @@ module.exports = function (grunt) {
           'people-outline': 'node_modules/ionicons/dist/svg/people-outline.svg',
           'heart-outline': 'node_modules/ionicons/dist/svg/heart-outline.svg',
           'information-circle-outline': 'src/svg/information-circle-outline.svg',
+          'glasses-outline': 'node_modules/ionicons/dist/svg/glasses-outline.svg',
+          'save-outline': 'node_modules/ionicons/dist/svg/save-outline.svg',
         },
         dest: '../../../templates/simple/icons.html',
       },

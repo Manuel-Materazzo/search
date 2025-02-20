@@ -3268,7 +3268,7 @@ failed-test {
   text-align: center;
 }
 .index .title {
-  background: url('../img/searxng.png') no-repeat;
+  background: url('../img/goose-search.png') no-repeat;
   min-height: 4rem;
   margin: 4rem auto;
   background-position: center;
@@ -3342,6 +3342,13 @@ table tr.pref-group th {
 #main_preferences input[type="text"]:hover,
 #main_preferences input[type="text"]:focus {
   background-color: var(--color-toolkit-select-background-hover);
+}
+#main_preferences div.pref-group {
+  width: 100%;
+  font-weight: normal;
+  padding: 1rem 0.5rem;
+  text-align: left;
+  background: var(--color-settings-table-group-background);
 }
 #main_preferences .value {
   margin: 0;

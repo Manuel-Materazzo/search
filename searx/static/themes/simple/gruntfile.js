@@ -151,8 +151,8 @@ module.exports = function (grunt) {
           svgo: ['--config', 'svg4web.svgo.js']
         },
         files: {
-          '<%= _templates %>/simple/searxng-wordmark.min.svg': '<%= _brand %>/searxng-wordmark.svg',
-          'img/searxng.svg': '<%= _brand %>/searxng.svg',
+          '<%= _templates %>/simple/goose-search-wordmark.min.svg': '<%= _brand %>/goose-search-wordmark.svg',
+          'img/goose-search.svg': '<%= _brand %>/goose-search.svg',
           'img/img_load_error.svg': '<%= _brand %>/img_load_error.svg'
         }
       },
@@ -161,15 +161,15 @@ module.exports = function (grunt) {
           svgo: ['--config', 'svg4favicon.svgo.js']
         },
         files: {
-          'img/favicon.svg': '<%= _brand %>/searxng-wordmark.svg'
+          'img/favicon.svg': '<%= _brand %>/goose-search-wordmark.svg'
         }
       },
     },
     svg2png: {
       favicon: {
         files: {
-          'img/favicon.png': '<%= _brand %>/searxng-wordmark.svg',
-          'img/searxng.png': '<%= _brand %>/searxng.svg',
+          'img/favicon.png': '<%= _brand %>/goose-search-wordmark.svg',
+          'img/goose-search.png': '<%= _brand %>/goose-search.svg',
         }
       }
     },

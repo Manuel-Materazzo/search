@@ -3268,7 +3268,7 @@ failed-test {
   text-align: center;
 }
 .index .title {
-  background: url('../img/searxng.png') no-repeat;
+  background: url('../img/goose-search.png') no-repeat;
   min-height: 4rem;
   margin: 4rem auto;
   background-position: center;
@@ -4055,7 +4055,7 @@ article[data-vim-selected].category-social {
 .result .cache_link,
 .result .proxyfied_link {
   font-size: smaller !important;
-  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 .result .content,
 .result .stat {

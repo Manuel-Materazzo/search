@@ -843,7 +843,7 @@ msgstr "Mostrar a página inicial"
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "Search for..."
-msgstr "Buscar por..."
+msgstr "Get to the point, or the goose will."
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6

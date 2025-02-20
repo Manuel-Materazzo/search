@@ -834,7 +834,7 @@ msgstr "Показать главную страницу"
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "Search for..."
-msgstr "Искать..."
+msgstr "Get to the point, or the goose will."
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6

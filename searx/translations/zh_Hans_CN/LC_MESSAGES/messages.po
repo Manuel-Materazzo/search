@@ -835,7 +835,7 @@ msgstr "显示前端页面"
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "Search for..."
-msgstr "搜索..."
+msgstr "Get to the point, or the goose will."
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6

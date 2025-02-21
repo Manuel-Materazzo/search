@@ -690,7 +690,7 @@ msgstr "Tác giả"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "đã lưu cache"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

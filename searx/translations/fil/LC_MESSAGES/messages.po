@@ -687,7 +687,7 @@ msgstr "Awtor"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "naka-cache"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

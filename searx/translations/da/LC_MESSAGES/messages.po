@@ -689,7 +689,7 @@ msgstr "Forfatter"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "cachet"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

@@ -697,7 +697,7 @@ msgstr "நூலாசிரியர்"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "தற்காலிக சேமிப்பு"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

@@ -688,7 +688,7 @@ msgstr "Autor"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "z vyrovnávacej pamäte"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

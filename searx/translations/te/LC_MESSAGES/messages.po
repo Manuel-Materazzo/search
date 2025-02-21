@@ -683,7 +683,7 @@ msgstr "రచయిత"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "కాష్ చేయబడింది"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

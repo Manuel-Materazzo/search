@@ -684,7 +684,7 @@ msgstr "Автор"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "кеширана"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

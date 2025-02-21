@@ -681,7 +681,7 @@ msgstr "저자"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "캐시"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

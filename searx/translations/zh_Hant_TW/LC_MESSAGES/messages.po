@@ -700,7 +700,7 @@ msgstr "作者"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "快照"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

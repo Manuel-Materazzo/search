@@ -688,7 +688,7 @@ msgstr "Egilea"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "cachean gordeta"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

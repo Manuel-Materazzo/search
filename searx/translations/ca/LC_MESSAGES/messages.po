@@ -693,7 +693,7 @@ msgstr "Autor"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "en memòria cau"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

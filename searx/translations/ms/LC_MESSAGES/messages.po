@@ -685,7 +685,7 @@ msgstr "Penulis"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "dicache"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

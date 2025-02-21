@@ -688,7 +688,7 @@ msgstr "Awdur"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "wedi'i storio"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

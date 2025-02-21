@@ -691,7 +691,7 @@ msgstr "Tekijä"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "välimuistissa"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

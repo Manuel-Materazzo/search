@@ -438,7 +438,7 @@ msgstr ""
 
 #: searx/templates/simple/macros.html:45
 msgid "cached"
-msgstr ""
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:45
 msgid "proxied"

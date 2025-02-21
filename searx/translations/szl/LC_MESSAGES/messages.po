@@ -677,7 +677,7 @@ msgstr "Autōr"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "buforowane"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

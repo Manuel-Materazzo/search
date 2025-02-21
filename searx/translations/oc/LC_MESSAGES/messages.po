@@ -673,7 +673,7 @@ msgstr "Autor"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "en version locala"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

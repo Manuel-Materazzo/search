@@ -700,7 +700,7 @@ msgstr "الكاتب"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "النسخة المخبأة"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

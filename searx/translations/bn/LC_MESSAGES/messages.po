@@ -694,7 +694,7 @@ msgstr "লেখক"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "ক্যাশকৃত"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

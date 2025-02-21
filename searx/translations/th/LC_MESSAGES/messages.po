@@ -680,7 +680,7 @@ msgstr "ผู้เขียน"
 
 #: searx/templates/simple/macros.html:50
 msgid "cached"
-msgstr "แคช"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/macros.html:50
 msgid "proxied"

@@ -332,7 +332,7 @@ def get_pretty_url(parsed_url: urllib.parse.ParseResult):
     # remove trailing /
     path = path[:-1] if len(path) > 0 and path[-1] == '/' else path
     # truncate string
-    path = (path[:75] + '...') if len(path) > 75 else path
+    path = (path[:60] + '...') if len(path) > 60 else path
     # replace slashes with stylish character
     path = unquote(path.replace("/", " › "))
     return [parsed_url.scheme + "://" + parsed_url.netloc, path]

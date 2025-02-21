@@ -25,6 +25,7 @@
 <!-- Draw result header -->
 {% macro result_header(result, favicons, image_proxify) -%}
     <article class="result {% if result['template'] %}result-
+
         {{ result.template|replace('.html', '') }}{% else %}result-default{% endif %} {% if result['category'] %}category-{{ result['category'] }}{% endif %}">
     {{- result_open_link(result.url, "url_header") -}}
     {%- if favicon_resolver != "" %}
@@ -68,9 +69,7 @@
         {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
         {{ result_link(cache_url + result.url, _('cached'), classes="cache_link", icon="save-outline") }}&lrm;
         {% if proxify and proxify_results %}
-            {% if proxy_method == 'GET' %}
-                {{ result_link(proxify(result.url), _('proxied'), classes="proxyfied_link", icon="glasses-outline") }}
-            {%- else %}
+            {% if proxy_post %}
                 <form method="post" action="{{ proxy_url }}" class="inline">
                     {% for param in proxy_post_params %}
                         <input type="hidden" name="{{ param }}"
@@ -80,6 +79,8 @@
                         {{ _('proxied') }}
                     </button>
                 </form>
+            {%- else %}
+                {{ result_link(proxify(result.url), _('proxied'), classes="proxyfied_link", icon="glasses-outline") }}
             {% endif %}
         {% endif %}
     </div>{{- '' -}}

@@ -449,7 +449,7 @@ def render(template_name: str, **kwargs):
     )
     )
     kwargs['urlparse'] = urlparse
-    kwargs['proxy_method'] = settings['result_proxy']['method']
+    kwargs['proxy_post'] = settings['result_proxy']['is-post']
     kwargs['proxy_url'] = settings['result_proxy']['url']
     kwargs['proxy_post_params'] = settings['result_proxy']['post-form-body']
 

@@ -173,13 +173,21 @@ ui:
 # morty proxy the key is base64 encoded (keep the !!binary notation)
 # Note: since commit af77ec3, morty accepts a base64 encoded key.
 #
-# result_proxy:
-#   # url of the proxy server. the url to proxy will be appended at the end.
-#   url: http://127.0.0.1:3000/
-#   # the key is a base64 encoded string, the YAML !!binary prefix is optional, de-comment only if url to proxy is needed as sha256
-#   key: !!binary "your_proxy_key"
-#   # [true|false] enable the "proxy" button next to each result
-#   proxify_results: true
+#result_proxy:
+#  # method of the call. [GET|POST]
+#  method: POST
+#  # url of the proxy server. on GET requests, the url to proxy will be appended at the end.
+#  url: http://127.0.0.1:3000/
+#  # form body of the POST request, %s in values will be replaced with the url to proxy
+#  post-form-body:
+#    u: "%s"
+#    go: ""
+#    proxy_formdata_server: "nl"
+#
+#  # the key is a base64 encoded string, the YAML !!binary prefix is optional, de-comment only if url to proxy is needed as sha256
+#  key: !!binary "your_proxy_key"
+#  # [true|false] enable the "proxy" button next to each result
+#  proxify_results: true
 
 # communication with search engines
 #

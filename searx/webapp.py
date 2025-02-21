@@ -265,13 +265,16 @@ def url_proxify(url: str):
     if url.startswith('//'):
         url = 'https:' + url
 
-    if not settings['result_proxy']['url']:
+    if not settings['result_proxy']['method'] or not settings['result_proxy']['url']:
         return url
 
     if settings['result_proxy']['key']:
         url = hmac.new(settings['result_proxy']['key'], url.encode(), hashlib.sha256).hexdigest()
 
-    return '{0}{1}'.format(settings['result_proxy']['url'], quote(url))
+    if settings['result_proxy']['method'] == 'GET':
+        return '{0}{1}'.format(settings['result_proxy']['url'], quote(url))
+    else:
+        return url
 
 
 def image_proxify(url: str):
@@ -446,6 +449,9 @@ def render(template_name: str, **kwargs):
     )
     )
     kwargs['urlparse'] = urlparse
+    kwargs['proxy_method'] = settings['result_proxy']['method']
+    kwargs['proxy_url'] = settings['result_proxy']['url']
+    kwargs['proxy_post_params'] = settings['result_proxy']['post-form-body']
 
     start_time = default_timer()
     result = render_template('{}/{}'.format(kwargs['theme'], template_name), **kwargs)

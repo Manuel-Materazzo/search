@@ -174,8 +174,8 @@ ui:
 # Note: since commit af77ec3, morty accepts a base64 encoded key.
 #
 #result_proxy:
-#  # method of the call. true = POST, false = GET
-#  is-post: true
+#  # method of the call. [GET|POST]
+#  method: POST
 #  # url of the proxy server. on GET requests, the url to proxy will be appended at the end.
 #  url: http://127.0.0.1:3000/
 #  # form body of the POST request, %s in values will be replaced with the url to proxy

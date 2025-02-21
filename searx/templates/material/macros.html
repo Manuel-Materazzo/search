@@ -77,7 +77,7 @@
                                value="{{ proxy_post_params[param] | replace('%s',proxify(result.url)) }}">
                     {% endfor %}
                     <button type="submit" name="submit_param" value="submit_value" class="proxyfied_link">
-                        {{ _('proxied') }}
+                        {{ icon_small("glasses-outline") }} {{ _('proxied') }}
                     </button>
                 </form>
             {% endif %}

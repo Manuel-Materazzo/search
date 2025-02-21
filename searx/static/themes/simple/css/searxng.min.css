@@ -4052,9 +4052,10 @@ article[data-vim-selected].category-social {
 .result .proxyfied_link {
   font-size: smaller !important;
   margin-left: 0.5rem;
-  color: var(--color-url-font);
-  background: none;
-  padding: 0;
+  color: var(--color-url-font) !important;
+  background: none !important;
+  padding: 0 !important;
+  vertical-align: top;
 }
 .result .content,
 .result .stat {

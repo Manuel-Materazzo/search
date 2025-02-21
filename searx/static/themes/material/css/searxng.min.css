@@ -4056,9 +4056,11 @@ article[data-vim-selected].category-social {
 .result .proxyfied_link {
   font-size: smaller !important;
   margin-right: 0.5rem;
-  color: var(--color-url-font);
-  background: none;
-  padding: 0;
+  margin-left: 0.2rem;
+  color: var(--color-url-font) !important;
+  background: none !important;
+  padding: 0 !important;
+  vertical-align: top;
 }
 .result .content,
 .result .stat {
@@ -4260,7 +4262,7 @@ article[data-vim-selected].category-social {
   font-size: smaller;
   margin-top: 0;
   margin-bottom: 0;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
   margin-left: 0;
 }
 .small_font {

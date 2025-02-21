@@ -66,10 +66,10 @@
 {%- macro result_sub_footer(result, proxify) -%}
     <div class="engines">
         {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
-        {{ result_link(cache_url + result.url, _('cached'), "cache_link", "save-outline") }}&lrm;
+        {{ result_link(cache_url + result.url, _('cached'), classes="cache_link", icon="save-outline") }}&lrm;
         {% if proxify and proxify_results %}
             {% if proxy_method == 'GET' %}
-                {{ result_link(proxify(result.url), _('proxied'), "proxyfied_link", "glasses-outline") }}
+                {{ result_link(proxify(result.url), _('proxied'), classes="proxyfied_link", icon="glasses-outline") }}
             {%- else %}
                 <form method="post" action="{{ proxy_url }}" class="inline">
                     {% for param in proxy_post_params %}

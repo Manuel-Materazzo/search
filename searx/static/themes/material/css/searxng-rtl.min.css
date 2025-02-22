@@ -4435,12 +4435,7 @@ summary.title {
   padding-top: 1em;
 }
 .sidebar-collapsible {
-  border-top: 1px solid var(--color-sidebar-border);
   padding-bottom: 0.5em;
-}
-#sidebar-end-collapsible {
-  border-bottom: 1px solid var(--color-sidebar-border);
-  width: 100%;
 }
 #answers {
   grid-area: answers;
@@ -4474,7 +4469,6 @@ summary.title {
 }
 #sidebar .infobox {
   margin: 10px 0 10px;
-  border: 1px solid var(--color-sidebar-border);
   padding: 1rem;
   font-size: 0.9em;
   border-radius: 10px;
@@ -4513,6 +4507,13 @@ summary.title {
 }
 #sidebar .infobox br {
   clear: both;
+}
+@media screen and (max-width: 79.75em) {
+  #sidebar .infobox .attributes,
+  #sidebar .infobox .relatedTopics,
+  #sidebar .infobox .urls {
+    display: none;
+  }
 }
 #sidebar .infobox .attributes,
 #sidebar .infobox .urls {
@@ -4634,7 +4635,7 @@ summary.title {
 /*
   tablet layout
 */
-@media screen and (width <= calc(79.75em - 0.5px)) {
+@media screen and (width <= 79.7em) {
   #links_on_top span {
     display: none;
   }

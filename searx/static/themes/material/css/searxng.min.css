@@ -4099,6 +4099,9 @@ article[data-vim-selected].category-social {
   display: flex;
   gap: 0.5rem;
 }
+.result .url_test_header {
+  max-width: 90%;
+}
 .result .url_wrapper {
   display: flex;
   align-items: center;

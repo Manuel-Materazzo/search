@@ -30,7 +30,7 @@
     {%- if favicon_resolver != "" %}
         <div class="favicon"><img loading="lazy" src="{{ favicon_url(result.parsed_url.netloc) }}"></div>
     {%- endif -%}
-    <div>
+    <div class="url_test_header">
         {%- if url_formatting_pref != 'host' %}
             <span class="url_wrapper">{{ get_pretty_host(result.parsed_url) }}</span>
         {%- endif -%}

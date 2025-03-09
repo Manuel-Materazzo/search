@@ -4469,6 +4469,7 @@ summary.title {
 }
 #sidebar .infobox {
   margin: 10px 0 10px;
+  background-color: var(--color-sidebar-background);
   padding: 1rem;
   font-size: 0.9em;
   border-radius: 10px;

@@ -449,9 +449,9 @@ def render(template_name: str, **kwargs):
     )
     )
     kwargs['urlparse'] = urlparse
-    kwargs['proxy_method'] = settings['result_proxy']['method']
-    kwargs['proxy_url'] = settings['result_proxy']['url']
-    kwargs['proxy_post_params'] = settings['result_proxy']['post-form-body']
+    kwargs['proxy_method'] = settings['result_proxy'] and settings['result_proxy']['method']
+    kwargs['proxy_url'] = settings['result_proxy'] and settings['result_proxy']['url']
+    kwargs['proxy_post_params'] = settings['result_proxy'] and settings['result_proxy']['post-form-body']
 
     start_time = default_timer()
     result = render_template('{}/{}'.format(kwargs['theme'], template_name), **kwargs)

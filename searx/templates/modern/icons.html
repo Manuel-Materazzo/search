@@ -5,8 +5,7 @@ template. This file from:
   client/modern/tools/icon_catalog.edge.html
 #}
 
-{%-
-set catalog = {
+{%-set catalog = {
     'alert' : '<svg viewBox="0 0 512 512" aria-hidden="true" class="__jinja_class_placeholder__"><path d="M256 80c-8.66 0-16.58 7.36-16 16l8 216a8 8 0 008 8h0a8 8 0 008-8l8-216c.58-8.64-7.34-16-16-16z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><circle cx="256" cy="416" r="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
     'appstore' : '<svg viewBox="0 0 512 512" aria-hidden="true" class="__jinja_class_placeholder__"><rect x="64" y="64" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><rect x="216" y="64" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><rect x="368" y="64" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><rect x="64" y="216" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><rect x="216" y="216" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><rect x="368" y="216" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><rect x="64" y="368" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><rect x="216" y="368" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><rect x="368" y="368" width="80" height="80" rx="40" ry="40" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/></svg>',
     'book' : '<svg viewBox="0 0 512 512" aria-hidden="true" class="__jinja_class_placeholder__"><path d="M256 160c16-63.16 76.43-95.41 208-96a15.94 15.94 0 0116 16v288a16 16 0 01-16 16c-128 0-177.45 25.81-208 64-30.37-38-80-64-208-64-9.88 0-16-8.05-16-17.93V80a15.94 15.94 0 0116-16c131.57.59 192 32.84 208 96zM256 160v288" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
@@ -38,18 +37,19 @@ set catalog = {
     'tv' : '<svg viewBox="0 0 512 512" aria-hidden="true" class="__jinja_class_placeholder__"><rect x="32" y="96" width="448" height="272" rx="32.14" ry="32.14" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M128 416h256"/></svg>',
     'information-circle' : '<svg viewBox="0 0 512 512" aria-hidden="true" class="__jinja_class_placeholder__"><path d="M248 64C146.39 64 64 146.39 64 248s82.39 184 184 184 184-82.39 184-184S349.61 64 248 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M220 220h32v116"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M208 340h88"/><path d="M248 130a26 26 0 1026 26 26 26 0 00-26-26z" fill="currentColor" stroke="currentColor" stroke-miterlimit="10" stroke-width="1"/></svg>',
     'newspaper' : '<svg viewBox="0 0 512 512" aria-hidden="true" class="__jinja_class_placeholder__"><path d="M368 415.86V72a24.07 24.07 0 00-24-24H72a24.07 24.07 0 00-24 24v352a40.12 40.12 0 0040 40h328" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M416 464h0a48 48 0 01-48-48V128h72a24 24 0 0124 24v264a48 48 0 01-48 48z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"/><path d="M240 128h64M240 192h64M112 256h192M112 320h192M112 384h192" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M176 208h-64a16 16 0 01-16-16v-64a16 16 0 0116-16h64a16 16 0 0116 16v64a16 16 0 01-16 16z" fill="currentColor" stroke="currentColor" stroke-linejoin="round" stroke-width="1"/></svg>',
-}
--%}
+    'glasses-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M224 232a32 32 0 0164 0M448 200h16M64 200H48M64 200c0 96 16 128 80 128s80-32 80-128c0 0-16-16-80-16s-80 16-80 16zM448 200c0 96-16 128-80 128s-80-32-80-128c0 0 16-16 80-16s80 16 80 16z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+    'save-outline':'<svg viewBox="0 0 512 512" class="ionicon" aria-hidden="true"><path d="M380.93 57.37A32 32 0 00358.3 48H94.22A46.21 46.21 0 0048 94.22v323.56A46.21 46.21 0 0094.22 464h323.56A46.36 46.36 0 00464 417.78V153.7a32 32 0 00-9.37-22.63zM256 416a64 64 0 1164-64 63.92 63.92 0 01-64 64zm48-224H112a16 16 0 01-16-16v-64a16 16 0 0116-16h192a16 16 0 0116 16v64a16 16 0 01-16 16z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>',
+}-%}
 
 
 {% macro icon(action, alt) -%}
-  {{ catalog[action] | replace("__jinja_class_placeholder__", "sxng-icon-set") | safe }}
+    {{ catalog[action] | replace("__jinja_class_placeholder__", "sxng-icon-set") | safe }}
 {%- endmacro %}
 
 {% macro icon_small(action, alt) -%}
-  {{ catalog[action] | replace("__jinja_class_placeholder__", "sxng-icon-set-small") | safe }}
+    {{ catalog[action] | replace("__jinja_class_placeholder__", "sxng-icon-set-small") | safe }}
 {%- endmacro %}
 
 {% macro icon_big(action, alt) -%}
-  {{ catalog[action] | replace("__jinja_class_placeholder__", "sxng-icon-set-big") | safe }}
+    {{ catalog[action] | replace("__jinja_class_placeholder__", "sxng-icon-set-big") | safe }}
 {%- endmacro %}

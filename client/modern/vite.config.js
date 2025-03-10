@@ -14,15 +14,15 @@ const ROOT = "../..";  // root of the git reposetory
 
 const PATH = {
 
-  dist: resolve(ROOT, "searx/static/themes/simple"),
-  // dist: resolve(ROOT, "client/simple/dist"),
+  dist: resolve(ROOT, "searx/static/themes/modern"),
+  // dist: resolve(ROOT, "client/modern/dist"),
 
   src: "src",
   modules: "node_modules",
   brand: "src/brand",
-  static: resolve(ROOT, "client/simple/static"),
-  leaflet: resolve(ROOT, "client/simple/node_modules/leaflet/dist"),
-  templates: resolve(ROOT, "searx/templates/simple"),
+  static: resolve(ROOT, "client/modern/static"),
+  leaflet: resolve(ROOT, "client/modern/node_modules/leaflet/dist"),
+  templates: resolve(ROOT, "searx/templates/modern"),
 };
 
 const svg2svg_opts = {
@@ -173,7 +173,7 @@ export default defineConfig({
       svg2svg_favicon_opts,
     ),
 
-    // -- simple templates
+    // -- modern templates
     plg_svg2svg(
       [
         { src: PATH.brand + "/goose-search-wordmark.svg", dest: PATH.templates + "/goose-search.min.svg" },

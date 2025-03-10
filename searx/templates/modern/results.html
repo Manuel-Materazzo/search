@@ -12,7 +12,7 @@
     <link rel="alternate" type="application/rss+xml" title="Searx search: {{ q|e }}"
           href="{{ url_for('search', _external=True) }}?q={{ q|urlencode }}&amp;categories={{ selected_categories|join(",") | replace(' ','+') }}&amp;pageno={{ pageno }}&amp;time_range={{ time_range }}&amp;language={{ current_language }}&amp;safesearch={{ safesearch }}&amp;format=rss">{% endblock %}
 {% block content %}
-    {% include 'material/search.html' %}
+    {% include 'modern/search.html' %}
 
     {% if results and results|map(attribute='template')|unique|list|count == 1 %}
         {% set only_template = 'only_template_' + results[0]['template']|default('default')|replace('.html', '') %}
@@ -23,7 +23,7 @@
     <div id="results" class="{{ only_template }}">
 
         {%- if answers -%}
-            {%- include 'material/elements/answers.html' -%}
+            {%- include 'modern/elements/answers.html' -%}
         {%- endif %}
 
         <div id="sidebar">

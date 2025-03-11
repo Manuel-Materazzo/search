@@ -53,6 +53,8 @@ class Result(msgspec.Struct, kw_only=True):
     The field is optional and is initialized from the context if necessary.
     """
 
+    sitelinks: Result | None = None
+
     def normalize_result_fields(self):
         """Normalize a result ..
 
@@ -167,6 +169,8 @@ class LegacyResult(dict):
 
         self.content = self.get("content", "")
         self.title = self.get("title", "")
+
+        self.sitelinks = [LegacyResult(item) for item in self.get("sitelinks", [])]
 
         # Legacy types that have already been ported to a type ..
 

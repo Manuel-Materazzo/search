@@ -398,3 +398,37 @@ html.no-js #clear_search.hide_if_nojs {
   border: 1px solid var(--color-favicon-border-color);
   display: flex;
 }
+
+.sitelinks-container {
+  margin: 1rem;
+
+  .show-more-state {
+    display: none;
+  }
+
+  .show-more-target {
+    opacity: 0;
+    max-height: 0;
+    font-size: 0;
+  }
+
+  .show-more-state:checked ~ .show-more-target {
+    opacity: 1;
+    font-size: inherit;
+    max-height: 999em;
+  }
+
+  .show-more-state ~ .show-more-trigger:before {
+    content: '➤ More';
+  }
+
+  .show-more-state:checked ~ .show-more-trigger:before {
+    content: '⮟ Less';
+  }
+
+  .show-more-trigger {
+    cursor: pointer;
+    font-size: .9em;
+  }
+
+}

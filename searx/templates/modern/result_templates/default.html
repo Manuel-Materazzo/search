@@ -18,9 +18,23 @@
     </p>
 {% endif -%}
 {% if result.get("sitelinks") %}
-    {% for sitelink in result.get("sitelinks") %}
-        <div>{{ result_link(sitelink.get("url", "#"), sitelink.get("title", "no title")|safe) }}</div>
-    {% endfor %}
+    <div class="sitelinks-container">
+        {% for sitelink in result.get("sitelinks") %}
+            {% if loop.index == 5 %}
+                <input type="checkbox" class="show-more-state" id="post-2" />
+                <label for="post-2" class="show-more-trigger"></label>
+            {% endif %}
+            {% if loop.index <= 4 %}
+                <div class="sitelink">
+                    {{ result_link(sitelink.get("url", "#"), sitelink.get("title", "no title")|safe) }}
+                </div>
+            {% else %}
+                <div class="sitelink show-more-target">
+                    {{ result_link(sitelink.get("url", "#"), sitelink.get("title", "no title")|safe) }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endif %}
 {#<h5>{{ result_link(result.url, result.title|safe) }}</h5>#}
 {{- result_sub_footer(result, proxify) -}}

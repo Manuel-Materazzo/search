@@ -1,4 +1,4 @@
-{% from 'modern/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+{% from 'modern/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_link with context %}
 
 {{ result_header(result, favicons, image_proxify) -}}
 {{- result_sub_header(result) -}}
@@ -17,7 +17,11 @@
         {{ _('This site did not provide any description.')|safe }}
     </p>
 {% endif -%}
-<!--TODO: add sub-url here, if any-->
+{% if result.get("sitelinks") %}
+    {% for sitelink in result.get("sitelinks") %}
+        <div>{{ result_link(sitelink.get("url", "#"), sitelink.get("title", "no title")|safe) }}</div>
+    {% endfor %}
+{% endif %}
 {#<h5>{{ result_link(result.url, result.title|safe) }}</h5>#}
 {{- result_sub_footer(result, proxify) -}}
 {% if result.iframe_src -%}

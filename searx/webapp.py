@@ -706,6 +706,9 @@ def search():
                 result['content'] = highlight_content(escape(result['content'][:1024]), search_query.query)
             if 'title' in result and result['title']:
                 result['title'] = highlight_content(escape(result['title'] or ''), search_query.query)
+            if 'sitelinks' in result and result['sitelinks'] and len(result['sitelinks']) > 0:
+                for sitelink in result['sitelinks']:
+                    sitelink['title'] = highlight_content(escape(sitelink['title'] or ''), search_query.query)
 
         if getattr(result, 'publishedDate', None):  # do not try to get a date from an empty string or a None type
             try:  # test if publishedDate >= 1900 (datetime module bug)

@@ -404,6 +404,10 @@ html.no-js #clear_search.hide_if_nojs {
 
   .sitelink {
     margin-bottom: 5px;
+
+    .highlight {
+      font-weight: bold;
+    }
   }
 
   .show-more-state {
@@ -414,12 +418,14 @@ html.no-js #clear_search.hide_if_nojs {
     opacity: 0;
     max-height: 0;
     font-size: 0;
+    margin-bottom: 0;
   }
 
   .show-more-state:checked ~ .show-more-target {
     opacity: 1;
     font-size: inherit;
     max-height: 999em;
+    margin-bottom: 5px;
   }
 
   .show-more-state ~ .show-more-trigger:before {

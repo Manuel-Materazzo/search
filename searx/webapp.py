@@ -262,6 +262,9 @@ def custom_url_for(endpoint: str, **values):
 
 
 def url_proxify(url: str):
+    if not url:
+        return url
+
     if url.startswith('//'):
         url = 'https:' + url
 
@@ -278,6 +281,9 @@ def url_proxify(url: str):
 
 
 def image_proxify(url: str):
+    if not url:
+        return url
+
     if url.startswith('//'):
         url = 'https:' + url
 
@@ -372,7 +378,7 @@ def get_client_settings():
         'query_in_title': req_pref.get_value('query_in_title'),
         'safesearch': str(req_pref.get_value('safesearch')),
         'theme': req_pref.get_value('theme'),
-        'doi_resolver': get_doi_resolver(req_pref),
+        'doi_resolver': get_doi_resolver(),
     }
 
 
@@ -710,14 +716,6 @@ def search():
                 for sitelink in result['sitelinks']:
                     sitelink['title'] = highlight_content(escape(sitelink['title'] or ''), search_query.query)
 
-        if getattr(result, 'publishedDate', None):  # do not try to get a date from an empty string or a None type
-            try:  # test if publishedDate >= 1900 (datetime module bug)
-                result['pubdate'] = result['publishedDate'].strftime('%Y-%m-%d %H:%M:%S%z')
-            except ValueError:
-                result['publishedDate'] = None
-            else:
-                result['publishedDate'] = webutils.searxng_l10n_timespan(result['publishedDate'])
-
         # set result['open_group'] = True when the template changes from the previous result
         # set result['close_group'] = True when the template changes on the next result
         if current_template != result.template:
@@ -1019,7 +1017,7 @@ def preferences():
         shortcuts={y: x for x, y in engine_shortcuts.items()},
         themes=themes,
         plugins_storage=searx.plugins.STORAGE.info,
-        current_doi_resolver=get_doi_resolver(sxng_request.preferences),
+        current_doi_resolver=get_doi_resolver(),
         allowed_plugins=allowed_plugins,
         preferences_url_params=sxng_request.preferences.get_as_url_params(),
         locked_preferences=get_setting("preferences.lock", []),
@@ -1308,7 +1306,7 @@ def config():
 
     _plugins = []
     for _ in searx.plugins.STORAGE:
-        _plugins.append({'name': _.id, 'enabled': _.default_on})
+        _plugins.append({'name': _.id, 'enabled': _.active})
 
     _limiter_cfg = limiter.get_cfg()
 

@@ -243,6 +243,9 @@ class OnlineProcessor(EngineProcessor):
         # remove first sitelinks result (same url as the current base result)
         del sitelink_results[0]
 
+        # remove sitelinks without an url (such as suggestions)
+        sitelink_results = list(filter(lambda result: result.get("url") is not None, sitelink_results))
+
         return sitelink_results
 
     def get_default_tests(self):

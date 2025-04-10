@@ -213,13 +213,16 @@ class OnlineProcessor(EngineProcessor):
             # skip if the query already contains one of the search terms
             if any(term in params["query"] for term in site['website_search_terms']):
                 continue
+
+            expression = "(" + site['website_url_expression'] + ")"
+
             # check each result
             for result in search_results:
                 # skip answer results
                 if isinstance(result, Answer):
                     continue
                 # if the result has an url matching the site where the force_sitelink is required
-                if re.match(site['website_url_expression'], result.get("url", "")):
+                if re.match(expression, result.get("url", "")):
                     # add sitelinks_results as sitelinks for the current base result
                     result["sitelinks"] = self._get_sitelinks(params, site['website_search_terms'][0])
                     # do not repeat search for other matching links

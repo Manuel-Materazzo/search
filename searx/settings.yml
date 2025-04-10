@@ -84,12 +84,17 @@ search:
   # Websites that MUST have sitelinks, otherwise they will be forced.
   force_sitelink_websites:
       # Website URL is matched against this expression
-    - website_url_expression: '(.*\.)?reddit\.com'
+    - website_url_expression: 'https://(.*\.)?reddit\.com'
       # When these terms are in the search query, skip forcing the sitelinks on the result.
       # The first term will be added as a search query when retrieving sitelinks.
-      website_search_terms: ['site:reddit.com', 'reddit']
-    - website_url_expression: '(.*\.)?stackoverflow\.com'
-      website_search_terms: ['site:stackoverflow.com', 'stackoverflow', 'stack overflow']
+      website_search_terms:
+        - 'site:reddit.com'
+        - 'reddit'
+    - website_url_expression: 'https://(.*\.)?stackoverflow\.com'
+      website_search_terms:
+        - 'site:stackoverflow.com'
+        - 'stackoverflow'
+        - 'stack overflow'
 
 
 server:

@@ -257,7 +257,7 @@ class Result(msgspec.Struct, kw_only=True):
     The field is optional and is initialized from the context if necessary.
     """
 
-    sitelinks: Result | None = None
+    sitelinks: list[Result] | None = None
 
     def normalize_result_fields(self):
         """Normalize fields ``url`` and ``parse_sql``.

@@ -34,11 +34,8 @@ def _clear_trackers(result: Result):
     parsed_query: list[tuple[str, str]] = parse_qsl(result.parsed_url.query)
     for name_value in list(parsed_query):
         param_name = name_value[0]
-        print(param_name)
         for reg in regexes:
-            print(reg)
             if reg.match(param_name):
-                print("match")
                 parsed_query.remove(name_value)
                 result.parsed_url = result.parsed_url._replace(query=urlencode(parsed_query))
                 result.url = urlunparse(result.parsed_url)

@@ -18,10 +18,11 @@ if typing.TYPE_CHECKING:
     from searx.plugins import PluginCfg
 
 regexes = {
-    re.compile(r'utm_[^&]+'),
-    re.compile(r'(wkey|wemail)[^&]*'),
-    re.compile(r'(_hsenc|_hsmi|hsCtaTracking|__hssc|__hstc|__hsfp)[^&]*'),
-    re.compile(r'&$'),
+    re.compile(r'utm_[^&]+'),  # Google Analytics tracking
+    re.compile(r'(wkey|wemail)[^&]*'),  # email marketing platforms
+    re.compile(r'(_hsenc|_hsmi|hsCtaTracking|__hssc|__hstc|__hsfp)[^&]*'),  # HubSpot tracking
+    re.compile(r'(tl)[^&]*'),  # Reddit's language tracking and translations
+    re.compile(r'&$'),  # Cleans up stray & that might be left behind after other parameters are removed.
 }
 
 

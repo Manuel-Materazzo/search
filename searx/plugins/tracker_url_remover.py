@@ -26,6 +26,25 @@ regexes = {
 }
 
 
+def _clear_trackers(result: Result):
+
+    if not result.parsed_url:
+        return
+
+    parsed_query: list[tuple[str, str]] = parse_qsl(result.parsed_url.query)
+    for name_value in list(parsed_query):
+        param_name = name_value[0]
+        print(param_name)
+        for reg in regexes:
+            print(reg)
+            if reg.match(param_name):
+                print("match")
+                parsed_query.remove(name_value)
+                result.parsed_url = result.parsed_url._replace(query=urlencode(parsed_query))
+                result.url = urlunparse(result.parsed_url)
+                break
+
+
 class SXNGPlugin(Plugin):
     """Remove trackers arguments from the returned URL"""
 
@@ -43,17 +62,12 @@ class SXNGPlugin(Plugin):
     def on_result(
         self, request: "SXNG_Request", search: "SearchWithPlugins", result: Result
     ) -> bool:  # pylint: disable=unused-argument
-        if not result.parsed_url:
-            return True
 
-        parsed_query: list[tuple[str, str]] = parse_qsl(result.parsed_url.query)
-        for name_value in list(parsed_query):
-            param_name = name_value[0]
-            for reg in regexes:
-                if reg.match(param_name):
-                    parsed_query.remove(name_value)
-                    result.parsed_url = result.parsed_url._replace(query=urlencode(parsed_query))
-                    result.url = urlunparse(result.parsed_url)
-                    break
+        # remove trackers from sitelinks, if any
+        if len(result.sitelinks or []) > 0:
+            for sitelink in result.sitelinks:
+                _clear_trackers(sitelink)
 
+        # remove trackers from main result
+        _clear_trackers(result)
         return True

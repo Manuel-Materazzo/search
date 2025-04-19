@@ -85,8 +85,8 @@ def _normalize_url_fields(result: Result | LegacyResult):
                 path=_url.path.rstrip("/"),
             ).geturl()
 
-    # normalize sitelinks too
-    if len(result.get("sitelinks", [])) > 0:
+    # normalize sitelinks too, but only on classic search results
+    if isinstance(result, list) and len(result.get("sitelinks", [])) > 0:
         for sitelink in result.get("sitelinks"):
             _normalize_url_fields(sitelink)
 

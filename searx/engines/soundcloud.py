@@ -2,16 +2,18 @@
 """SoundCloud is a German audio streaming service."""
 
 import re
-from urllib.parse import quote_plus, urlencode
 import datetime
+
+from urllib.parse import quote_plus, urlencode
 
 from dateutil import parser
 from lxml import html
 
 from searx.network import get as http_get
+from searx.enginelib import EngineCache
 
 about = {
-    "website": "ttps://soundcloud.com",
+    "website": "https://soundcloud.com",
     "wikidata_id": "Q568769",
     "official_api_documentation": "https://developers.soundcloud.com/docs/api/guide",
     "use_official_api": False,
@@ -28,7 +30,6 @@ HTML frontend of the common WEB site.
 """
 
 cid_re = re.compile(r'client_id:"([^"]*)"', re.I | re.U)
-guest_client_id = ""
 results_per_page = 10
 
 soundcloud_facet = "model"
@@ -48,12 +49,22 @@ app_locale_map = {
     "sv": "sv",
 }
 
+CACHE: EngineCache
+"""Persistent (SQLite) key/value cache that deletes its values after ``expire``
+seconds."""
+
 
 def request(query, params):
 
     # missing attributes: user_id, app_version
     # - user_id=451561-497874-703312-310156
     # - app_version=1740727428
+
+    guest_client_id = CACHE.get("guest_client_id")
+    if guest_client_id is None:
+        guest_client_id = get_client_id()
+        if guest_client_id:
+            CACHE.set(key="guest_client_id", value=guest_client_id)
 
     args = {
         "q": query,
@@ -104,12 +115,12 @@ def response(resp):
     return results
 
 
-def init(engine_settings=None):  # pylint: disable=unused-argument
-    global guest_client_id  # pylint: disable=global-statement
-    guest_client_id = get_client_id()
+def init(engine_settings):  # pylint: disable=unused-argument
+    global CACHE  # pylint: disable=global-statement
+    CACHE = EngineCache(engine_settings["name"])  # type:ignore
 
 
-def get_client_id() -> str:
+def get_client_id() -> str | None:
 
     client_id = ""
     url = "https://soundcloud.com"
@@ -143,4 +154,4 @@ def get_client_id() -> str:
         logger.info("using client_id '%s' for soundclud queries", client_id)
     else:
         logger.warning("missing valid client_id for soundclud queries")
-    return client_id
+    return client_id or None

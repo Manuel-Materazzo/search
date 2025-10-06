@@ -117,7 +117,7 @@ Implementations
 
 """
 
-from typing import Any, TYPE_CHECKING
+import typing as t
 
 from urllib.parse import (
     urlencode,
@@ -129,6 +129,7 @@ from lxml import html
 
 from searx import locales
 from searx.utils import (
+    extr,
     extract_text,
     eval_xpath,
     eval_xpath_list,
@@ -138,13 +139,7 @@ from searx.utils import (
 )
 from searx.enginelib.traits import EngineTraits
 from searx.result_types import EngineResults
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
-
-traits: EngineTraits
+from searx.extended_types import SXNG_Response
 
 about = {
     "website": 'https://search.brave.com/',
@@ -157,16 +152,18 @@ about = {
 
 base_url = "https://search.brave.com/"
 categories = []
-brave_category = 'search'
-Goggles = Any
+brave_category: t.Literal["search", "videos", "images", "news", "goggles"] = 'search'
 """Brave supports common web-search, videos, images, news, and goggles search.
 
 - ``search``: Common WEB search
 - ``videos``: search for videos
 - ``images``: search for images
 - ``news``: search for news
-- ``goggles``: Common WEB search with custom rules
+- ``goggles``: Common WEB search with custom rules, requires a :py:obj:`Goggles` URL.
 """
+
+Goggles: str = ""
+"""This should be a URL ending in ``.goggle``"""
 
 brave_spellcheck = False
 """Brave supports some kind of spell checking.  When activated, Brave tries to
@@ -191,7 +188,7 @@ time_range_support = False
 """Brave only supports time-range in :py:obj:`brave_category` ``search`` (UI
 category All) and in the goggles category."""
 
-time_range_map = {
+time_range_map: dict[str, str] = {
     'day': 'pd',
     'week': 'pw',
     'month': 'pm',
@@ -199,12 +196,12 @@ time_range_map = {
 }
 
 
-def request(query, params):
+def request(query: str, params: dict[str, t.Any]) -> None:
 
     # Don't accept br encoding / see https://github.com/searxng/searxng/pull/1787
     params['headers']['Accept-Encoding'] = 'gzip, deflate'
 
-    args = {
+    args: dict[str, t.Any] = {
         'q': query,
         'source': 'web',
     }
@@ -253,34 +250,7 @@ def _extract_published_date(published_date_raw):
         return None
 
 
-def parse_data_string(resp):
-    # kit.start(app, element, {
-    #    node_ids: [0, 19],
-    #    data: [{"type":"data","data" .... ["q","goggles_id"],"route":1,"url":1}}]
-    #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    kit_start = resp.text.index("kit.start(app,")
-    start = resp.text[kit_start:].index('data: [{"type":"data"')
-    start = kit_start + start + len('data: ')
-
-    lev = 0
-    end = start
-    inner = False
-    for c in resp.text[start:]:
-        if inner and lev == 0:
-            break
-        end += 1
-        if c == "[":
-            lev += 1
-            inner = True
-            continue
-        if c == "]":
-            lev -= 1
-
-    json_data = js_variable_to_python(resp.text[start:end])
-    return json_data
-
-
-def response(resp) -> EngineResults:
+def response(resp: SXNG_Response) -> EngineResults:
 
     if brave_category in ('search', 'goggles'):
         return _parse_search(resp)
@@ -288,7 +258,15 @@ def response(resp) -> EngineResults:
     if brave_category in ('news'):
         return _parse_news(resp)
 
-    json_data = parse_data_string(resp)
+    # Example script source containing the data:
+    #
+    # kit.start(app, element, {
+    #    node_ids: [0, 19],
+    #    data: [{type:"data",data: .... ["q","goggles_id"],route:1,url:1}}]
+    #          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    js_object = "[{" + extr(resp.text, "data: [{", "}}],") + "}}]"
+    json_data = js_variable_to_python(js_object)
+
     # json_data is a list and at the second position (0,1) in this list we find the "response" data we need ..
     json_resp = json_data[1]['data']['body']['response']
 

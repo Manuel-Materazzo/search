@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # pylint: disable=invalid-name, missing-module-docstring, missing-class-docstring
 
-from __future__ import annotations
 from abc import abstractmethod, ABC
 import re
 
@@ -9,7 +8,7 @@ from searx import settings
 from searx.sxng_locales import sxng_locales
 from searx.engines import categories, engines, engine_shortcuts
 from searx.external_bang import get_bang_definition_and_autocomplete
-from searx.search import EngineRef
+from searx.search.models import EngineRef
 from searx.webutils import VALID_LANGUAGE_CODE
 
 
@@ -155,7 +154,7 @@ class ExternalBangParser(QueryPartParser):
         return raw_value.startswith('!!') and len(raw_value) > 2
 
     def __call__(self, raw_value):
-        value = raw_value[2:]
+        value = raw_value[2:].lower()
         found, bang_ac_list = self._parse(value) if len(value) > 0 else (False, [])
         if self.enable_autocomplete:
             self._autocomplete(bang_ac_list)
@@ -183,7 +182,7 @@ class BangParser(QueryPartParser):
         return raw_value[0] == '!' and (len(raw_value) < 2 or raw_value[1] != '!')
 
     def __call__(self, raw_value):
-        value = raw_value[1:].replace('-', ' ').replace('_', ' ')
+        value = raw_value[1:].replace('-', ' ').replace('_', ' ').lower()
         found = self._parse(value) if len(value) > 0 else False
         if found and raw_value[0] == '!':
             self.raw_text_query.specific = True

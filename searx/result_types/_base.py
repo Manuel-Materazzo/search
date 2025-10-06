@@ -16,15 +16,13 @@
    :members:
 """
 
-
-from __future__ import annotations
-
 __all__ = ["Result"]
+
+import typing as t
 
 import re
 import urllib.parse
 import warnings
-import typing
 import time
 import datetime
 
@@ -38,7 +36,7 @@ WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
 UNKNOWN = object()
 
 
-def _normalize_url_fields(result: Result | LegacyResult):
+def _normalize_url_fields(result: "Result | LegacyResult"):
 
     # As soon we need LegacyResult not any longer, we can move this function to
     # method Result.normalize_result_fields
@@ -75,7 +73,7 @@ def _normalize_url_fields(result: Result | LegacyResult):
                 path=_url.path,
             ).geturl()
 
-        infobox_id = getattr(result, "id", None)
+        infobox_id: str | None = getattr(result, "id", None)
         if infobox_id:
             _url = urllib.parse.urlparse(infobox_id)
             result.id = _url._replace(
@@ -90,7 +88,7 @@ def _normalize_url_fields(result: Result | LegacyResult):
             _normalize_url_fields(sitelink)
 
 
-def _normalize_text_fields(result: MainResult | LegacyResult):
+def _normalize_text_fields(result: "MainResult | LegacyResult"):
 
     # As soon we need LegacyResult not any longer, we can move this function to
     # method MainResult.normalize_result_fields
@@ -116,13 +114,17 @@ def _normalize_text_fields(result: MainResult | LegacyResult):
         result.content = ""
 
 
-def _filter_urls(result: Result | LegacyResult, filter_func: Callable[[Result | LegacyResult, str, str], str | bool]):
+def _filter_urls(
+    result: "Result | LegacyResult", filter_func: "Callable[[Result | LegacyResult, str, str], str | bool]"
+):
     # pylint: disable=too-many-branches, too-many-statements
 
     # As soon we need LegacyResult not any longer, we can move this function to
     # method Result.
 
     url_fields = ["url", "iframe_src", "audio_src", "img_src", "thumbnail_src", "thumbnail"]
+
+    url_src: str
 
     for field_name in url_fields:
         url_src = getattr(result, field_name, "")
@@ -160,7 +162,7 @@ def _filter_urls(result: Result | LegacyResult, filter_func: Callable[[Result | 
         new_infobox_urls: list[dict[str, str]] = []
 
         for item in infobox_urls:
-            url_src = item.get("url")
+            url_src = item.get("url", "")
             if not url_src:
                 new_infobox_urls.append(item)
                 continue
@@ -184,14 +186,14 @@ def _filter_urls(result: Result | LegacyResult, filter_func: Callable[[Result | 
     #
     # The infobox has additional subsections for attributes, urls and relatedTopics:
 
-    infobox_attributes: list[dict[str, dict]] = getattr(result, "attributes", [])
+    infobox_attributes: list[dict[str, t.Any]] = getattr(result, "attributes", [])
 
     if infobox_attributes:
         # log.debug("filter_urls: infobox_attributes .. %s", infobox_attributes)
-        new_infobox_attributes: list[dict[str, dict]] = []
+        new_infobox_attributes: list[dict[str, str | list[dict[str, str]]]] = []
 
         for item in infobox_attributes:
-            image = item.get("image", {})
+            image: dict[str, str] = item.get("image", {})
             url_src = image.get("src", "")
             if not url_src:
                 new_infobox_attributes.append(item)
@@ -220,7 +222,7 @@ def _filter_urls(result: Result | LegacyResult, filter_func: Callable[[Result | 
     result.normalize_result_fields()
 
 
-def _normalize_date_fields(result: MainResult | LegacyResult):
+def _normalize_date_fields(result: "MainResult | LegacyResult"):
 
     if result.publishedDate:  # do not try to get a date from an empty string or a None type
         try:  # test if publishedDate >= 1900 (datetime module bug)
@@ -271,7 +273,7 @@ class Result(msgspec.Struct, kw_only=True):
     def __post_init__(self):
         pass
 
-    def filter_urls(self, filter_func: Callable[[Result | LegacyResult, str, str], str | bool]):
+    def filter_urls(self, filter_func: "Callable[[Result | LegacyResult, str, str], str | bool]"):
         """A filter function is passed in the ``filter_func`` argument to
         filter and/or modify the URLs.
 
@@ -311,7 +313,7 @@ class Result(msgspec.Struct, kw_only=True):
         """
         return id(self)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
         """py:obj:`Result` objects are equal if the hash values of the two
         objects are equal.  If needed, its recommended to overwrite
         "py:obj:`Result.__hash__`."""
@@ -320,11 +322,11 @@ class Result(msgspec.Struct, kw_only=True):
 
     # for legacy code where a result is treated as a Python dict
 
-    def __setitem__(self, field_name, value):
+    def __setitem__(self, field_name: str, value: t.Any):
 
         return setattr(self, field_name, value)
 
-    def __getitem__(self, field_name):
+    def __getitem__(self, field_name: str) -> t.Any:
 
         if field_name not in self.__struct_fields__:
             raise KeyError(f"{field_name}")
@@ -337,7 +339,7 @@ class Result(msgspec.Struct, kw_only=True):
     def as_dict(self):
         return {f: getattr(self, f) for f in self.__struct_fields__}
 
-    def defaults_from(self, other: Result):
+    def defaults_from(self, other: "Result"):
         """Fields not set in *self* will be updated from the field values of the
         *other*.
         """
@@ -367,7 +369,11 @@ class MainResult(Result):  # pylint: disable=missing-class-docstring
     """The date on which the object was published."""
 
     pubdate: str = ""
-    """String representation of :py:obj:`MainResult.publishedDate`"""
+    """String representation of :py:obj:`MainResult.publishedDate`
+
+    Deprecated: it is still partially used in the templates, but will one day be
+    completely eliminated.
+    """
 
     length: time.struct_time | None = None
     """Playing duration in seconds."""
@@ -381,7 +387,8 @@ class MainResult(Result):  # pylint: disable=missing-class-docstring
     metadata: str = ""
     """Miscellaneous metadata."""
 
-    priority: typing.Literal["", "high", "low"] = ""
+    PriorityType = t.Literal["", "high", "low"]  # pyright: ignore[reportUnannotatedClassAttribute]
+    priority: "MainResult.PriorityType" = ""
     """The priority can be set via :ref:`hostnames plugin`, for example."""
 
     engines: set[str] = set()
@@ -419,7 +426,7 @@ class MainResult(Result):  # pylint: disable=missing-class-docstring
             self.engines.add(self.engine)
 
 
-class LegacyResult(dict):
+class LegacyResult(dict[str, t.Any]):
     """A wrapper around a legacy result item.  The SearXNG core uses this class
     for untyped dictionaries / to be downward compatible.
 
@@ -435,7 +442,7 @@ class LegacyResult(dict):
        Do not use this class in your own implementations!
     """
 
-    UNSET = object()
+    UNSET: object = object()
 
     # emulate field types from type class Result
     url: str | None
@@ -448,12 +455,12 @@ class LegacyResult(dict):
     content: str
     img_src: str
     thumbnail: str
-    priority: typing.Literal["", "high", "low"]
+    priority: t.Literal["", "high", "low"]
     engines: set[str]
     positions: list[int]
     score: float
     category: str
-    publishedDate: datetime.datetime | None = None
+    publishedDate: datetime.datetime | None
     pubdate: str = ""
 
     # infobox result
@@ -463,7 +470,7 @@ class LegacyResult(dict):
     def as_dict(self):
         return self
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: t.Any, **kwargs: t.Any):
 
         super().__init__(*args, **kwargs)
 
@@ -483,6 +490,7 @@ class LegacyResult(dict):
         self["positions"] = self.get("positions", "")
         self["score"] = self.get("score", 0)
         self["category"] = self.get("category", "")
+        self["publishedDate"] = self.get("publishedDate")
 
         if "infobox" in self:
             self["urls"] = self.get("urls", [])
@@ -507,15 +515,15 @@ class LegacyResult(dict):
                 DeprecationWarning,
             )
 
-    def __getattr__(self, name: str, default=UNSET) -> typing.Any:
+    def __getattr__(self, name: str, default: t.Any = UNSET) -> t.Any:
         if default == self.UNSET and name not in self:
             raise AttributeError(f"LegacyResult object has no field named: {name}")
         return self[name]
 
-    def __setattr__(self, name: str, val):
+    def __setattr__(self, name: str, val: t.Any):
         self[name] = val
 
-    def __hash__(self) -> int:  # type: ignore
+    def __hash__(self) -> int:  # pyright: ignore[reportIncompatibleVariableOverride]
 
         if "answer" in self:
             # deprecated ..
@@ -543,7 +551,7 @@ class LegacyResult(dict):
 
         return id(self)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
 
         return hash(self) == hash(other)
 
@@ -558,11 +566,11 @@ class LegacyResult(dict):
         if self.engine:
             self.engines.add(self.engine)
 
-    def defaults_from(self, other: LegacyResult):
+    def defaults_from(self, other: "LegacyResult"):
         for k, v in other.items():
             if not self.get(k):
                 self[k] = v
 
-    def filter_urls(self, filter_func: Callable[[Result | LegacyResult, str, str], str | bool]):
+    def filter_urls(self, filter_func: "Callable[[Result | LegacyResult, str, str], str | bool]"):
         """See :py:obj:`Result.filter_urls`"""
         _filter_urls(self, filter_func=filter_func)

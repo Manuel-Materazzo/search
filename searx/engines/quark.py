@@ -6,12 +6,12 @@ from datetime import datetime
 import re
 import json
 
-from searx.utils import html_to_text, gen_useragent
+from searx.utils import html_to_text
 from searx.exceptions import SearxEngineAPIException, SearxEngineCaptchaException
 
 # Metadata
 about = {
-    "website": "https://m.quark.cn/",
+    "website": "https://quark.sm.cn/",
     "wikidata_id": "Q48816502",
     "use_official_api": False,
     "require_api_key": False,
@@ -53,7 +53,7 @@ def request(query, params):
 
     category_config = {
         'general': {
-            'endpoint': 'https://m.quark.cn/s',
+            'endpoint': 'https://quark.sm.cn/s',
             'params': {
                 "q": query,
                 "layout": "html",
@@ -77,9 +77,6 @@ def request(query, params):
         query_params["tl_request"] = time_range_dict.get(params['time_range'])
 
     params["url"] = f"{query_url}?{urlencode(query_params)}"
-    params["headers"] = {
-        "User-Agent": gen_useragent(),
-    }
     return params
 
 

@@ -32,15 +32,12 @@ install uninstall:
 	$(Q)./manage pyenv.$@
 
 PHONY += clean
-clean: py.clean docs.clean node.clean nvm.clean test.clean
+clean: py.clean docs.clean node.clean nvm.clean go.clean test.clean
 	$(Q)./manage build_msg CLEAN  "common files"
 	$(Q)find . -name '*.orig' -exec rm -f {} +
 	$(Q)find . -name '*.rej' -exec rm -f {} +
 	$(Q)find . -name '*~' -exec rm -f {} +
 	$(Q)find . -name '*.bak' -exec rm -f {} +
-
-lxc.clean:
-	$(Q)rm -rf lxc-env
 
 PHONY += search.checker search.checker.%
 search.checker: install
@@ -50,43 +47,44 @@ search.checker.%: install
 	$(Q)./manage pyenv.cmd searxng-checker -v "$(subst _, ,$(patsubst search.checker.%,%,$@))"
 
 PHONY += test ci.test test.shell
-ci.test: test.yamllint test.black test.types.ci  test.pylint test.unit test.robot test.rst test.shell test.pybabel
-test:    test.yamllint test.black test.types.dev test.pylint test.unit test.robot test.rst test.shell
+test:    test.yamllint test.black test.pyright_modified test.pylint test.unit test.robot test.rst test.shell test.shfmt
+ci.test: test test.pybabel
 test.shell:
 	$(Q)shellcheck -x -s dash \
-		dockerfiles/docker-entrypoint.sh
+		container/entrypoint.sh
 	$(Q)shellcheck -x -s bash \
 		utils/brand.sh \
 		$(MTOOLS) \
 		utils/lib.sh \
 		utils/lib_sxng*.sh \
-		utils/lib_go.sh \
+		utils/lib_govm.sh \
 		utils/lib_nvm.sh \
 		utils/lib_redis.sh \
-		utils/searxng.sh \
-		utils/lxc.sh \
-		utils/lxc-searxng.env \
-		utils/searx.sh \
-		utils/filtron.sh \
-		utils/morty.sh
+		utils/lib_valkey.sh \
+		utils/searxng.sh
 	$(Q)$(MTOOLS) build_msg TEST "$@ OK"
 
+PHONY += format
+format: format.python format.shell
 
 # wrap ./manage script
 
 MANAGE += weblate.translations.commit weblate.push.translations
 MANAGE += data.all data.traits data.useragents data.locales data.currencies
 MANAGE += docs.html docs.live docs.gh-pages docs.prebuild docs.clean
-MANAGE += docker.build docker.push docker.buildx
+MANAGE += podman.build
+MANAGE += docker.build docker.buildx
+MANAGE += container.build container.test container.push
 MANAGE += gecko.driver
 MANAGE += node.env node.env.dev node.clean
 MANAGE += py.build py.clean
 MANAGE += pyenv pyenv.install pyenv.uninstall
-MANAGE += format.python
-MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.coverage test.robot test.rst test.clean test.themes test.types.dev test.types.ci
-MANAGE += themes.all themes.fix themes.test
+MANAGE += format.python format.shell
+MANAGE += test.yamllint test.pylint test.black test.pybabel test.unit test.coverage test.robot test.rst test.clean test.themes test.pyright test.pyright_modified test.shfmt
+MANAGE += themes.all themes.simple themes.simple.analyze themes.fix themes.lint themes.test
 MANAGE += static.build.commit static.build.drop static.build.restore
 MANAGE += nvm.install nvm.clean nvm.status nvm.nodejs
+MANAGE += go.env.dev go.clean
 
 PHONY += $(MANAGE)
 
@@ -95,8 +93,8 @@ $(MANAGE):
 
 # short hands of selected targets
 
-PHONY += docs docker themes
+PHONY += docs container themes
 
 docs: docs.html
-docker:  docker.build
+container:  container.build
 themes: themes.all

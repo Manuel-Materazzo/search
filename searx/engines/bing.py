@@ -26,7 +26,6 @@ category for the Chinese market.
 """
 # pylint: disable=too-many-branches, invalid-name
 
-from typing import TYPE_CHECKING
 import base64
 import re
 import time
@@ -38,13 +37,7 @@ import babel.languages
 from searx.utils import eval_xpath, extract_text, eval_xpath_list, eval_xpath_getindex
 from searx.locales import language_tag, region_tag
 from searx.enginelib.traits import EngineTraits
-
-if TYPE_CHECKING:
-    import logging
-
-    logger = logging.getLogger()
-
-traits: EngineTraits
+from searx.exceptions import SearxEngineAPIException
 
 about = {
     "website": 'https://www.bing.com',
@@ -161,27 +154,33 @@ def response(resp):
         results.append({'url': url, 'title': title, 'content': content})
 
     # get number_of_results
-    try:
+    if results:
         result_len_container = "".join(eval_xpath(dom, '//span[@class="sb_count"]//text()'))
         if "-" in result_len_container:
-
-            # Remove the part "from-to" for paginated request ...
-            result_len_container = result_len_container[result_len_container.find("-") * 2 + 2 :]
+            start_str, result_len_container = re.split(r'-\d+', result_len_container)
+            start = int(start_str)
+        else:
+            start = 1
 
         result_len_container = re.sub('[^0-9]', '', result_len_container)
-
         if len(result_len_container) > 0:
             result_len = int(result_len_container)
 
-    except Exception as e:  # pylint: disable=broad-except
-        logger.debug('result error :\n%s', e)
+        expected_start = _page_offset(resp.search_params.get("pageno", 1))
 
-    if result_len and _page_offset(resp.search_params.get("pageno", 0)) > result_len:
-        # Avoid reading more results than available.
-        # For example, if there is 100 results from some search and we try to get results from 120 to 130,
-        # Bing will send back the results from 0 to 10 and no error.
-        # If we compare results count with the first parameter of the request we can avoid this "invalid" results.
-        return []
+        if expected_start != start:
+            if expected_start > result_len:
+                # Avoid reading more results than available.
+                # For example, if there is 100 results from some search and we try to get results from 120 to 130,
+                # Bing will send back the results from 0 to 10 and no error.
+                # If we compare results count with the first parameter of the request we can avoid this "invalid"
+                # results.
+                return []
+
+            # Sometimes Bing will send back the first result page instead of the requested page as a rate limiting
+            # measure.
+            msg = f"Expected results to start at {expected_start}, but got results starting at {start}"
+            raise SearxEngineAPIException(msg)
 
     results.append({'number_of_results': result_len})
     return results

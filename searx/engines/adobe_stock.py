@@ -35,18 +35,11 @@ Implementation
 ==============
 
 """
-from __future__ import annotations
 
-from typing import TYPE_CHECKING
 from datetime import datetime, timedelta
 from urllib.parse import urlencode
 
 import isodate
-
-if TYPE_CHECKING:
-    import logging
-
-    logger: logging.Logger
 
 about = {
     "website": "https://stock.adobe.com/",
@@ -156,7 +149,7 @@ def parse_image_item(item):
 def parse_video_item(item):
 
     # in video items, the title is more or less a "content description", we try
-    # to reduce the lenght of the title ..
+    # to reduce the length of the title ..
 
     title = item["title"]
     content = ""

@@ -1,8 +1,9 @@
-/*! Autocomplete.js v2.6.3 | license MIT | (c) 2017, Baptiste Donaux | http://autocomplete-js.com */
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 .autocomplete {
   position: absolute;
   width: @search-width;
+  max-width: calc(100% - 2 * @search-padding-horizontal);
   max-height: 0;
   overflow-y: hidden;
   .ltr-text-align-left();
@@ -65,8 +66,6 @@
 
 @media screen and (max-width: @phone) {
   .autocomplete {
-    width: 100%;
-
     > ul > li {
       padding: 1rem;
     }

@@ -1,13 +1,8 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""WebbApp
-
-"""
+"""WebApp"""
 # pylint: disable=use-dict-literal
-from __future__ import annotations
 
-import hashlib
-import hmac
 import json
 import os
 import sys
@@ -29,6 +24,9 @@ from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter  # pylint: disable=no-name-in-module
 
+from whitenoise import WhiteNoise
+from whitenoise.base import Headers
+
 import flask
 
 from flask import (
@@ -48,17 +46,17 @@ from flask_babel import (
     format_decimal,
 )
 
+import searx
 from searx.extended_types import sxng_request
 from searx import (
     logger,
     get_setting,
     settings,
-    searx_debug,
 )
 
 from searx import infopage
 from searx import limiter
-from searx.botdetection import link_token
+from searx.botdetection import link_token, ProxyFix
 
 from searx.data import ENGINE_DESCRIPTIONS
 from searx.result_types import Answer
@@ -75,13 +73,11 @@ from searx.engines import (
 from searx import webutils
 from searx.webutils import (
     highlight_content,
-    get_static_files,
     get_result_templates,
     get_themes,
     exception_classname_to_text,
     new_hmac,
     is_hmac_of,
-    is_flask_run_cmdline,
     group_engines_in_tab,
 )
 from searx.webadapter import (
@@ -105,6 +101,7 @@ from searx.metrics import get_engines_stats, get_engine_errors, get_reliabilitie
 from searx.flaskfix import patch_application
 
 from searx.locales import (
+    LOCALE_BEST_MATCH,
     LOCALE_NAMES,
     RTL_LOCALES,
     localeselector,
@@ -116,7 +113,7 @@ from searx.locales import (
 from searx.autocomplete import search_autocomplete, backends as autocomplete_backends
 from searx import favicons
 
-from searx.redisdb import initialize as redis_initialize
+from searx.valkeydb import initialize as valkey_initialize
 from searx.sxng_locales import sxng_locales
 import searx.search
 from searx.network import stream as http_stream, set_context_network_name
@@ -126,14 +123,8 @@ logger = logger.getChild('webapp')
 
 warnings.simplefilter("always")
 
-# check secret_key
-if not searx_debug and settings['server']['secret_key'] == 'ultrasecretkey':
-    logger.error('server.secret_key is not changed. Please use something else instead of ultrasecretkey.')
-    sys.exit(1)
-
 # about static
 logger.debug('static directory is %s', settings['ui']['static_path'])
-static_files = get_static_files(settings['ui']['static_path'])
 
 # about templates
 logger.debug('templates directory is %s', settings['ui']['templates_path'])
@@ -151,7 +142,7 @@ STATS_SORT_PARAMETERS = {
 }
 
 # Flask app
-app = Flask(__name__, static_folder=settings['ui']['static_path'], template_folder=templates_path)
+app = Flask(__name__, static_folder=None, template_folder=templates_path)
 
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
@@ -187,23 +178,31 @@ def _get_locale_rfc5646(locale):
 
 # code-highlighter
 @app.template_filter('code_highlighter')
-def code_highlighter(codelines, language=None):
+def code_highlighter(codelines, language=None, hl_lines=None, strip_whitespace=True, strip_new_lines=True):
     if not language:
         language = 'text'
 
     try:
-        # find lexer by programming language
-        lexer = get_lexer_by_name(language, stripall=True)
+        lexer = get_lexer_by_name(language, stripall=strip_whitespace, stripnl=strip_new_lines)
 
     except Exception as e:  # pylint: disable=broad-except
         logger.warning("pygments lexer: %s " % e)
         # if lexer is not found, using default one
-        lexer = get_lexer_by_name('text', stripall=True)
+        lexer = get_lexer_by_name('text', stripall=strip_whitespace, stripnl=strip_new_lines)
 
     html_code = ''
     tmp_code = ''
     last_line = None
     line_code_start = None
+
+    def offset_hl_lines(hl_lines, start):
+        """
+        hl_lines in pygments are expected to be relative to the input
+        """
+        if hl_lines is None:
+            return None
+
+        return [line - start + 1 for line in hl_lines]
 
     # parse lines
     for line, code in codelines:
@@ -213,7 +212,12 @@ def code_highlighter(codelines, language=None):
         # new codeblock is detected
         if last_line is not None and last_line + 1 != line:
             # highlight last codepart
-            formatter = HtmlFormatter(linenos='inline', linenostart=line_code_start, cssclass="code-highlight")
+            formatter = HtmlFormatter(
+                linenos='inline',
+                linenostart=line_code_start,
+                cssclass="code-highlight",
+                hl_lines=offset_hl_lines(hl_lines, line_code_start),
+            )
             html_code = html_code + highlight(tmp_code, lexer, formatter)
 
             # reset conditions for next codepart
@@ -227,7 +231,12 @@ def code_highlighter(codelines, language=None):
         last_line = line
 
     # highlight last codepart
-    formatter = HtmlFormatter(linenos='inline', linenostart=line_code_start, cssclass="code-highlight")
+    formatter = HtmlFormatter(
+        linenos='inline',
+        linenostart=line_code_start,
+        cssclass="code-highlight",
+        hl_lines=offset_hl_lines(hl_lines, line_code_start),
+    )
     html_code = html_code + highlight(tmp_code, lexer, formatter)
 
     return html_code
@@ -240,25 +249,48 @@ def get_result_template(theme_name: str, template_name: str):
     return 'result_templates/' + template_name
 
 
+_STATIC_FILES: list[str] = []
+
+
 def custom_url_for(endpoint: str, **values):
-    suffix = ""
-    if endpoint == 'static' and values.get('filename'):
-        file_hash = static_files.get(values['filename'])
-        if not file_hash:
+    global _STATIC_FILES  # pylint: disable=global-statement
+    if not _STATIC_FILES:
+        _STATIC_FILES = webutils.get_static_file_list()
+
+    # handled by WhiteNoise
+    if endpoint == "static" and values.get("filename"):
+
+        # We need to verify the "filename" argument: in the jinja templates
+        # there could be call like:
+        #     url_for('static', filename='img/favicon.png')
+        # which should map to:
+        #     static/themes/<theme_name>/img/favicon.png
+
+        arg_filename = values["filename"]
+        if arg_filename not in _STATIC_FILES:
             # try file in the current theme
-            theme_name = sxng_request.preferences.get_value('theme')
-            filename_with_theme = "themes/{}/{}".format(theme_name, values['filename'])
-            file_hash = static_files.get(filename_with_theme)
-            if file_hash:
-                values['filename'] = filename_with_theme
-        if get_setting('ui.static_use_hash') and file_hash:
-            suffix = "?" + file_hash
-    if endpoint == 'info' and 'locale' not in values:
-        locale = sxng_request.preferences.get_value('locale')
-        if infopage.INFO_PAGES.get_page(values['pagename'], locale) is None:
+            theme_name = sxng_request.preferences.get_value("theme")
+            theme_filename = f"themes/{theme_name}/{arg_filename}"
+            if theme_filename in _STATIC_FILES:
+                values["filename"] = theme_filename
+
+        app_prefix = url_for("index")
+        return f"{app_prefix}static/{values['filename']}"
+
+    if endpoint == "info" and "locale" not in values:
+
+        # We need to verify the "locale" argument: in the jinja templates there
+        # could be call like:
+        #     url_for('info', pagename='about')
+        # which should map to:
+        #     info/<locale>/about
+
+        locale = sxng_request.preferences.get_value("locale")
+        if infopage.INFO_PAGES.get_page(values["pagename"], locale) is None:
             locale = infopage.INFO_PAGES.locale_default
-        values['locale'] = locale
-    return url_for(endpoint, **values) + suffix
+        values["locale"] = locale
+
+    return url_for(endpoint, **values)
 
 
 def url_proxify(url: str):
@@ -376,7 +408,7 @@ def get_client_settings():
         'favicon_resolver': req_pref.get_value('favicon_resolver'),
         'advanced_search': req_pref.get_value('advanced_search'),
         'query_in_title': req_pref.get_value('query_in_title'),
-        'safesearch': str(req_pref.get_value('safesearch')),
+        'safesearch': req_pref.get_value('safesearch'),
         'theme': req_pref.get_value('theme'),
         'doi_resolver': get_doi_resolver(),
     }
@@ -386,15 +418,7 @@ def render(template_name: str, **kwargs):
     # values from the preferences
     # pylint: disable=too-many-statements
     client_settings = get_client_settings()
-    kwargs['client_settings'] = str(
-        base64.b64encode(
-            bytes(
-                json.dumps(client_settings),
-                encoding='utf-8',
-            )
-        ),
-        encoding='utf-8',
-    )
+    kwargs['client_settings'] = base64.b64encode(json.dumps(client_settings).encode('utf-8')).decode('utf-8')
     kwargs['preferences'] = sxng_request.preferences
     kwargs.update(client_settings)
 
@@ -1104,10 +1128,12 @@ def image_proxy():
 
 @app.route('/engine_descriptions.json', methods=['GET'])
 def engine_descriptions():
-    locale = get_locale().split('_')[0]
+    sxng_ui_lang_tag = get_locale().replace("_", "-")
+    sxng_ui_lang_tag = LOCALE_BEST_MATCH.get(sxng_ui_lang_tag, sxng_ui_lang_tag)
+
     result = ENGINE_DESCRIPTIONS['en'].copy()
-    if locale != 'en':
-        for engine, description in ENGINE_DESCRIPTIONS.get(locale, {}).items():
+    if sxng_ui_lang_tag != 'en':
+        for engine, description in ENGINE_DESCRIPTIONS.get(sxng_ui_lang_tag, {}).items():
             result[engine] = description
     for engine, description in result.items():
         if len(description) == 2 and description[1] == 'ref':
@@ -1346,45 +1372,90 @@ def page_not_found(_e):
     return render('404.html'), 404
 
 
-# see https://flask.palletsprojects.com/en/1.1.x/cli/
-# True if "FLASK_APP=searx/webapp.py FLASK_ENV=development flask run"
-flask_run_development = (
-    os.environ.get("FLASK_APP") is not None and os.environ.get("FLASK_ENV") == 'development' and is_flask_run_cmdline()
-)
+def run():
+    """Runs the application on a local development server.
 
-# True if reload feature is activated of werkzeug, False otherwise (including uwsgi, etc..)
-#  __name__ != "__main__" if searx.webapp is imported (make test, make docs, uwsgi...)
-# see run() at the end of this file : searx_debug activates the reload feature.
-werkzeug_reloader = flask_run_development or (searx_debug and __name__ == "__main__")
+    This run method is only called when SearXNG is started via ``__main__``::
 
-# initialize the engines except on the first run of the werkzeug server.
-if not werkzeug_reloader or (werkzeug_reloader and os.environ.get("WERKZEUG_RUN_MAIN") == "true"):
+        python -m searx.webapp
+
+    Do not use :ref:`run() <flask.Flask.run>` in a production setting.  It is
+    not intended to meet security and performance requirements for a production
+    server.
+
+    It is not recommended to use this function for development with automatic
+    reloading as this is badly supported.  Instead you should be using the flask
+    command line script’s run support::
+
+        flask --app searx.webapp run --debug --reload --host 127.0.0.1 --port 8888
+
+    .. _Flask.run: https://flask.palletsprojects.com/en/stable/api/#flask.Flask.run
+    """
+
+    host: str = get_setting("server.bind_address")  # type: ignore
+    port: int = get_setting("server.port")  # type: ignore
+
+    if searx.sxng_debug:
+        logger.debug("run local development server (DEBUG) on %s:%s", host, port)
+        app.run(
+            debug=True,
+            port=port,
+            host=host,
+            threaded=True,
+            extra_files=[DEFAULT_SETTINGS_FILE],
+        )
+    else:
+        logger.debug("run local development server on %s:%s", host, port)
+        app.run(port=port, host=host, threaded=True)
+
+
+def init():
+
+    if searx.sxng_debug or app.debug:
+        app.debug = True
+        searx.sxng_debug = True
+
+    # check secret_key in production
+
+    if not app.debug and get_setting("server.secret_key") == 'ultrasecretkey':
+        logger.error("server.secret_key is not changed. Please use something else instead of ultrasecretkey.")
+        sys.exit(1)
+
     locales_initialize()
-    redis_initialize()
+    valkey_initialize()
     searx.plugins.initialize(app)
-    searx.search.initialize(
-        enable_checker=True,
-        check_network=True,
-        enable_metrics=get_setting("general.enable_metrics"),
-    )
+
+    metrics: bool = get_setting("general.enable_metrics")  # type: ignore
+    searx.search.initialize(enable_checker=True, check_network=True, enable_metrics=metrics)
+
     limiter.initialize(app, settings)
     favicons.init()
 
 
-def run():
-    logger.debug('starting webserver on %s:%s', settings['server']['bind_address'], settings['server']['port'])
-    app.run(
-        debug=searx_debug,
-        use_debugger=searx_debug,
-        port=settings['server']['port'],
-        host=settings['server']['bind_address'],
-        threaded=True,
-        extra_files=[DEFAULT_SETTINGS_FILE],
-    )
+def static_headers(headers: Headers, _path: str, _url: str) -> None:
+    headers['Cache-Control'] = 'public, max-age=30, stale-while-revalidate=60'
+
+    for header, value in settings['server']['default_http_headers'].items():
+        # cast value to string, as WhiteNoise requires header values to be strings
+        headers[header] = str(value)
 
 
-application = app
+app.wsgi_app = ProxyFix(app.wsgi_app)
+app.wsgi_app = WhiteNoise(
+    app.wsgi_app,
+    root=settings['ui']['static_path'],
+    prefix="static",
+    max_age=None,
+    allow_all_origins=False,
+    add_headers_function=static_headers,
+)
+
 patch_application(app)
+
+# remove when we drop support for uwsgi
+application = app
+
+init()
 
 if __name__ == "__main__":
     run()

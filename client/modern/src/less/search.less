@@ -1,6 +1,4 @@
-/*
-* SearXNG, A privacy-respecting, hackable metasearch engine
-*/
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 #search {
   padding: 0;
@@ -84,8 +82,8 @@ button.category_button {
 
 // only used when JavaScript is disabled
 .no-js
-#categories_container:has(button.category_button:focus-within)
-button.category_button {
+  #categories_container:has(button.category_button:focus-within)
+  button.category_button {
   &.selected {
     color: var(--color-base-font);
     border-bottom: none;
@@ -131,7 +129,7 @@ button.category_button {
 }
 
 #search_view {
-  padding: 0.5rem 0.3rem 0 0.5rem;
+  padding: 0.5rem @search-padding-horizontal 0 @search-padding-horizontal;
   grid-area: search;
 
   body.results_endpoint & {
@@ -141,7 +139,8 @@ button.category_button {
 
 .search_box {
   border-radius: 0.8rem;
-  width: @search-width;
+  width: 100%;
+  max-width: @search-width;
   display: inline-flex;
   flex-direction: row;
   white-space: nowrap;
@@ -193,11 +192,6 @@ html.no-js #clear_search.hide_if_nojs {
   .ltr-padding-left(1rem);
   .ltr-padding-right(0) !important;
   .ltr-rounded-left-corners(24px);
-}
-
-#q::-ms-clear,
-#q::-webkit-search-cancel-button {
-  display: none;
 }
 
 #send_search {
@@ -270,7 +264,6 @@ html.no-js #clear_search.hide_if_nojs {
       width: 100%;
       .ltr-text-align-left();
       overflow: scroll hidden;
-      -webkit-overflow-scrolling: touch;
     }
   }
 }
@@ -291,8 +284,7 @@ html.no-js #clear_search.hide_if_nojs {
   }
 
   .search_box {
-    width: 98%;
-    display: flex;
+    width: 100%;
   }
 
   #q {
@@ -374,11 +366,6 @@ html.no-js #clear_search.hide_if_nojs {
 
 #categories {
   .disable-user-select;
-
-  &::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
 }
 
 #categories_container {

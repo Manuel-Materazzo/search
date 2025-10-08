@@ -1,4 +1,4 @@
-{% from theme + '/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer with context %}
+{% from theme + '/macros.html' import result_header, result_sub_header, result_sub_footer, result_footer, result_link with context %}
 {{ result_header(result, favicons, image_proxify) -}}
 {{- result_sub_header(result) -}}
 {% if result.iframe_src -%}
@@ -13,7 +13,7 @@
     {{ _('This site did not provide any description.')|safe }}
   </p>
 {% endif -%}
-{% if result.get("sitelinks") %}
+{% if result.get("sitelinks", None) %}
     <div class="sitelinks-container">
         {% for sitelink in result.get("sitelinks") %}
             {% if loop.index == 5 %}

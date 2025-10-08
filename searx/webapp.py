@@ -487,6 +487,9 @@ def render(template_name: str, **kwargs):
     try:
         result = render_template('{}/{}'.format(kwargs['theme'], template_name), **kwargs)
     except Exception as e:
+        logger.warning(
+            f"Template file not found, falling back to simple: {kwargs['theme']}/{template_name}"
+        )
         result = render_template('{}/{}'.format("simple", template_name), **kwargs)
     sxng_request.render_time += default_timer() - start_time  # pylint: disable=assigning-non-slot
 

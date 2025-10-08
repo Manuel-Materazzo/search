@@ -18,8 +18,8 @@ services:
   searxng:
     container_name: searxng
     build:
-        dockerfile: Dockerfile
-        context: '.'
+        context: .
+        dockerfile: container/custom.dockerfile
     restart: unless-stopped
     networks:
       - searxng

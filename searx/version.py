@@ -114,7 +114,7 @@ try:
         str(vf.GIT_URL),
         str(vf.GIT_BRANCH),
     )
-except ImportError:
+except Exception:
     VERSION_STRING, VERSION_TAG, DOCKER_TAG, GIT_URL, GIT_BRANCH = get_information()
 
 logger.info("version: %s", VERSION_STRING)

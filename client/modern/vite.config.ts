@@ -12,17 +12,19 @@ import type { PreRenderedAsset } from "rolldown";
 import type { Config } from "svgo";
 import type { UserConfig } from "vite";
 import analyzer from "vite-bundle-analyzer";
-import manifest from "./package.json" with { type: "json" };
-import { plg_svg2png, plg_svg2svg } from "./tools/plg.ts";
+import manifest from "../simple/package.json" with { type: "json" };
+import { plg_svg2png, plg_svg2svg } from "../simple/tools/plg.ts";
 
 const ROOT = "../../"; // root of the git repository
 
 const PATH = {
-  brand: "src/brand/",
+  brand: "../simple/src/brand/",
   dist: resolve(ROOT, "searx/static/themes/modern/"),
-  modules: "node_modules/",
-  src: "src/",
-  templates: resolve(ROOT, "searx/templates/simple/")
+  modules: "../simple/node_modules/",
+  js: "../simple/src/js",
+  svg: "../simple/src/svg",
+  less: "src/less",
+  templates: resolve(ROOT, "searx/templates/modern/") // TODO: only diffs with simple?
 } as const;
 
 const svg2svg_opts: Config = {
@@ -47,15 +49,15 @@ export default {
     rolldownOptions: {
       input: {
         // build CSS files
-        "searxng-ltr.css": `${PATH.src}/less/style-ltr.less`,
-        "searxng-rtl.css": `${PATH.src}/less/style-rtl.less`,
-        "rss.css": `${PATH.src}/less/rss.less`,
+        "searxng-ltr.css": `${PATH.less}/custom-ltr.less`,
+        "searxng-rtl.css": `${PATH.less}/custom-rtl.less`,
+        "rss.css": `${PATH.less}/custom-rss.less`,
 
         // build script files
-        "searxng.core": `${PATH.src}/js/core/index.ts`,
+        "searxng.core": `${PATH.js}/core/index.ts`,
 
         // ol pkg
-        ol: `${PATH.src}/js/pkg/ol.ts`,
+        ol: `${PATH.js}/pkg/ol.ts`,
         "ol.css": `${PATH.modules}/ol/ol.css`
       },
 
@@ -107,15 +109,15 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.src}/svg/empty_favicon.svg`,
+          src: `${PATH.svg}/empty_favicon.svg`,
           dest: `${PATH.dist}/img/empty_favicon.svg`
         },
         {
-          src: `${PATH.src}/svg/select-dark.svg`,
+          src: `${PATH.svg}/select-dark.svg`,
           dest: `${PATH.dist}/img/select-dark.svg`
         },
         {
-          src: `${PATH.src}/svg/select-light.svg`,
+          src: `${PATH.svg}/select-light.svg`,
           dest: `${PATH.dist}/img/select-light.svg`
         }
       ],
@@ -125,11 +127,11 @@ export default {
     // SearXNG brand (static)
     plg_svg2png([
       {
-        src: `${PATH.brand}/searxng-wordmark.svg`,
+        src: `${PATH.brand}/goose-search-wordmark.svg`,
         dest: `${PATH.dist}/img/favicon.png`
       },
       {
-        src: `${PATH.brand}/searxng.svg`,
+        src: `${PATH.brand}/goose-search.svg`,
         dest: `${PATH.dist}/img/searxng.png`
       }
     ]),
@@ -138,7 +140,7 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/searxng.svg`,
+          src: `${PATH.brand}/goose-search.svg`,
           dest: `${PATH.dist}/img/searxng.svg`
         },
         {
@@ -153,7 +155,7 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/searxng-wordmark.svg`,
+          src: `${PATH.brand}/goose-search-wordmark.svg`,
           dest: `${PATH.dist}/img/favicon.svg`
         }
       ],
@@ -164,7 +166,7 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/searxng-wordmark.svg`,
+          src: `${PATH.brand}/goose-search-wordmark.svg`,
           dest: `${PATH.templates}/searxng-wordmark.min.svg`
         }
       ],

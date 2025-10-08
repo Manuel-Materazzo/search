@@ -243,9 +243,18 @@ def code_highlighter(codelines, language=None, hl_lines=None, strip_whitespace=T
 
 
 def get_result_template(theme_name: str, template_name: str):
+    # Try the requested theme first
     themed_path = theme_name + '/result_templates/' + template_name
     if themed_path in result_templates:
         return themed_path
+
+    # Fallback to simple theme if not using it already
+    if theme_name != 'simple':
+        simple_themed_path = 'simple/result_templates/' + template_name
+        if simple_themed_path in result_templates:
+            return simple_themed_path
+
+    # Final fallback to base result_templates directory
     return 'result_templates/' + template_name
 
 

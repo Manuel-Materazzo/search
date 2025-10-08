@@ -464,8 +464,8 @@ def render(template_name: str, **kwargs):
     kwargs['url_for'] = custom_url_for  # override url_for function in templates
     kwargs['image_proxify'] = image_proxify
     kwargs['favicon_url'] = favicons.favicon_url
-    kwargs['proxify'] = url_proxify if settings['result_proxy']['url'] is not None else None
-    kwargs['proxify_results'] = settings['result_proxy']['proxify_results']
+    kwargs['proxify'] = url_proxify if settings.get('result_proxy', {}).get('url', None) is not None else None
+    kwargs['proxify_results'] = settings.get('result_proxy', {}).get('proxify_results', None)
     kwargs['cache_url'] = settings['ui']['cache_url']
     kwargs['get_result_template'] = get_result_template
     kwargs['opensearch_url'] = (
@@ -479,12 +479,15 @@ def render(template_name: str, **kwargs):
     )
     )
     kwargs['urlparse'] = urlparse
-    kwargs['proxy_method'] = settings['result_proxy'] and settings['result_proxy']['method']
-    kwargs['proxy_url'] = settings['result_proxy'] and settings['result_proxy']['url']
-    kwargs['proxy_post_params'] = settings['result_proxy'] and settings['result_proxy']['post-form-body']
+    kwargs['proxy_method'] = settings.get('result_proxy', {}).get('method', None)
+    kwargs['proxy_url'] = settings.get('result_proxy', {}).get('url', None)
+    kwargs['proxy_post_params'] = settings.get('result_proxy', {}).get('post-form-body', None)
 
     start_time = default_timer()
-    result = render_template('{}/{}'.format(kwargs['theme'], template_name), **kwargs)
+    try:
+        result = render_template('{}/{}'.format(kwargs['theme'], template_name), **kwargs)
+    except Exception as e:
+        result = render_template('{}/{}'.format("simple", template_name), **kwargs)
     sxng_request.render_time += default_timer() - start_time  # pylint: disable=assigning-non-slot
 
     return result

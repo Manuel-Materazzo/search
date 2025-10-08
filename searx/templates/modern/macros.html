@@ -59,7 +59,6 @@
 
 <!-- Draw result sub footer -->
 {%- macro result_sub_footer(result) -%}
-  porcodio
   <div class="engines">
     {% for engine in result.engines %}<span>{{ engine }}</span>{% endfor %}
     {{ result_link(cache_url + result.url, _('cached'), classes="cache_link", icon="save-outline") }}&lrm;

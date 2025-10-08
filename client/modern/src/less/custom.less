@@ -1,4 +1,4 @@
-@results-image-row-height: 12rem;
+@results-image-row-height: 15rem;
 
 #send_search {
   .ltr-rounded-right-corners(24px);
@@ -21,25 +21,14 @@
   img.thumbnail {
     .ltr-float-right();
     padding-top: 0;
+    max-width: 7rem;
+    max-height: 7rem;
   }
-
-  //img.thumbnail {
-  //  .ltr-float-left();
-  //  padding-top: 0.6rem;
-  //  .ltr-padding-right(1rem);
-  //  width: 7rem;
-  //  height: unset; // remove height value that was needed for lazy loading
-  //}
 }
 
 .result-images {
   padding: 0.25rem 0.25rem 3rem 0.25rem;
   margin: 0;
-}
-
-.favicon {
-  border-radius: 50%;
-  overflow: hidden;
 }
 
 #results {
@@ -59,13 +48,13 @@
   .infobox {
     border: none;
     background-color: var(--color-sidebar-background);
-  }
 
-  @media screen and (max-width: @tablet) {
-    .attributes,
-    .relatedTopics,
-    .urls {
-      display: none;
+    @media screen and (max-width: @tablet) {
+      .attributes,
+      .relatedTopics,
+      .urls {
+        display: none;
+      }
     }
   }
 }
@@ -74,6 +63,11 @@
   #results {
     margin: 0 0 50px 0;
   }
+}
+
+.favicon {
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .favicon img {

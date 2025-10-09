@@ -130,7 +130,7 @@ export default {
       },
       {
         src: `${PATH.brand}/goose-search.svg`,
-        dest: `${PATH.dist}/img/searxng.png`
+        dest: `${PATH.dist}/img/goose-search.png`
       }
     ]),
 
@@ -139,7 +139,7 @@ export default {
       [
         {
           src: `${PATH.brand}/goose-search.svg`,
-          dest: `${PATH.dist}/img/searxng.svg`
+          dest: `${PATH.dist}/img/goose-search.svg`
         },
         {
           src: `${PATH.brand}/img_load_error.svg`,

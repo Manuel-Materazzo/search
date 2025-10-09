@@ -132,7 +132,7 @@ export default {
       },
       {
         src: `${PATH.brand}/goose-search.svg`,
-        dest: `${PATH.dist}/img/searxng.png`
+        dest: `${PATH.dist}/img/goose-search.png`
       }
     ]),
 
@@ -141,7 +141,7 @@ export default {
       [
         {
           src: `${PATH.brand}/goose-search.svg`,
-          dest: `${PATH.dist}/img/searxng.svg`
+          dest: `${PATH.dist}/img/goose-search.svg`
         },
         {
           src: `${PATH.brand}/img_load_error.svg`,
@@ -167,7 +167,7 @@ export default {
       [
         {
           src: `${PATH.brand}/goose-search-wordmark.svg`,
-          dest: `${PATH.templates}/searxng-wordmark.min.svg`
+          dest: `${PATH.templates}/goose-search-wordmark.min.svg`
         }
       ],
       svg2svg_opts

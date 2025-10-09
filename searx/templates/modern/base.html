@@ -28,7 +28,7 @@
   <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/favicon.png') }}">
 </head>
 <body class="{{ endpoint }}_endpoint" >
-  <main id="main_results" class="{{body_class}}">
+  <main id="main_{{  self._TemplateReference__context.name.split('/')[-1].split('.')[0] }}" class="{{body_class}}">
     {% if errors %}
         <div class="dialog-error" role="alert">
             <a href="#" class="close" aria-label="close" title="close">×</a>

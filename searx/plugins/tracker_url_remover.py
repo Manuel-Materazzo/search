@@ -42,8 +42,11 @@ class SXNGPlugin(Plugin):
         return True
 
     def on_result(self, request: "SXNG_Request", search: "SearchWithPlugins", result: "Result") -> bool:
-        #TODO: something on sitelinks
+        # filter result
         result.filter_urls(self.filter_url_field)
+        # filter sitelinks
+        for sitelink in result.sitelinks:
+            sitelink.filter_urls(self.filter_url_field)
         return True
 
     @classmethod

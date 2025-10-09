@@ -84,7 +84,7 @@ def _normalize_url_fields(result: "Result | LegacyResult"):
 
     # normalize sitelinks too, but only on classic search results
     if isinstance(result, list) and len(result.get("sitelinks", [])) > 0:
-        for sitelink in result.get("sitelinks"):
+        for sitelink in result.get("sitelinks", []):
             _normalize_url_fields(sitelink)
 
 
@@ -258,7 +258,7 @@ class Result(msgspec.Struct, kw_only=True):
     The field is optional and is initialized from the context if necessary.
     """
 
-    sitelinks: list[t.Self] | None = None
+    sitelinks: list[t.Self] = []
 
     def normalize_result_fields(self):
         """Normalize fields ``url`` and ``parse_sql``.

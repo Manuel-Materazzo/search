@@ -752,7 +752,7 @@ def search():
             if 'title' in result and result['title']:
                 result['title'] = highlight_content(escape(result['title'] or ''), search_query.query)
             if 'sitelinks' in result and result['sitelinks'] and len(result['sitelinks']) > 0:
-                for sitelink in result['sitelinks']:
+                for sitelink in result.get('sitelinks',[]):
                     sitelink['title'] = highlight_content(escape(sitelink['title'] or ''), search_query.query)
 
         # set result['open_group'] = True when the template changes from the previous result

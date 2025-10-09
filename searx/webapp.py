@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """WebApp"""
+import hashlib
+import hmac
 # pylint: disable=use-dict-literal
 
 import json
@@ -312,7 +314,7 @@ def url_proxify(url: str):
     if not settings['result_proxy']['method'] or not settings['result_proxy']['url']:
         return url
 
-    if settings['result_proxy']['key']:
+    if settings.get('result_proxy', {}).get('key', None):
         url = hmac.new(settings['result_proxy']['key'], url.encode(), hashlib.sha256).hexdigest()
 
     if settings['result_proxy']['method'] == 'GET':

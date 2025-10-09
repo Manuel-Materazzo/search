@@ -6,6 +6,7 @@ COPY --chown=searxng:searxng ./searx/webapp.py ./searx/webapp.py
 COPY --chown=searxng:searxng ./searx/result_types/_base.py ./searx/result_types/_base.py
 COPY --chown=searxng:searxng ./searx/search/processors/online.py ./searx/search/processors/online.py
 COPY --chown=searxng:searxng ./searx/plugins/tracker_url_remover.py ./searx/plugins/tracker_url_remover.py
+COPY --chown=searxng:searxng ./searx/data/tracker_patterns.py ./searx/data/tracker_patterns.py
 COPY --chown=searxng:searxng ./searx/settings.yml /etc/searxng/settings.yml
 
 # Force Python to recompile by removing stale bytecode

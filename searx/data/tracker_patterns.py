@@ -63,15 +63,9 @@ class TrackerPatternsDB:
                 rule[self.Fields.del_args],
             )
 
-            # Modify existing Reddit rule to include tl parameter TODO: check
-            if "reddit\.com" in key:
-                existing_del_args = rule[self.Fields.del_args]
-                if existing_del_args:
-                    # Remove closing parenthesis, add |tl, then close
-                    updated_del_args = existing_del_args.rstrip(')') + '|tl)'
-                else:
-                    updated_del_args = r"tl"
-                value = (rule[self.Fields.url_ignore], updated_del_args)
+            # Modify existing Reddit rule to include tl parameter
+            if "reddit.com" in key:
+                value[1].append("tl")
 
             rows.append((key, value, None))
 

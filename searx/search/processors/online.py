@@ -21,7 +21,7 @@ from searx.exceptions import (
 from searx.metrics.error_recorder import count_error
 from searx import settings
 from .abstract import EngineProcessor, RequestParams
-from ...result_types import Answer
+from ...result_types import LegacyResult
 
 if t.TYPE_CHECKING:
     from searx.search.models import SearchQuery
@@ -305,8 +305,8 @@ class OnlineProcessor(EngineProcessor):
 
             # check each result
             for result in search_results:
-                # skip answer results
-                if isinstance(result, Answer):
+                # skip if it's not a legacy result
+                if not isinstance(result, LegacyResult) or not isinstance(result, dict):
                     continue
                 # if the result has an url matching the site where the force_sitelink is required
                 if re.match(expression, result.get("url", "")):

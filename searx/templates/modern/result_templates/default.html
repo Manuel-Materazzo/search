@@ -17,8 +17,8 @@
     <div class="sitelinks-container">
         {% for sitelink in result["sitelinks"] %}
             {% if loop.index == 5 %}
-                <input type="checkbox" class="show-more-state" id="{{ sitelink.get("url", "post-2") }}" />
-                <label for="{{ sitelink.get("url", "post-2") }}" class="show-more-trigger"></label>
+                <input type="checkbox" class="show-more-state" id="{{ sitelink["url"] }}" />
+                <label for="{{ sitelink["url"] }}" class="show-more-trigger"></label>
             {% endif %}
             {% if loop.index <= 4 %}
                 <div class="sitelink">

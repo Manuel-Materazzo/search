@@ -88,12 +88,12 @@ search:
       # When these terms are in the search query, skip forcing the sitelinks on the result.
       # The first term will be added as a search query when retrieving sitelinks.
       website_search_terms:
-        - 'site:reddit.com'
         - 'reddit'
+        - 'site:reddit.com'
     - website_url_expression: 'https://(.*\.)?stackoverflow\.com'
       website_search_terms:
-        - 'site:stackoverflow.com'
         - 'stackoverflow'
+        - 'site:stackoverflow.com'
         - 'stack overflow'
 
 

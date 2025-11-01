@@ -305,11 +305,8 @@ class OnlineProcessor(EngineProcessor):
 
             # check each result
             for result in search_results:
-                # skip if it's not a legacy result
-                if not isinstance(result, LegacyResult) or not isinstance(result, dict):
-                    continue
                 # if the result has an url matching the site where the force_sitelink is required
-                if re.match(expression, result.get("url", "")):
+                if re.match(expression, self._get_property(result,"url", "")):
                     # add sitelinks_results as sitelinks for the current base result
                     result["sitelinks"] = self._get_sitelinks(params, site['website_search_terms'][0])
                     # do not repeat search for other matching links
@@ -329,11 +326,20 @@ class OnlineProcessor(EngineProcessor):
 
         # do another engine search
         sitelink_results = self._search_basic(sitelink_query, sitelink_params)
+        self.logger.error(f"query: {sitelink_query}")
+        self.logger.error(f"risultati: {len(sitelink_results)}")
 
         # remove first sitelinks result (same url as the current base result)
-        del sitelink_results[0]
+        if len(sitelink_results) > 0:
+            del sitelink_results[0]
 
         # remove sitelinks without an url (such as suggestions)
         sitelink_results = list(filter(lambda result: result.get("url") is not None, sitelink_results))
 
         return sitelink_results
+
+    def _get_property(self, thing, key, default=None):
+        if isinstance(thing, dict):
+            return thing.get(key, default)
+        else:
+            return getattr(thing, key, default)

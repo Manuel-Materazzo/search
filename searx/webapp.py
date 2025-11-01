@@ -387,6 +387,12 @@ def get_pretty_url(parsed_url: urllib.parse.ParseResult):
     path = (path[:60] + '...') if len(path) > 60 else path
     # replace slashes with stylish character
     path = unquote(path.replace("/", " › "))
+
+    # Keep the query argument for URLs like:
+    # - 'http://example.org?/foo/bar' --> parsed_url.query is 'foo/bar'
+    query_args: list[tuple[str, str]] = list(urllib.parse.parse_qsl(parsed_url.query))
+    if not query_args and parsed_url.query:
+        path += (" › .." if len(parsed_url.query) > 24 else " › ") + parsed_url.query[-24:]
     return [parsed_url.scheme + "://" + parsed_url.netloc, path]
 
 
@@ -918,8 +924,11 @@ def preferences():
 
     # save preferences using the link the /preferences?preferences=...
     if sxng_request.args.get('preferences') or sxng_request.form.get('preferences'):
-        resp = make_response(redirect(url_for('index', _external=True)))
-        return sxng_request.preferences.save(resp)
+        # if preferences_preview_only is 'true', the prefs from the 'preferences' query are
+        # shown in the settings page, but they're not applied unless the user presses 'save'
+        if sxng_request.args.get('preferences_preview_only') != 'true':
+            resp = make_response(redirect(url_for('index', _external=True)))
+            return sxng_request.preferences.save(resp)
 
     # save preferences
     if sxng_request.method == 'POST':

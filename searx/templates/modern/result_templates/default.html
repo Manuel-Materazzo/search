@@ -22,11 +22,11 @@
             {% endif %}
             {% if loop.index <= 4 %}
                 <div class="sitelink">
-                    {{ result_link(sitelink.get("url", "#"), sitelink.get("title", "no title")|safe) }}
+                    {{ result_link(sitelink["url"], sitelink["title"]|safe) }}
                 </div>
             {% else %}
                 <div class="sitelink show-more-target">
-                    {{ result_link(sitelink.get("url", "#"), sitelink.get("title", "no title")|safe) }}
+                    {{ result_link(sitelink["url"], sitelink["title"]|safe) }}
                 </div>
             {% endif %}
         {% endfor %}

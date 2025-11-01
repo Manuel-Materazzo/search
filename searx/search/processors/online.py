@@ -334,12 +334,14 @@ class OnlineProcessor(EngineProcessor):
             del sitelink_results[0]
 
         # remove sitelinks without an url (such as suggestions)
-        sitelink_results = list(filter(lambda result: result.get("url") is not None, sitelink_results))
+        sitelink_results = list(filter(lambda result: self._get_property(result, "url") is not None, sitelink_results))
 
         return sitelink_results
 
     def _get_property(self, thing, key, default=None):
-        if isinstance(thing, dict):
+        if thing is None:
+            return default
+        elif isinstance(thing, dict):
             return thing.get(key, default)
         else:
             return getattr(thing, key, default)

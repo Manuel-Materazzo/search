@@ -29,21 +29,20 @@
 # youtherthyf <youtherthyf@noreply.codeberg.org>, 2025.
 msgid ""
 msgstr ""
-"Project-Id-Version: searx\n"
+"Project-Id-Version:  searx\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-20 08:35+0000\n"
+"POT-Creation-Date: 2026-02-22 13:48+0000\n"
 "PO-Revision-Date: 2025-10-22 02:09+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
-"Language-Team: Arabic <https://translate.codeberg.org/projects/searxng/"
-"searxng/ar/>\n"
 "Language: ar\n"
+"Language-Team: Arabic "
+"<https://translate.codeberg.org/projects/searxng/searxng/ar/>\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : "
+"n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Weblate 5.13.3\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -511,7 +510,7 @@ msgid "active users"
 msgstr "المستخدمين النشطين"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:81
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:83
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "التعليقات"
@@ -527,7 +526,7 @@ msgid "community"
 msgstr "المجتمع"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:81 searx/searxng.msg
+#: searx/engines/hackernews.py:83 searx/searxng.msg
 msgid "points"
 msgstr "النقاط"
 
@@ -537,7 +536,7 @@ msgid "title"
 msgstr "العنوان"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:84 searx/searxng.msg
+#: searx/engines/hackernews.py:86 searx/searxng.msg
 msgid "author"
 msgstr "الكاتب"
 
@@ -556,28 +555,28 @@ msgstr "مغلق"
 msgid "answered"
 msgstr "أُجيبت"
 
-#: searx/webapp.py:328
+#: searx/webapp.py:327
 msgid "No item found"
 msgstr "تعذر العثور على عناصر"
 
-#: searx/engines/qwant.py:289
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
+#: searx/engines/qwant.py:296
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "المصدر"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:331
 msgid "Error loading the next page"
 msgstr "حدث خلل أثناء تحميل الصفحة التالية"
 
-#: searx/webapp.py:475 searx/webapp.py:876
+#: searx/webapp.py:480 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "إنّ الإعدادات خاطئة، يرجى تعديل خياراتك"
 
-#: searx/webapp.py:491
+#: searx/webapp.py:496
 msgid "Invalid settings"
 msgstr "إعدادات غير صالحة"
 
-#: searx/webapp.py:568 searx/webapp.py:658
+#: searx/webapp.py:573 searx/webapp.py:663
 msgid "search error"
 msgstr "خطأ في البحث"
 
@@ -656,7 +655,7 @@ msgstr "توليد قِيم عشوائية مختلفة"
 msgid "Compute {func} of the arguments"
 msgstr "حساب {func} من الحجج"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "أظهِر الطريق على الخريطة .."
 
@@ -669,7 +668,7 @@ msgstr "{title} (قديما)"
 msgid "This entry has been superseded by"
 msgstr "هذا الإدخال تم استبداله بـ"
 
-#: searx/engines/qwant.py:291
+#: searx/engines/qwant.py:298
 msgid "Channel"
 msgstr "القناة"
 
@@ -684,10 +683,6 @@ msgstr "تصويتات"
 #: searx/engines/radio_browser.py:146
 msgid "clicks"
 msgstr "نقرات"
-
-#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:78
-msgid "Language"
-msgstr "اللغة"
 
 #: searx/engines/semantic_scholar.py:141
 #, python-brace-format
@@ -719,6 +714,10 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "لا يمكن تنزيل الصورة."
 
+#: searx/engines/zlibrary.py:78
+msgid "Language"
+msgstr "اللغة"
+
 #: searx/engines/zlibrary.py:79
 msgid "Book rating"
 msgstr "تقييم الكتاب"
@@ -735,13 +734,13 @@ msgstr "{دالة}"
 msgid "Filter out onion results that appear in Ahmia's blacklist."
 msgstr "قم بتصفية نتائج .onion التي تظهر في القائمة السوداء الخاصة بـ Ahmia."
 
-#: searx/plugins/calculator.py:37
-msgid "Basic Calculator"
-msgstr "آلة حاسبة بسيطة"
+#: searx/plugins/calculator.py:25
+msgid "Calculator"
+msgstr ""
 
-#: searx/plugins/calculator.py:38
-msgid "Calculate mathematical expressions via the search bar"
-msgstr "حساب التعبيرات الرياضية عبر شريط البحث"
+#: searx/plugins/calculator.py:26
+msgid "Parses and solves mathematical expressions."
+msgstr ""
 
 #: searx/plugins/hash_plugin.py:33
 msgid "Hash plugin"
@@ -768,6 +767,16 @@ msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
 msgstr ""
 "اعيد كتابة أسماء المضيفين و ازيل او ارفع اولاوية النتائج بنائا علي اسم "
 "المضيف"
+
+#: searx/plugins/infinite_scroll.py:25
+msgid "Infinite scroll"
+msgstr "تمرير الصفحات بلا حدود"
+
+#: searx/plugins/infinite_scroll.py:26
+msgid ""
+"Automatically loads the next page when scrolling to bottom of the current"
+" page"
+msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:54
 msgid "Open Access DOI rewrite"
@@ -843,15 +852,15 @@ msgstr ""
 "إزالة وسيطات التتبع من \"URL\" الذي تم إرجاعه , إزالة وسيطات التتبع من "
 "محدد موقع الموارد الموحد الذي تم إرجاعه"
 
-#: searx/plugins/unit_converter.py:48
+#: searx/plugins/unit_converter.py:42
 msgid "Unit converter plugin"
 msgstr "إضافة محول الوحدات"
 
-#: searx/plugins/unit_converter.py:49
+#: searx/plugins/unit_converter.py:43
 msgid "Convert between units"
 msgstr "التحويل بين الوحدات"
 
-#: searx/result_types/answer.py:226
+#: searx/result_types/answer.py:223
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{مكان}:{حرارة},{وضع}"
@@ -874,7 +883,7 @@ msgid "Donate"
 msgstr "تبرُّع"
 
 #: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
-#: searx/templates/simple/preferences.html:156
+#: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "التفضيلات"
 
@@ -935,23 +944,23 @@ msgstr "الكاتب"
 msgid "cached"
 msgstr "Internet Archive"
 
-#: searx/templates/simple/new_issue.html:64
+#: searx/templates/simple/new_issue.html:60
 msgid "Start submitting a new issue on GitHub"
 msgstr "ابدأ بتقديم قضية جديدة على GitHub"
 
-#: searx/templates/simple/new_issue.html:66
+#: searx/templates/simple/new_issue.html:62
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr "الرجاء التحقق من الأخطاء الموجودة حول هذا المحرك على GitHub"
 
-#: searx/templates/simple/new_issue.html:69
+#: searx/templates/simple/new_issue.html:65
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr "أؤكد عدم وجود أخطاء حول المشكلة التي أواجهها"
 
-#: searx/templates/simple/new_issue.html:71
+#: searx/templates/simple/new_issue.html:67
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr "إذا كان هذا مثيلًا عامًا ، فيرجى تحديد عنوان URL في تقرير الخطأ"
 
-#: searx/templates/simple/new_issue.html:72
+#: searx/templates/simple/new_issue.html:68
 msgid "Submit a new issue on Github including the above information"
 msgstr "قم بتقديم مشكلة جديدة على GitHub بالمعلومات الواردة أعلاه"
 
@@ -988,57 +997,53 @@ msgstr "صفحة 80"
 msgid "P95"
 msgstr "صفحة 95"
 
-#: searx/templates/simple/preferences.html:136
-msgid "Failed checker test(s): "
-msgstr "فشل اختبار المدقق: "
-
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:134
 msgid "Errors:"
 msgstr "الأخطاء:"
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:156
 msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:163
+#: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:173
+#: searx/templates/simple/preferences.html:169
 msgid "General"
 msgstr "الرئيسية"
 
-#: searx/templates/simple/preferences.html:176
+#: searx/templates/simple/preferences.html:172
 msgid "Default categories"
 msgstr "القوائم الإفتراضية"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:200
 msgid "User interface"
 msgstr "واجهة المستخدم"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:220
 msgid "Privacy"
 msgstr "الخصوصية"
 
-#: searx/templates/simple/preferences.html:242
+#: searx/templates/simple/preferences.html:235
 msgid "Engines"
 msgstr "المحركات"
 
-#: searx/templates/simple/preferences.html:244
+#: searx/templates/simple/preferences.html:237
 msgid "Currently used search engines"
 msgstr "محركات البحث المُستخدَمة حاليًا"
 
-#: searx/templates/simple/preferences.html:253
+#: searx/templates/simple/preferences.html:246
 msgid "Special Queries"
 msgstr "استفسارات خاصة"
 
-#: searx/templates/simple/preferences.html:261
+#: searx/templates/simple/preferences.html:254
 msgid "Cookies"
 msgstr "كعكات الكوكيز"
 
@@ -1158,18 +1163,6 @@ msgstr "وظيفة"
 #: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "شفرة"
-
-#: searx/templates/simple/stats.html:128
-msgid "Checker"
-msgstr "مدقّق"
-
-#: searx/templates/simple/stats.html:131
-msgid "Failed test"
-msgstr "اختبار فاشل"
-
-#: searx/templates/simple/stats.html:132
-msgid "Comment(s)"
-msgstr "تعليق/تعليقات"
 
 #: searx/templates/simple/answer/translations.html:12
 #: searx/templates/simple/preferences/answerers.html:8
@@ -1529,16 +1522,6 @@ msgstr "وكيل بروكسي الصور"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
-msgstr ""
-
-#: searx/templates/simple/preferences/infinite_scroll.html:2
-msgid "Infinite scroll"
-msgstr "تمرير الصفحات بلا حدود"
-
-#: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid ""
-"Automatically load the next page when scrolling to the bottom of the "
-"current page"
 msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
@@ -2385,3 +2368,28 @@ msgstr "إخفاء الفيديو"
 
 #~ msgid "repo"
 #~ msgstr "مستودعات"
+
+#~ msgid "Basic Calculator"
+#~ msgstr "آلة حاسبة بسيطة"
+
+#~ msgid "Calculate mathematical expressions via the search bar"
+#~ msgstr "حساب التعبيرات الرياضية عبر شريط البحث"
+
+#~ msgid ""
+#~ "Automatically load the next page when"
+#~ " scrolling to the bottom of the "
+#~ "current page"
+#~ msgstr ""
+
+#~ msgid "Failed checker test(s): "
+#~ msgstr "فشل اختبار المدقق: "
+
+#~ msgid "Checker"
+#~ msgstr "مدقّق"
+
+#~ msgid "Failed test"
+#~ msgstr "اختبار فاشل"
+
+#~ msgid "Comment(s)"
+#~ msgstr "تعليق/تعليقات"
+

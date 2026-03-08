@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-10-20 08:35+0000\n"
+"POT-Creation-Date: 2026-02-22 13:48+0000\n"
 "PO-Revision-Date: 2025-06-22 17:06+0000\n"
 "Last-Translator: return42 <return42@noreply.codeberg.org>\n"
 "Language: szl\n"
@@ -22,7 +22,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #. CONSTANT_NAMES['NO_SUBGROUPING']
 #: searx/searxng.msg
@@ -490,7 +490,7 @@ msgid "active users"
 msgstr "aktywni używocze"
 
 #. SOCIAL_MEDIA_TERMS['COMMENTS']
-#: searx/engines/discourse.py:157 searx/engines/hackernews.py:81
+#: searx/engines/discourse.py:157 searx/engines/hackernews.py:83
 #: searx/engines/lemmy.py:130 searx/searxng.msg
 msgid "comments"
 msgstr "kōmyntorze"
@@ -506,7 +506,7 @@ msgid "community"
 msgstr "społeczność"
 
 #. SOCIAL_MEDIA_TERMS['POINTS']
-#: searx/engines/hackernews.py:81 searx/searxng.msg
+#: searx/engines/hackernews.py:83 searx/searxng.msg
 msgid "points"
 msgstr "pōnkty"
 
@@ -516,7 +516,7 @@ msgid "title"
 msgstr "tytuł"
 
 #. SOCIAL_MEDIA_TERMS['AUTHOR']
-#: searx/engines/hackernews.py:84 searx/searxng.msg
+#: searx/engines/hackernews.py:86 searx/searxng.msg
 msgid "author"
 msgstr "autōr"
 
@@ -535,28 +535,28 @@ msgstr "zawarty"
 msgid "answered"
 msgstr "ôdpedziany"
 
-#: searx/webapp.py:328
+#: searx/webapp.py:327
 msgid "No item found"
 msgstr "Żodyn elymynt niy znojdziōny"
 
-#: searx/engines/qwant.py:289
-#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:330
+#: searx/engines/qwant.py:296
+#: searx/templates/simple/result_templates/images.html:23 searx/webapp.py:329
 msgid "Source"
 msgstr "Zdrzōdło"
 
-#: searx/webapp.py:332
+#: searx/webapp.py:331
 msgid "Error loading the next page"
 msgstr "Feler ladowanio nastympnyj strōny"
 
-#: searx/webapp.py:475 searx/webapp.py:876
+#: searx/webapp.py:480 searx/webapp.py:881
 msgid "Invalid settings, please edit your preferences"
 msgstr "Niynoleżne sztalōnki, zmiyń swoje preferyncyje"
 
-#: searx/webapp.py:491
+#: searx/webapp.py:496
 msgid "Invalid settings"
 msgstr "Niynoleżne sztalōnki"
 
-#: searx/webapp.py:568 searx/webapp.py:658
+#: searx/webapp.py:573 searx/webapp.py:663
 msgid "search error"
 msgstr "błōnd wyszukowanio"
 
@@ -635,7 +635,7 @@ msgstr "Wygyneruj insze werty losowe"
 msgid "Compute {func} of the arguments"
 msgstr "Porachuj {func} ôd argumyntōw"
 
-#: searx/engines/openstreetmap.py:156
+#: searx/engines/openstreetmap.py:155
 msgid "Show route in map .."
 msgstr "Pokoż trasa na karcie..."
 
@@ -648,7 +648,7 @@ msgstr "{title} (ZASTARZAŁE)"
 msgid "This entry has been superseded by"
 msgstr "Tyn wpis bōł zastōmpiōny ôd"
 
-#: searx/engines/qwant.py:291
+#: searx/engines/qwant.py:298
 msgid "Channel"
 msgstr "Kanał"
 
@@ -663,10 +663,6 @@ msgstr "głosy"
 #: searx/engines/radio_browser.py:146
 msgid "clicks"
 msgstr "kliki"
-
-#: searx/engines/seekr.py:193 searx/engines/zlibrary.py:78
-msgid "Language"
-msgstr "Jynzyk"
 
 #: searx/engines/semantic_scholar.py:141
 #, python-brace-format
@@ -700,6 +696,10 @@ msgstr ""
 msgid "The image could not be downloaded."
 msgstr "Tego ôbrazu niy szło ściōngnōńć."
 
+#: searx/engines/zlibrary.py:78
+msgid "Language"
+msgstr "Jynzyk"
+
 #: searx/engines/zlibrary.py:79
 msgid "Book rating"
 msgstr "Ôcyna ksiōnżki"
@@ -716,13 +716,13 @@ msgstr ""
 msgid "Filter out onion results that appear in Ahmia's blacklist."
 msgstr ""
 
-#: searx/plugins/calculator.py:37
-msgid "Basic Calculator"
+#: searx/plugins/calculator.py:25
+msgid "Calculator"
 msgstr ""
 
-#: searx/plugins/calculator.py:38
-msgid "Calculate mathematical expressions via the search bar"
-msgstr "Rachuj matymatyczne wyrazy we posku szukanio"
+#: searx/plugins/calculator.py:26
+msgid "Parses and solves mathematical expressions."
+msgstr ""
 
 #: searx/plugins/hash_plugin.py:33
 msgid "Hash plugin"
@@ -744,6 +744,16 @@ msgstr "Przidowek hostnames"
 
 #: searx/plugins/hostnames.py:120
 msgid "Rewrite hostnames and remove or prioritize results based on the hostname"
+msgstr ""
+
+#: searx/plugins/infinite_scroll.py:25
+msgid "Infinite scroll"
+msgstr "Niyskōńczōne przewijanie"
+
+#: searx/plugins/infinite_scroll.py:26
+msgid ""
+"Automatically loads the next page when scrolling to bottom of the current"
+" page"
 msgstr ""
 
 #: searx/plugins/oa_doi_rewrite.py:54
@@ -817,15 +827,15 @@ msgstr "Wymazowanie trackrōw z URL-ōw"
 msgid "Remove trackers arguments from the returned URL"
 msgstr "Wymaż argumynta trackrōw ze swrōcōnyj adresy URL"
 
-#: searx/plugins/unit_converter.py:48
+#: searx/plugins/unit_converter.py:42
 msgid "Unit converter plugin"
 msgstr ""
 
-#: searx/plugins/unit_converter.py:49
+#: searx/plugins/unit_converter.py:43
 msgid "Convert between units"
 msgstr ""
 
-#: searx/result_types/answer.py:226
+#: searx/result_types/answer.py:223
 #, python-brace-format
 msgid "{location}: {temperature}, {condition}"
 msgstr "{location}: {temperature}, {condition}"
@@ -848,7 +858,7 @@ msgid "Donate"
 msgstr "Spōmōż"
 
 #: searx/templates/simple/base.html:55 searx/templates/simple/base.html:57
-#: searx/templates/simple/preferences.html:156
+#: searx/templates/simple/preferences.html:152
 msgid "Preferences"
 msgstr "Preferyncyje"
 
@@ -909,23 +919,23 @@ msgstr "Autōr"
 msgid "cached"
 msgstr "Internet Archive"
 
-#: searx/templates/simple/new_issue.html:64
+#: searx/templates/simple/new_issue.html:60
 msgid "Start submitting a new issue on GitHub"
 msgstr "Zacznij ôtwiyrać nowy problym na GitHubie"
 
-#: searx/templates/simple/new_issue.html:66
+#: searx/templates/simple/new_issue.html:62
 msgid "Please check for existing bugs about this engine on GitHub"
 msgstr "Sprawdź teroźne felery ôd tego motoru na GitHubie"
 
-#: searx/templates/simple/new_issue.html:69
+#: searx/templates/simple/new_issue.html:65
 msgid "I confirm there is no existing bug about the issue I encounter"
 msgstr "Potwiyrdzōm, że niy ma teroźnego feleru, co by sie tykoł mojigo problymu"
 
-#: searx/templates/simple/new_issue.html:71
+#: searx/templates/simple/new_issue.html:67
 msgid "If this is a public instance, please specify the URL in the bug report"
 msgstr "Jeźli to je publiczno instancyjo, to podej URL we reporcie ô felerze"
 
-#: searx/templates/simple/new_issue.html:72
+#: searx/templates/simple/new_issue.html:68
 msgid "Submit a new issue on Github including the above information"
 msgstr "Wyślij nowe zgłoszynie problymu na Github ze informacyjōm wyżyj"
 
@@ -962,57 +972,53 @@ msgstr "P80"
 msgid "P95"
 msgstr "P95"
 
-#: searx/templates/simple/preferences.html:136
-msgid "Failed checker test(s): "
-msgstr "Niypodarzōne testy weryfikacyjne: "
-
-#: searx/templates/simple/preferences.html:138
+#: searx/templates/simple/preferences.html:134
 msgid "Errors:"
 msgstr "Felery:"
 
-#: searx/templates/simple/preferences.html:160
+#: searx/templates/simple/preferences.html:156
 msgid ""
 "This is a preview of the settings used by the 'Search URL' you used to "
 "get here."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:162
+#: searx/templates/simple/preferences.html:158
 msgid "Press save to copy these preferences to your browser."
 msgstr ""
 
-#: searx/templates/simple/preferences.html:163
+#: searx/templates/simple/preferences.html:159
 msgid "Click here to view your browser preferences instead:"
 msgstr ""
 
-#: searx/templates/simple/preferences.html:173
+#: searx/templates/simple/preferences.html:169
 msgid "General"
 msgstr "Ôgōlne"
 
-#: searx/templates/simple/preferences.html:176
+#: searx/templates/simple/preferences.html:172
 msgid "Default categories"
 msgstr "Wychodne kategoryje"
 
-#: searx/templates/simple/preferences.html:204
+#: searx/templates/simple/preferences.html:200
 msgid "User interface"
 msgstr "Interfejs używocza"
 
-#: searx/templates/simple/preferences.html:227
+#: searx/templates/simple/preferences.html:220
 msgid "Privacy"
 msgstr "Prywatność"
 
-#: searx/templates/simple/preferences.html:242
+#: searx/templates/simple/preferences.html:235
 msgid "Engines"
 msgstr "Wyszukowarki"
 
-#: searx/templates/simple/preferences.html:244
+#: searx/templates/simple/preferences.html:237
 msgid "Currently used search engines"
 msgstr "Teroźnie używane wyszukowarki"
 
-#: searx/templates/simple/preferences.html:253
+#: searx/templates/simple/preferences.html:246
 msgid "Special Queries"
 msgstr "Ekstra zapytania"
 
-#: searx/templates/simple/preferences.html:261
+#: searx/templates/simple/preferences.html:254
 msgid "Cookies"
 msgstr "Cookies"
 
@@ -1132,18 +1138,6 @@ msgstr "Funkcyjo"
 #: searx/templates/simple/stats.html:121
 msgid "Code"
 msgstr "Kod"
-
-#: searx/templates/simple/stats.html:128
-msgid "Checker"
-msgstr "Weryfikacyjo"
-
-#: searx/templates/simple/stats.html:131
-msgid "Failed test"
-msgstr "Niypodarzōny test"
-
-#: searx/templates/simple/stats.html:132
-msgid "Comment(s)"
-msgstr "Kōmyntorz(e)"
 
 #: searx/templates/simple/answer/translations.html:12
 #: searx/templates/simple/preferences/answerers.html:8
@@ -1497,16 +1491,6 @@ msgstr "Proxy ôbrazōw"
 
 #: searx/templates/simple/preferences/image_proxy.html:14
 msgid "Proxy image results through SearXNG"
-msgstr ""
-
-#: searx/templates/simple/preferences/infinite_scroll.html:2
-msgid "Infinite scroll"
-msgstr "Niyskōńczōne przewijanie"
-
-#: searx/templates/simple/preferences/infinite_scroll.html:14
-msgid ""
-"Automatically load the next page when scrolling to the bottom of the "
-"current page"
 msgstr ""
 
 #: searx/templates/simple/preferences/language.html:24
@@ -2110,4 +2094,28 @@ msgstr "skryj wideo"
 
 #~ msgid "repo"
 #~ msgstr "repozytoryja"
+
+#~ msgid "Basic Calculator"
+#~ msgstr ""
+
+#~ msgid "Calculate mathematical expressions via the search bar"
+#~ msgstr "Rachuj matymatyczne wyrazy we posku szukanio"
+
+#~ msgid ""
+#~ "Automatically load the next page when"
+#~ " scrolling to the bottom of the "
+#~ "current page"
+#~ msgstr ""
+
+#~ msgid "Failed checker test(s): "
+#~ msgstr "Niypodarzōne testy weryfikacyjne: "
+
+#~ msgid "Checker"
+#~ msgstr "Weryfikacyjo"
+
+#~ msgid "Failed test"
+#~ msgstr "Niypodarzōny test"
+
+#~ msgid "Comment(s)"
+#~ msgstr "Kōmyntorz(e)"
 

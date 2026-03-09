@@ -23,6 +23,7 @@ const PATH = {
   modules: "../simple/node_modules/",
   js: "../simple/src/js",
   svg: "../simple/src/svg",
+  src: "src/",
   less: "src/less",
   templates: resolve(ROOT, "searx/templates/modern/") // TODO: only diffs with simple?
 } as const;
@@ -81,6 +82,15 @@ export default {
               console.warn("Unknown asset:", name);
               return "[name][extname]";
           }
+        },
+        sanitizeFileName: (name: string): string => {
+          return name
+            .normalize("NFD")
+            .replace(/[^a-zA-Z0-9.-]/g, "_")
+            .toLowerCase();
+        },
+        comments: {
+          legal: true
         }
       }
     }
@@ -109,15 +119,15 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.svg}/empty_favicon.svg`,
+          src: `${PATH.src}/svg/empty_favicon.svg`,
           dest: `${PATH.dist}/img/empty_favicon.svg`
         },
         {
-          src: `${PATH.svg}/select-dark.svg`,
+          src: `${PATH.src}/svg/select-dark.svg`,
           dest: `${PATH.dist}/img/select-dark.svg`
         },
         {
-          src: `${PATH.svg}/select-light.svg`,
+          src: `${PATH.src}/svg/select-light.svg`,
           dest: `${PATH.dist}/img/select-light.svg`
         }
       ],

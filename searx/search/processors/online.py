@@ -344,6 +344,8 @@ class OnlineProcessor(EngineProcessor):
         if thing is None:
             return default
         elif isinstance(thing, dict):
-            return thing.get(key, default)
+            value = thing.get(key, default)
+            return value if value is not None else default
         else:
-            return getattr(thing, key, default)
+            value = getattr(thing, key, default)
+            return value if value is not None else default

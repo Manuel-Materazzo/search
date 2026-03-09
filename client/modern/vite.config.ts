@@ -21,11 +21,11 @@ const PATH = {
   brand: "../simple/src/brand/",
   dist: resolve(ROOT, "searx/static/themes/modern/"),
   modules: "../simple/node_modules/",
+  src: "../simple/src/",
+  templates: resolve(ROOT, "searx/templates/modern/"), // TODO: only diffs with simple?
   js: "../simple/src/js",
   svg: "../simple/src/svg",
-  src: "src/",
-  less: "src/less",
-  templates: resolve(ROOT, "searx/templates/modern/") // TODO: only diffs with simple?
+  less: "src/less"
 } as const;
 
 const svg2svg_opts: Config = {
@@ -49,38 +49,27 @@ export default {
     sourcemap: true,
     rolldownOptions: {
       input: {
-        // build CSS files
-        "searxng-ltr.css": `${PATH.less}/custom-ltr.less`,
-        "searxng-rtl.css": `${PATH.less}/custom-rtl.less`,
-        "rss.css": `${PATH.less}/custom-rss.less`,
+        // entrypoint
+        core: `${PATH.js}/index.ts`,
 
-        // build script files
-        "searxng.core": `${PATH.js}/core/index.ts`,
-
-        // ol pkg
-        ol: `${PATH.js}/pkg/ol.ts`,
-        "ol.css": `${PATH.modules}/ol/ol.css`
+        // stylesheets
+        ltr: `${PATH.less}/custom-ltr.less`,
+        rtl: `${PATH.less}/custom-rtl.less`,
+        rss: `${PATH.less}/custom-rss.less`
       },
 
       // file naming conventions / pathnames are relative to outDir (PATH.dist)
       output: {
-        entryFileNames: "js/[name].min.js",
-        chunkFileNames: "js/[name].min.js",
+        entryFileNames: "sxng-[name].min.js",
+        chunkFileNames: "chunk/[hash].min.js",
         assetFileNames: ({ names }: PreRenderedAsset): string => {
           const [name] = names;
 
-          const extension = name?.split(".").pop();
-          switch (extension) {
+          switch (name?.split(".").pop()) {
             case "css":
-              return "css/[name].min[extname]";
-            case "js":
-              return "js/[name].min[extname]";
-            case "png":
-            case "svg":
-              return "img/[name][extname]";
+              return "sxng-[name].min[extname]";
             default:
-              console.warn("Unknown asset:", name);
-              return "[name][extname]";
+              return "sxng-[name][extname]";
           }
         },
         sanitizeFileName: (name: string): string => {

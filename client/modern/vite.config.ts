@@ -18,10 +18,10 @@ import { plg_svg2png, plg_svg2svg } from "../simple/tools/plg.ts";
 const ROOT = "../../"; // root of the git repository
 
 const PATH = {
-  brand: "../simple/src/brand/",
+  brand: "../simple/src/brand",
   dist: resolve(ROOT, "searx/static/themes/modern/"),
   modules: "../simple/node_modules/",
-  src: "../simple/src/",
+  src: "../simple/src",
   templates: resolve(ROOT, "searx/templates/modern/"), // TODO: only diffs with simple?
   js: "../simple/src/js",
   svg: "../simple/src/svg",
@@ -126,12 +126,12 @@ export default {
     // SearXNG brand (static)
     plg_svg2png([
       {
-        src: `${PATH.brand}/goose-search-wordmark.svg`,
+        src: `${PATH.brand}/vectevo-search-wordmark.svg`,
         dest: `${PATH.dist}/img/favicon.png`
       },
       {
-        src: `${PATH.brand}/goose-search.svg`,
-        dest: `${PATH.dist}/img/goose-search.png`
+        src: `${PATH.brand}/vectevo-search.svg`,
+        dest: `${PATH.dist}/img/vectevo-search.png`
       }
     ]),
 
@@ -139,8 +139,8 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/goose-search.svg`,
-          dest: `${PATH.dist}/img/goose-search.svg`
+          src: `${PATH.brand}/vectevo-search.svg`,
+          dest: `${PATH.dist}/img/vectevo-search.svg`
         },
         {
           src: `${PATH.brand}/img_load_error.svg`,
@@ -154,7 +154,7 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/goose-search-wordmark.svg`,
+          src: `${PATH.brand}/vectevo-search-wordmark.svg`,
           dest: `${PATH.dist}/img/favicon.svg`
         }
       ],
@@ -165,7 +165,7 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/goose-search-wordmark.svg`,
+          src: `${PATH.brand}/vectevo-search-wordmark.svg`,
           dest: `${PATH.templates}/goose-search-wordmark.min.svg`
         }
       ],

@@ -164,6 +164,8 @@ def apply_schema(
                 msg = msg.replace("`$.", "`" + namespace + ".")
                 if "`$." not in str(e):
                     msg = f"{namespace}: {msg}"
+                if cfg_dict is None:
+                    msg += " (key is missing or set to `null` / empty value in settings.yml)"
                 logger.error(msg)
                 errors.append(msg)  # type: ignore
         elif isinstance(value, SettingsValue):

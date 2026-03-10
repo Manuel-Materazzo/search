@@ -138,8 +138,12 @@ class SettingsBytesValue(SettingsValue):
         return super().__call__(value)
 
 
-def apply_schema(settings: dict[str, t.Any], schema: dict[str, t.Any], path_list: list[str]):
-    error = False
+def apply_schema(
+    settings: dict[str, t.Any], schema: dict[str, t.Any], path_list: list[str], errors: list[str] | None = None
+):
+    is_root = errors is None
+    if is_root:
+        errors = []
     for key, value in schema.items():
         if isinstance(value, type) and issubclass(value, msgspec.Struct):
             try:
@@ -156,9 +160,12 @@ def apply_schema(settings: dict[str, t.Any], schema: dict[str, t.Any], path_list
                 # is converted to:
                 #     Expected `str`, got `int` - at `foo.bar.name`
                 msg = str(e)
-                msg = msg.replace("`$.", "`" + ".".join([*path_list, key]) + ".")
+                namespace = ".".join([*path_list, key])
+                msg = msg.replace("`$.", "`" + namespace + ".")
+                if "`$." not in str(e):
+                    msg = f"{namespace}: {msg}"
                 logger.error(msg)
-                error = True
+                errors.append(msg)  # type: ignore
         elif isinstance(value, SettingsValue):
             try:
                 settings[key] = value(settings.get(key, _UNDEFINED))
@@ -166,14 +173,14 @@ def apply_schema(settings: dict[str, t.Any], schema: dict[str, t.Any], path_list
                 # don't stop now: check other values
                 msg = ".".join([*path_list, key]) + f": {e}"
                 logger.error(msg)
-                error = True
+                errors.append(msg)  # type: ignore
         elif isinstance(value, dict):
-            error = error or apply_schema(settings.setdefault(key, {}), schema[key], [*path_list, key])
+            apply_schema(settings.setdefault(key, {}), schema[key], [*path_list, key], errors)
         else:
             settings.setdefault(key, value)
-    if len(path_list) == 0 and error:
-        raise ValueError("Invalid settings.yml")
-    return error
+    if is_root and errors:
+        raise ValueError("Invalid settings.yml:\n  - " + "\n  - ".join(errors))
+    return bool(errors)
 
 
 SCHEMA: dict[str, t.Any] = {

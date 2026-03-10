@@ -163,7 +163,7 @@ export default {
       [
         {
           src: `${PATH.brand}/vectevo-search-wordmark.svg`,
-          dest: `${PATH.templates}/searxng-wordmark.min.svg`
+          dest: `${PATH.templates}/vectevo-wordmark.min.svg`
         }
       ],
       svg2svg_opts

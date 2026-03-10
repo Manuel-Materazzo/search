@@ -166,7 +166,7 @@ export default {
       [
         {
           src: `${PATH.brand}/vectevo-search-wordmark.svg`,
-          dest: `${PATH.templates}/goose-search-wordmark.min.svg`
+          dest: `${PATH.templates}/vectevo-search-wordmark.min.svg`
         }
       ],
       svg2svg_opts

@@ -6,7 +6,7 @@
 .. _CONTRIBUTING: https://github.com/searxng/searxng/blob/master/CONTRIBUTING.rst
 .. _LICENSE: https://github.com/searxng/searxng/blob/master/LICENSE
 
-.. figure:: https://raw.githubusercontent.com/searxng/searxng/master/client/simple/src/brand/goose-search.svg
+.. figure:: https://raw.githubusercontent.com/searxng/searxng/master/client/simple/src/brand/vectevo-search.svg
    :target: https://searxng.org
    :alt: SearXNG
    :width: 512px

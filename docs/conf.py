@@ -199,7 +199,7 @@ html_sidebars = {
     ],
 }
 singlehtml_sidebars = {"index": ["project.html", "localtoc.html"]}
-html_logo = "../src/brand/goose-search.svg"
+html_logo = "../src/brand/vectevo-search.svg"
 html_title = "SearXNG Documentation ({})".format(VERSION_STRING)
 html_show_sourcelink = True
 

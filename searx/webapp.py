@@ -99,6 +99,7 @@ from searx.preferences import (
 import searx.answerers
 import searx.plugins
 
+
 from searx.metrics import get_engines_stats, get_engine_errors, get_reliabilities, histogram, counter, openmetrics
 from searx.flaskfix import patch_application
 
@@ -119,6 +120,7 @@ from searx.valkeydb import initialize as valkey_initialize
 from searx.sxng_locales import sxng_locales
 import searx.search
 from searx.network import stream as http_stream, set_context_network_name
+
 
 logger = logger.getChild('webapp')
 
@@ -212,6 +214,7 @@ def code_highlighter(codelines, language=None, hl_lines=None, strip_whitespace=T
 
         # new codeblock is detected
         if last_line is not None and last_line + 1 != line:
+
             # highlight last codepart
             formatter = HtmlFormatter(
                 linenos='inline',
@@ -334,7 +337,7 @@ def image_proxify(url: str):
 
     if url.startswith('data:image/'):
         # 50 is an arbitrary number to get only the beginning of the image.
-        partial_base64 = url[len('data:image/'): 50].split(';')
+        partial_base64 = url[len('data:image/') : 50].split(';')
         if (
             len(partial_base64) == 2
             and partial_base64[0] in ['gif', 'png', 'jpeg', 'pjpeg', 'webp', 'tiff', 'bmp']
@@ -488,11 +491,11 @@ def render(template_name: str, **kwargs):
         url_for('opensearch')
         + '?'
         + urlencode(
-        {
-            'method': sxng_request.preferences.get_value('method'),
-            'autocomplete': sxng_request.preferences.get_value('autocomplete'),
-        }
-    )
+            {
+                'method': sxng_request.preferences.get_value('method'),
+                'autocomplete': sxng_request.preferences.get_value('autocomplete'),
+            }
+        )
     )
     kwargs['urlparse'] = urlparse
     kwargs['proxy_method'] = settings.get('result_proxy', {}).get('method', None)
@@ -648,7 +651,7 @@ def index():
         # fmt: off
         'index.html',
         selected_categories=get_selected_categories(sxng_request.preferences, sxng_request.form),
-        current_locale=sxng_request.preferences.get_value("locale"),
+        current_locale = sxng_request.preferences.get_value("locale"),
         # fmt: on
     )
 
@@ -729,10 +732,12 @@ def search():
     # 3. formats without a template
 
     if output_format == 'json':
+
         response = webutils.get_json_response(search_query, result_container)
         return Response(response, mimetype='application/json')
 
     if output_format == 'csv':
+
         csv = webutils.CSVWriter(StringIO())
         webutils.write_csv_response(csv, result_container)
         csv.stream.seek(0)
@@ -822,31 +827,31 @@ def search():
     return render(
         # fmt: off
         'results.html',
-        results=results,
+        results = results,
         q=sxng_request.form['q'],
-        selected_categories=search_query.categories,
-        pageno=search_query.pageno,
-        time_range=search_query.time_range or '',
-        number_of_results=format_decimal(result_container.number_of_results),
-        suggestions=suggestion_urls,
-        answers=result_container.answers,
-        corrections=correction_urls,
-        infoboxes=result_container.infoboxes,
-        engine_data=result_container.engine_data,
-        paging=result_container.paging,
-        unresponsive_engines=webutils.get_translated_errors(
+        selected_categories = search_query.categories,
+        pageno = search_query.pageno,
+        time_range = search_query.time_range or '',
+        number_of_results = format_decimal(result_container.number_of_results),
+        suggestions = suggestion_urls,
+        answers = result_container.answers,
+        corrections = correction_urls,
+        infoboxes = result_container.infoboxes,
+        engine_data = result_container.engine_data,
+        paging = result_container.paging,
+        unresponsive_engines = webutils.get_translated_errors(
             result_container.unresponsive_engines
         ),
-        current_locale=sxng_request.preferences.get_value("locale"),
-        current_language=selected_locale,
-        search_language=match_locale(
+        current_locale = sxng_request.preferences.get_value("locale"),
+        current_language = selected_locale,
+        search_language = match_locale(
             search_obj.search_query.lang,
             settings['search']['languages'],
             fallback=sxng_request.preferences.get_value("language")
         ),
-        timeout_limit=sxng_request.form.get('timeout_limit', None),
-        timings=engine_timings_pairs,
-        max_response_time=max_response_time
+        timeout_limit = sxng_request.form.get('timeout_limit', None),
+        timings = engine_timings_pairs,
+        max_response_time = max_response_time
         # fmt: on
     )
 
@@ -1036,28 +1041,28 @@ def preferences():
     return render(
         # fmt: off
         'preferences.html',
-        preferences=True,
-        selected_categories=get_selected_categories(sxng_request.preferences, sxng_request.form),
-        locales=LOCALE_NAMES,
-        current_locale=sxng_request.preferences.get_value("locale"),
-        image_proxy=image_proxy,
-        engines_by_category=engines_by_category,
-        stats=stats,
-        max_rate95=max_rate95,
-        reliabilities=reliabilities,
-        supports=supports,
-        answer_storage=searx.answerers.STORAGE.info,
-        disabled_engines=disabled_engines,
-        autocomplete_backends=autocomplete_backends,
-        favicon_resolver_names=favicons.proxy.CFG.resolver_map.keys(),
-        shortcuts={y: x for x, y in engine_shortcuts.items()},
-        themes=themes,
-        plugins_storage=searx.plugins.STORAGE.info,
-        current_doi_resolver=get_doi_resolver(),
-        allowed_plugins=allowed_plugins,
-        preferences_url_params=sxng_request.preferences.get_as_url_params(),
-        locked_preferences=get_setting("preferences.lock", []),
-        doi_resolvers=get_setting("doi_resolvers", {}),
+        preferences = True,
+        selected_categories = get_selected_categories(sxng_request.preferences, sxng_request.form),
+        locales = LOCALE_NAMES,
+        current_locale = sxng_request.preferences.get_value("locale"),
+        image_proxy = image_proxy,
+        engines_by_category = engines_by_category,
+        stats = stats,
+        max_rate95 = max_rate95,
+        reliabilities = reliabilities,
+        supports = supports,
+        answer_storage = searx.answerers.STORAGE.info,
+        disabled_engines = disabled_engines,
+        autocomplete_backends = autocomplete_backends,
+        favicon_resolver_names = favicons.proxy.CFG.resolver_map.keys(),
+        shortcuts = {y: x for x, y in engine_shortcuts.items()},
+        themes = themes,
+        plugins_storage = searx.plugins.STORAGE.info,
+        current_doi_resolver = get_doi_resolver(),
+        allowed_plugins = allowed_plugins,
+        preferences_url_params = sxng_request.preferences.get_as_url_params(),
+        locked_preferences = get_setting("preferences.lock", []),
+        doi_resolvers = get_setting("doi_resolvers", {}),
         # fmt: on
     )
 
@@ -1202,7 +1207,7 @@ def stats():
             f"\
             Error: {error['exception_classname'] or error['log_message']} \
             Parameters: {error['log_parameters']} \
-            File name: {error['filename']}:{error['line_no']} \
+            File name: {error['filename'] }:{ error['line_no'] } \
             Error Function: {error['function']} \
             Code: {error['code']} \
             ".replace(
@@ -1215,12 +1220,12 @@ def stats():
     return render(
         # fmt: off
         'stats.html',
-        sort_order=sort_order,
-        engine_stats=engine_stats,
-        engine_reliabilities=engine_reliabilities,
-        selected_engine_name=selected_engine_name,
-        searx_git_branch=GIT_BRANCH,
-        technical_report=technical_report,
+        sort_order = sort_order,
+        engine_stats = engine_stats,
+        engine_reliabilities = engine_reliabilities,
+        selected_engine_name = selected_engine_name,
+        searx_git_branch = GIT_BRANCH,
+        technical_report = technical_report,
         # fmt: on
     )
 

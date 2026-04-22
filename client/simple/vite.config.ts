@@ -136,7 +136,7 @@ export default {
     plg_svg2png(
       [
         {
-          src: `${PATH.brand}/searxng-wordmark.svg`,
+          src: `${PATH.brand}/vectevo-search.svg`,
           dest: `${PATH.dist}/img/512.png`
         }
       ],
@@ -146,7 +146,7 @@ export default {
     plg_svg2png(
       [
         {
-          src: `${PATH.brand}/searxng-wordmark.svg`,
+          src: `${PATH.brand}/vectevo-search.svg`,
           dest: `${PATH.dist}/img/192.png`
         }
       ],

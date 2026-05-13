@@ -237,7 +237,12 @@ class BooleanSetting(Setting):
 
     def parse(self, data: str):
         """Parse and validate ``data`` and store the result at ``self.value``"""
-        self.value = MAP_STR2BOOL[data]
+        if data in MAP_STR2BOOL:
+            self.value = MAP_STR2BOOL[data]
+        elif data.capitalize() in MAP_STR2BOOL:
+            self.value = MAP_STR2BOOL[data.capitalize()]
+        else:
+            self.value = data.lower() in ('1', 'on', 'true', 'yes')
         self.key = self.normalized_str(self.value)  # pylint: disable=attribute-defined-outside-init
 
     def save(self, name: str, resp: flask.Response):
@@ -491,6 +496,10 @@ class Preferences:
             'engine_cascade': BooleanSetting(
                 False,
                 locked=is_locked('engine_cascade')
+            ),
+            'engine_order': StringSetting(
+                '',
+                locked=is_locked('engine_order')
             ),
             # fmt: on
         }

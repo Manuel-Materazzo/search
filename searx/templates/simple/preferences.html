@@ -189,6 +189,9 @@
     {%- if 'engine_cascade' not in locked_preferences -%}
       {%- include 'simple/preferences/engine_cascade.html' -%}
     {%- endif -%}
+    {%- if 'engine_order' not in locked_preferences -%}
+      {%- include 'simple/preferences/engine_order.html' -%}
+    {%- endif -%}
     {%- include 'simple/preferences/tokens.html' -%}
     {{- plugin_preferences('general') -}}
 

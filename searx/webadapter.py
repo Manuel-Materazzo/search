@@ -287,6 +287,14 @@ def get_search_query_from_webapp(
         # calculate which engines should be used
         query_engineref_list = parse_generic(preferences, form, disabled_engines)
 
+        # apply engine order if specified in preferences
+        engine_order_str = preferences.get_value('engine_order')
+        if engine_order_str:
+            engine_order = [name.strip() for name in engine_order_str.split(',') if name.strip()]
+            if engine_order:
+                order_map = {name: i for i, name in enumerate(engine_order)}
+                query_engineref_list.sort(key=lambda x: order_map.get(x.name, 999))
+
     query_engineref_list = deduplicate_engineref_list(query_engineref_list)
     query_engineref_list, query_engineref_list_unknown, query_engineref_list_notoken = validate_engineref_list(
         query_engineref_list, preferences

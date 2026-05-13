@@ -157,6 +157,35 @@ class Search:
                     self.result_container.add_unresponsive_engine(th._engine_name, 'timeout')
                     PROCESSORS[th._engine_name].logger.error('engine timeout')
 
+    def search_sequential_requests(self, requests: list[tuple[str, str, RequestParams]]):
+        # pylint: disable=protected-access
+        for engine_name, query, request_params in requests:
+            search_id = str(uuid4())
+            _search = copy_current_request_context(PROCESSORS[engine_name].search)
+            th = threading.Thread(  # pylint: disable=invalid-name
+                target=_search,
+                args=(query, request_params, self.result_container, self.start_time, self.actual_timeout),
+                name=search_id,
+            )
+            th._timeout = False
+            th._engine_name = engine_name
+            th.start()
+
+            remaining_time = max(0.0, self.actual_timeout - (default_timer() - self.start_time))
+            th.join(remaining_time)
+            if th.is_alive():
+                th._timeout = True
+                self.result_container.add_unresponsive_engine(th._engine_name, 'timeout')
+                PROCESSORS[th._engine_name].logger.error('engine timeout')
+
+            # Check if we have any results (main results, answers, or infoboxes)
+            if (
+                self.result_container.main_results_map
+                or self.result_container.answers
+                or self.result_container.infoboxes
+            ):
+                break
+
     def search_standard(self):
         """
         Update self.result_container, self.actual_timeout
@@ -165,7 +194,10 @@ class Search:
 
         # send all search-request
         if requests:
-            self.search_multiple_requests(requests)
+            if self.search_query.engine_cascade:
+                self.search_sequential_requests(requests)
+            else:
+                self.search_multiple_requests(requests)
 
         # return results, suggestions, answers and infoboxes
         return True

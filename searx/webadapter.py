@@ -218,6 +218,16 @@ def parse_engine_data(form):
     return engine_data
 
 
+def parse_engine_cascade(preferences: Preferences, form: Dict[str, str]) -> bool:
+    if is_locked('engine_cascade'):
+        return preferences.get_value('engine_cascade')
+
+    if 'engine_cascade' in form:
+        return form.get('engine_cascade') in ('1', 'on', 'true', 'True')
+
+    return preferences.get_value('engine_cascade')
+
+
 def get_search_query_from_webapp(
     preferences: Preferences, form: Dict[str, str]
 ) -> Tuple[SearchQuery, RawTextQuery, List[EngineRef], List[EngineRef], str]:
@@ -266,6 +276,8 @@ def get_search_query_from_webapp(
     if query_lang == 'auto':
         query_lang = preferences.client.locale_tag or 'all'
 
+    engine_cascade = parse_engine_cascade(preferences, form)
+
     if not is_locked('categories') and raw_text_query.specific:
         # if engines are calculated from query,
         # set categories by using that information
@@ -292,6 +304,7 @@ def get_search_query_from_webapp(
             external_bang=external_bang,
             engine_data=engine_data,
             redirect_to_first_result=redirect_to_first_result,
+            engine_cascade=engine_cascade,
         ),
         raw_text_query,
         query_engineref_list_unknown,

@@ -488,6 +488,10 @@ class Preferences:
                 settings['ui']['url_formatting'],
                 choices=['pretty', 'full', 'host']
             ),
+            'engine_cascade': BooleanSetting(
+                False,
+                locked=is_locked('engine_cascade')
+            ),
             # fmt: on
         }
 

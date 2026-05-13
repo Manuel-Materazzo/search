@@ -1,0 +1,9 @@
+<fieldset>
+    <legend>{{ _('Engine cascade') }}</legend>
+    <div class="value">
+        {{- checkbox_onoff_reversed('engine_cascade', preferences.get_value('engine_cascade')) -}}
+    </div>
+    <div class="description">
+        {{ _('If the first engine does not return results, automatically search with the next one.') }}
+    </div>
+</fieldset>

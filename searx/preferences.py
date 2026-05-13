@@ -494,11 +494,11 @@ class Preferences:
                 choices=['pretty', 'full', 'host']
             ),
             'engine_cascade': BooleanSetting(
-                False,
+                settings['ui']['engine_cascade'],
                 locked=is_locked('engine_cascade')
             ),
             'engine_order': StringSetting(
-                '',
+                settings['ui']['engine_order'],
                 locked=is_locked('engine_order')
             ),
             # fmt: on

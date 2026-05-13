@@ -251,6 +251,8 @@ SCHEMA: dict[str, t.Any] = {
         'search_on_category_select': SettingsValue(bool, True),
         'hotkeys': SettingsValue(('default', 'vim'), 'default'),
         'url_formatting': SettingsValue(('pretty', 'full', 'host'), 'pretty'),
+        'engine_cascade': SettingsValue(bool, False),
+        'engine_order': SettingsValue(str, ''),
     },
     'preferences': {
         'lock': SettingsValue(list, []),

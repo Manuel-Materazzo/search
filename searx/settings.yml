@@ -172,6 +172,10 @@ ui:
   hotkeys: default
   # URL formatting: pretty, full or host
   url_formatting: pretty
+  # Enable cascade search by default for all users
+  engine_cascade: true
+  # Set a predefined engine order (comma-separated list)
+  engine_order: "brave, duckduckgo, qwant, bing, startpage"
 
 # Lock arbitrary settings on the preferences page.
 #

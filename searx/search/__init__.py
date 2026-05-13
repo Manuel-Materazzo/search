@@ -181,8 +181,8 @@ class Search:
             # Check if we have any results (main results, answers, or infoboxes)
             if (
                 self.result_container.main_results_map
-                or self.result_container.answers
-                or self.result_container.infoboxes
+                or len(self.result_container.answers) > 0
+                or len(self.result_container.infoboxes) > 0
             ):
                 break
 

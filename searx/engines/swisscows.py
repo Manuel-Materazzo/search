@@ -9,6 +9,7 @@ import codecs
 import hashlib
 import json
 import random
+import string
 
 from datetime import datetime
 from urllib.parse import urlencode
@@ -43,8 +44,8 @@ paging = True
 
 base_url = "https://api.swisscows.com"
 
-CAESAR_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-NONCE_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
+CAESAR_ALPHABET = string.ascii_uppercase
+NONCE_ALPHABET = string.ascii_letters + string.digits + "-._~"
 
 time_range_map = {"day": "Day", "week": "Week", "month": "Month", "year": "Year"}
 
@@ -92,7 +93,7 @@ def generate_nonce(length: int = 32) -> str:
     """
     Generate a random char sequence with the given length.
     """
-    return "".join([random.choice(NONCE_ALPHABET) for _ in range(length)])
+    return "".join(random.choices(NONCE_ALPHABET, k=length))
 
 
 def caesar_shift_with_switch_case(s: str, offset: int = 13) -> str:
@@ -151,7 +152,7 @@ def generate_nonce_and_signature(base_path: str, args: dict[str, t.Any]) -> tupl
 maximum_page_size = {"web": 20, "images": 50, "videos": 10}
 
 
-def init(_):
+def setup(_: dict[str, t.Any]) -> bool | None:
     if swisscows_category not in ("web", "images", "videos"):
         raise ValueError("illegal swisscows category: %s" % swisscows_category)
 

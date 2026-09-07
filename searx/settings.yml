@@ -42,12 +42,12 @@ search:
   safe_search: 0
   # Existing autocomplete backends: "360search", "baidu", "bing", "brave", "dbpedia", "duckduckgo", "google",
   # "yandex", "privacywall", "mwmbl", "naver", "seznam", "sogou", "startpage", "swisscows", "quark", "qwant",
-  # "wikipedia" - leave blank to turn it off by default.
-  autocomplete: ""
+  # "wikipedia" - set blank to turn it off by default.
+  autocomplete: "duckduckgo"
   # minimun characters to type before autocompleter starts
   autocomplete_min: 4
   # backend for the favicon near URL in search results.
-  # Available resolvers: "allesedv", "duckduckgo", "google", "yandex" - leave blank to turn it off by default.
+  # Available resolvers: "allesedv", "duckduckgo", "google", "kagi", "yandex" - leave blank to turn it off by default.
   favicon_resolver: ""
   # Default search language - leave blank to detect from browser information or
   # use codes from 'languages.py'
@@ -126,11 +126,10 @@ server:
   image_proxy: false
   # 1.0 and 1.1 are supported
   http_protocol_version: "1.0"
-  # POST queries are "more secure!" but are also the source of hard-to-locate
-  # annoyances, which is why GET may be better for end users and their browsers.
+  # POST keeps search queries out of the browsers history, but causes UX issues.
   # see https://github.com/searxng/searxng/pull/3619
   # Is overwritten by ${SEARXNG_METHOD}
-  method: "POST"
+  method: "GET"
   default_http_headers:
     X-Content-Type-Options: nosniff
     X-Download-Options: noopen
@@ -228,20 +227,13 @@ outgoing:
   useragent_suffix: ""
   # The maximum number of concurrent connections that may be established.
   pool_connections: 100
-  # Allow the connection pool to maintain keep-alive connections below this
-  # point.
-  pool_maxsize: 20
-  # See https://www.python-httpx.org/http2/
+  # Enables the use of HTTP2
   enable_http2: true
   # uncomment below section if you want to use a custom server certificate
-  # see https://www.python-httpx.org/advanced/#changing-the-verification-defaults
-  # and https://www.python-httpx.org/compatibility/#ssl-configuration
+  # see https://curl-cffi.readthedocs.io/en/latest/quick_start.html
   #  verify: ~/.mitmproxy/mitmproxy-ca-cert.cer
   #
-  # uncomment below section if you want to use a proxyq see: SOCKS proxies
-  #   https://2.python-requests.org/en/latest/user/advanced/#proxies
-  # are also supported: see
-  #   https://2.python-requests.org/en/latest/user/advanced/#socks
+  # uncomment below section if you want to use a proxy
   #
   #  proxies:
   #    all://:
@@ -686,11 +678,6 @@ engines:
     shortcut: cos
     disabled: true
 
-  - name: cara
-    engine: cara
-    shortcut: ca
-    disabled: true
-
   # - name: chatnoir
   #   engine: chatnoir
   #   shortcut: cha
@@ -806,6 +793,7 @@ engines:
     engine: deviantart
     shortcut: da
     timeout: 3.0
+    inactive: true
 
   - name: devicons
     engine: devicons
@@ -898,28 +886,28 @@ engines:
     shortcut: dog
     dogpile_categ: search
     categories: general
-    disabled: true
+    inactive: true
 
   - name: dogpile images
     engine: dogpile
     shortcut: dogi
     dogpile_categ: images
     categories: images
-    disabled: true
+    inactive: true
 
   - name: dogpile videos
     engine: dogpile
     shortcut: dogv
     dogpile_categ: videos
     categories: videos
-    disabled: true
+    inactive: true
 
   - name: dogpile news
     engine: dogpile
     shortcut: dogn
     dogpile_categ: news
     categories: news
-    disabled: true
+    inactive: true
 
   # duckduckgo uses html.duckduckgo.com,
   # duckduckgo web uses duckduckgo.com
@@ -1265,12 +1253,12 @@ engines:
   - name: google
     engine: google
     shortcut: go
-    inactive: true
+    disabled: true
 
   - name: google images
     engine: google_images
     shortcut: goi
-    inactive: true
+    disabled: true
 
   - name: google news
     engine: google_news
@@ -1279,7 +1267,6 @@ engines:
   - name: google videos
     engine: google_videos
     shortcut: gov
-    inactive: true
 
   - name: google cse
     engine: google_cse
@@ -1344,22 +1331,6 @@ engines:
     engine: hackernews
     shortcut: hn
     disabled: true
-
-  - name: heexy
-    engine: heexy
-    categories: general
-    heexy_categ: web
-    shortcut: he
-    disabled: true
-    inactive: true
-
-  - name: heexy images
-    engine: heexy
-    categories: images
-    heexy_categ: image
-    shortcut: hei
-    disabled: true
-    inactive: true
 
   - name: hex
     engine: hex
@@ -1459,6 +1430,12 @@ engines:
     shortcut: iq
     disabled: true
 
+  - name: jina
+    engine: jina
+    shortcut: ji
+    api_key: ""
+    inactive: true
+
   # - name: kagi
   #   engine: kagi
   #   categories: [general, web]
@@ -1508,6 +1485,12 @@ engines:
       website: https://kavunka.net
       description: "Demo index of Kavunka, a statistical search engine"
       results: HTML
+
+  - name: keenable
+    engine: keenable
+    shortcut: keen
+    disabled: true
+    inactive: true
 
   - name: kozmonavt
     engine: xpath
@@ -2064,41 +2047,6 @@ engines:
     shortcut: poc
     disabled: true
 
-  - name: presearch
-    engine: presearch
-    search_type: search
-    categories: [general, web]
-    shortcut: ps
-    timeout: 4.0
-    disabled: true
-
-  - name: presearch images
-    engine: presearch
-    network: presearch
-    search_type: images
-    categories: [images, web]
-    timeout: 4.0
-    shortcut: psimg
-    disabled: true
-
-  - name: presearch videos
-    engine: presearch
-    network: presearch
-    search_type: videos
-    categories: [general, web]
-    timeout: 4.0
-    shortcut: psvid
-    disabled: true
-
-  - name: presearch news
-    engine: presearch
-    network: presearch
-    search_type: news
-    categories: [news, web]
-    timeout: 4.0
-    shortcut: psnews
-    disabled: true
-
   - name: pub.dev
     engine: xpath
     shortcut: pd
@@ -2224,12 +2172,6 @@ engines:
       require_api_key: false
       results: JSON
 
-  - name: reddit
-    engine: reddit
-    shortcut: re
-    page_size: 25
-    disabled: true
-
   - name: reuters
     engine: reuters
     shortcut: reu
@@ -2271,6 +2213,32 @@ engines:
     disabled: true
     about:
       website: https://searchmysite.net
+
+  - name: searchrockit
+    engine: searchrockit
+    categories: general
+    searchrockit_categ: web
+    shortcut: sr
+    disabled: true
+    inactive: true
+
+  - name: searchrockit images
+    engine: searchrockit
+    categories: images
+    searchrockit_categ: images
+    shortcut: sri
+    # took up to 60s when testing
+    timeout: 10
+    disabled: true
+    inactive: true
+
+  - name: searchrockit news
+    engine: searchrockit
+    categories: news
+    searchrockit_categ: news
+    shortcut: srn
+    disabled: true
+    inactive: true
 
   - name: selfhst icons
     engine: selfhst
@@ -2661,6 +2629,16 @@ engines:
     search_type: images
     shortcut: ydi
     disabled: true
+
+  - name: yandex api
+    engine: yandex_api
+    categories: [general, web]
+    shortcut: yda
+    inactive: true
+    # api_key: ""
+    # folder_id: ""
+    # search_type: SEARCH_TYPE_COM
+    # l10n: LOCALIZATION_EN
 
   - name: yandex music
     engine: yandex_music
@@ -3344,6 +3322,14 @@ engines:
   #   brave_category: goggles
   #   Goggles: # required! This should be a URL ending in .goggle
 
+  - name: exaapi
+    engine: exaapi
+    shortcut: exa
+    api_key: ""
+    search_type: auto
+    content_mode: highlights
+    inactive: true
+
   - name: lib.rs
     shortcut: lrs
     engine: lib_rs
@@ -3383,13 +3369,6 @@ engines:
       website: https://minecraft.wiki/
       wikidata_id: Q105533483
 
-  # s1search google engines / mirrors
-  - name: searchtoday
-    engine: s1search
-    shortcut: std
-    base_url: https://info.searchtoday.site
-    disabled: true
-
   - name: sina
     engine: json_engine
     shortcut: sina
@@ -3420,30 +3399,27 @@ engines:
       require_api_key: false
       results: JSON
 
-  # - name: webcrawler
-  #   engine: s1search
-  #   shortcut: wc
-  #   base_url: https://www.webcrawler.com
-  #   disabled: true
-
-  # s1search yahoo engines / mirrors
-  # - name: excite
-  #   engine: s1search
-  #   shortcut: exc
-  #   base_url: https://results.excite.com.s1search.co
-  #   disabled: true
-
-  # - name: metacrawler
-  #   engine: s1search
-  #   shortcut: mec
-  #   base_url: https://search.metacrawler.com
-  #   disabled: true
-
-  - name: infospace
+  # s1search engines / mirrors
+  - name: metacrawler
     engine: s1search
-    shortcut: ifs
-    base_url: https://search.infospace.com
+    shortcut: mec
+    base_url: https://search.metacrawler.com
     disabled: true
+    inactive: true
+
+  - name: zoo search
+    engine: s1search
+    shortcut: zoo
+    base_url: https://search.zoo.com
+    disabled: true
+    inactive: true
+
+  # s1search engines / mirrors with rampjs page layout
+  - name: s1search
+    engine: s1search_rampjs
+    shortcut: s1
+    disabled: true
+    inactive: true
 
 # Doku engine lets you access to any Doku wiki instance:
 # A public one or a privete/corporate one.

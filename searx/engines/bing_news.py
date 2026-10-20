@@ -9,13 +9,8 @@
 
 from urllib.parse import urlencode
 
-from lxml import html
-
 from searx.enginelib.traits import EngineTraits
-from searx.engines.bing import (
-    get_locale_params,
-    override_accept_language,
-)
+from searx.engines.bing import get_locale_params
 from searx.utils import eval_xpath, eval_xpath_getindex, eval_xpath_list, extract_text
 
 # about
@@ -54,8 +49,6 @@ def request(query, params):
 
     engine_region = traits.get_region(params["searxng_locale"], traits.all_locale)
 
-    override_accept_language(params, engine_region)
-
     # build URL query
     # - example: https://www.bing.com/news/infinitescrollajax?q=london&first=1
     page = int(params.get("pageno", 1)) - 1
@@ -83,7 +76,7 @@ def response(resp):
 
     results = []
 
-    dom = html.fromstring(resp.text)
+    dom = resp.html()
 
     for newsitem in eval_xpath_list(dom, '//div[contains(@class, "newsitem")]'):
         link = eval_xpath_getindex(newsitem, './/a[@class="title"]', 0, None)

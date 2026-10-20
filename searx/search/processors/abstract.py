@@ -29,6 +29,10 @@ logger = logger.getChild("searx.search.processor")
 SUSPENDED_STATUS: dict[int | str, "SuspendedStatus"] = {}
 
 
+TimeRangeType = t.Literal["day", "week", "month", "year"]
+SafesearchType = t.Literal[0, 1, 2]
+
+
 class RequestParams(t.TypedDict):
     """Basic quantity of the Request parameters of all engine types."""
 
@@ -51,10 +55,10 @@ class RequestParams(t.TypedDict):
     pageno: int
     """Current page number, where the first page is ``1``."""
 
-    safesearch: t.Literal[0, 1, 2]
+    safesearch: SafesearchType
     """Safe-Search filter (0:normal, 1:moderate, 2:strict)."""
 
-    time_range: t.Literal["day", "week", "month", "year"] | None
+    time_range: TimeRangeType | None
     """Time-range filter."""
 
     engine_data: dict[str, str]
@@ -157,7 +161,7 @@ class EngineProcessor(ABC):
         try:
             init_ok = self.engine.init(eng_setting)
         except Exception as e:  # pylint: disable=broad-except
-            logger.exception(f"(PID {os.getpid()}) {self.engine.name}: engine INIT failed, exception: {e}")
+            logger.exception("(PID %s) %s: engine INIT failed, exception: %s", os.getpid(), self.engine.name, e)
             init_ok = False
 
         # In older engines, None is returned from the init method, which is
@@ -168,7 +172,7 @@ class EngineProcessor(ABC):
             init_ok = True
 
         if not init_ok:
-            logger.error(f"(PID {os.getpid()}) {self.engine.name}: engine init was not successful")
+            logger.error("(PID %s) %s: engine init was not successful", os.getpid(), self.engine.name)
 
         return init_ok
 

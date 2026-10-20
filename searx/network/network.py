@@ -25,7 +25,6 @@ from searx.extended_types import SXNG_Response
 from .client import DEFAULT_IMPERSONATE, AsyncClient, new_client, get_loop
 from .raise_for_httperror import raise_for_httperror
 
-
 logger = logger.getChild('network')
 DEFAULT_NAME = '__DEFAULT__'
 NETWORKS: dict[str, "Network"] = {}
@@ -278,7 +277,6 @@ class Network:
             client = await self.get_client(**kwargs_clients)
             try:
                 method = method.upper()
-                client.check_url(url)
                 if stream:
                     return client.stream(method, url, **kwargs)
 
@@ -410,14 +408,6 @@ def initialize(
     for engine_name, engine, network in iter_networks():
         if isinstance(network, str):
             NETWORKS[engine_name] = NETWORKS[network]
-
-    # the /image_proxy endpoint has a dedicated network.
-    # same parameters than the default network, but HTTP/2 is disabled.
-    # It decreases the CPU load average, and the total time is more or less the same
-    if 'image_proxy' not in NETWORKS:
-        image_proxy_params = default_params.copy()
-        image_proxy_params['enable_http2'] = False
-        NETWORKS['image_proxy'] = new_network(image_proxy_params, logger_name='image_proxy')
 
 
 @atexit.register

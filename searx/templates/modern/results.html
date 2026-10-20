@@ -42,6 +42,16 @@
 
         {%- include 'simple/elements/engines_msg.html' -%}
 
+        {%- if q -%}
+          <div id="startpage_search">
+            <a href="https://www.startpage.com/do/search?q={{ q|urlencode }}"
+               class="startpage-button"
+               rel="noopener noreferrer">
+              {{ _('Search on Startpage') }}
+            </a>
+          </div>
+        {%- endif -%}
+
         {%- if method == 'POST' -%}
           {%- include 'simple/elements/search_url.html' -%}
         {%- endif -%}

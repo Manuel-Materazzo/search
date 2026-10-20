@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Simple implementation to store TrackerPatterns data in a SQL database."""
+
 # pylint: disable=too-many-branches
 
 import typing as t
@@ -97,7 +98,7 @@ class TrackerPatternsDB:
                 continue
 
             if resp.status_code != 200:
-                log.warning(f"TRACKER_PATTERNS: ClearURL ignore HTTP {resp.status_code} {url}")
+                log.warning("TRACKER_PATTERNS: ClearURL ignore HTTP %s %s", resp.status_code, url)
                 continue
 
             break

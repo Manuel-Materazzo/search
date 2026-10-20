@@ -31,11 +31,12 @@ from collections.abc import Callable
 import msgspec
 
 from searx import logger
-from searx.utils import get_embedded_stream_url
 
 log = logger.getChild("result_types")
 
 WHITESPACE_REGEX = re.compile('( |\t|\n)+', re.M | re.U)
+MAXIMUM_TITLE_LENGTH_CHARS = 200
+MAXIMUM_CONTENT_LENGTH_CHARS = 1200
 UNSET = object()
 
 
@@ -97,6 +98,21 @@ def _normalize_url_fields(result: "Result | LegacyResult"):
             _normalize_url_fields(sitelink)
 
 
+def _normalize_text_field(text: str, field_name: str, max_length: int) -> str:
+    if text and not isinstance(text, str):
+        text = str(text)
+        log.debug("result: invalid type of field '%s': %s", field_name, text)
+
+    text = WHITESPACE_REGEX.sub(" ", text).strip()
+
+    # truncate too long result titles and contents
+    if text and len(text) > max_length:
+        # don't split at characters, but at full words instead
+        # e.g. _truncate_text("hello world", 9) yields "hello" instead of "hello wor"
+        text = text[:max_length].rsplit(" ", 1)[0] + " …"
+    return text
+
+
 def _normalize_text_fields(result: "MainResult | LegacyResult"):
 
     # As soon we need LegacyResult not any longer, we can move this function to
@@ -106,18 +122,9 @@ def _normalize_text_fields(result: "MainResult | LegacyResult"):
     # implemented correctly. Historically, however, we have always had a type
     # check here.
 
-    if result.title and not isinstance(result.title, str):
-        log.debug("result: invalid type of field 'title': %s", str(result))
-        result.title = str(result)
-    if result.content and not isinstance(result.content, str):
-        log.debug("result: invalid type of field 'content': %s", str(result))
-        result.content = str(result)
+    result.title = _normalize_text_field(result.title, "title", MAXIMUM_TITLE_LENGTH_CHARS)
+    result.content = _normalize_text_field(result.content, "content", MAXIMUM_CONTENT_LENGTH_CHARS)
 
-    # normalize title and content
-    if result.title:
-        result.title = WHITESPACE_REGEX.sub(" ", result.title).strip()
-    if result.content:
-        result.content = WHITESPACE_REGEX.sub(" ", result.content).strip()
     if result.content == result.title:
         # avoid duplicate content between the content and title fields
         result.content = ""
@@ -385,7 +392,11 @@ class MainResult(Result):  # pylint: disable=missing-class-docstring
     """URL of a image that is displayed in the result item."""
 
     iframe_src: str = ""
-    """URL of an embedded ``<iframe>`` / the frame is collapsible."""
+    """URL of an embedded ``<iframe>`` / the frame is collapsible.
+
+    To convert a standard video URL from a widely know video services into its
+    embed format, have a look at :obj:`searx.utils.get_embedded_stream_url`.
+    """
 
     audio_src: str = ""
     """URL of an embedded ``<audio controls>``."""
@@ -542,10 +553,6 @@ class LegacyResult(dict[str, t.Any]):
                 f" / use a class from searx.result_types",
                 DeprecationWarning,
             )
-
-        # TODO: move into typed video results class once it is implemented  # pylint: disable=fixme
-        if self.template == "videos.html" and self.url and not self.iframe_src:
-            self.iframe_src = get_embedded_stream_url(self.url)
 
     def __getattr__(self, name: str, default: t.Any = UNSET) -> t.Any:
         if default == UNSET and name not in self:

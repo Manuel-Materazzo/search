@@ -1094,7 +1094,7 @@ msgstr "Auteur"
 
 #: searx/templates/simple/macros.html:63
 msgid "cached"
-msgstr "en cache"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
@@ -1205,7 +1205,7 @@ msgstr "Afficher la page d'accueil"
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "Search for..."
-msgstr "Rechercher..."
+msgstr "Get to the point, or the goose will."
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6

@@ -3,12 +3,13 @@ name: Integration
 
 # yamllint disable-line rule:truthy
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+#  push:
+#    branches:
+#      - master
+#  pull_request:
+#    branches:
+#      - master
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}

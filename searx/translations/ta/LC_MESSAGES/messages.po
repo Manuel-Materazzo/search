@@ -1081,7 +1081,7 @@ msgstr "நூலாசிரியர்"
 
 #: searx/templates/simple/macros.html:63
 msgid "cached"
-msgstr "தற்காலிக சேமிப்பு"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
@@ -1194,7 +1194,7 @@ msgstr "முன் பக்கத்தைக் காட்டு"
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "Search for..."
-msgstr "எதைப்பற்றி தேட வேண்டும..."
+msgstr "Get to the point, or the goose will."
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6

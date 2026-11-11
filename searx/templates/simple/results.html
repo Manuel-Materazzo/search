@@ -1,4 +1,4 @@
-{% extends "simple/base.html" %}
+{% extends theme + "/base.html" %}
 {% from 'simple/icons.html' import icon, icon_big, icon_small %}
 {% macro engine_data_form(engine_data) -%}
     {% for engine_name, kv_data in engine_data.items() %}
@@ -62,7 +62,7 @@
     {% for result in results %}
         {% if result.open_group and not only_template %}<div class="template_group_{{ result['template']|replace('.html', '') }}">{% endif %}
         {% set index = loop.index %}
-        {% include get_result_template('simple', result['template']) %}
+        {% include get_result_template(theme, result['template']) %}
         {% if result.close_group and not only_template %}</div>{% endif %}
     {% endfor %}
     {% if not results and not answers %}

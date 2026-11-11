@@ -9,6 +9,8 @@ from timeit import default_timer
 import asyncio
 import ssl
 from curl_cffi.requests.exceptions import RequestException, Timeout
+import re
+
 
 import searx.network
 from searx.exceptions import (
@@ -17,7 +19,9 @@ from searx.exceptions import (
     SearxEngineTooManyRequestsException,
 )
 from searx.metrics.error_recorder import count_error
+from searx import settings
 from .abstract import EngineProcessor, RequestParams
+from ...result_types import LegacyResult
 
 if t.TYPE_CHECKING:
     from searx.search.models import SearchQuery
@@ -255,6 +259,12 @@ class OnlineProcessor(EngineProcessor):
         try:
             # send requests and parse the results
             search_results = self._search_basic(query, params)
+
+            # if force sitelinks option is enabled, add sitelinks to the search result
+            if (len(settings['search'].get('force_sitelinks_categories', [])) > 0 and
+                len(settings['search'].get('force_sitelink_websites', [])) > 0):
+                search_results = self._add_forced_sitelinks(search_results, params)
+
             self.extend_container(result_container, start_time, search_results)
         except ssl.SSLError as e:
             # requests timeout (connect or read)
@@ -286,3 +296,65 @@ class OnlineProcessor(EngineProcessor):
         except Exception as e:  # pylint: disable=broad-except
             self.handle_exception(result_container, e)
             self.logger.exception("exception : {0}".format(e))
+
+    def _add_forced_sitelinks(self, search_results: list, params: dict) -> list:
+        """
+        Forces the retrival of the sitelinks for the configured websites and adds them to the search results.
+        """
+        # for each website where the force_sitelink is required
+        for site in settings['search']['force_sitelink_websites']:
+            # skip if the query was not fired on an enabled category (or it's a sitelinks query)
+            if params["category"] not in settings['search']['force_sitelinks_categories']:
+                continue
+            # skip if the query already contains one of the search terms
+            if any(term in params["query"] for term in site['website_search_terms']):
+                continue
+
+            expression = "(" + site['website_url_expression'] + ")"
+
+            # check each result
+            for result in search_results:
+                # if the result has an url matching the site where the force_sitelink is required
+                if re.match(expression, self._get_property(result, "url", "")):
+                    # add sitelinks_results as sitelinks for the current base result
+                    result["sitelinks"] = self._get_sitelinks(params, site['website_search_terms'][0])
+                    # do not repeat search for other matching links
+                    break
+        return search_results
+
+    def _get_sitelinks(self, params, search_term):
+        """
+        Gets a list of sitelinks by performing another search with the same query + search_term and the same parameters
+        """
+        sitelink_params = params.copy()
+
+        # update search query and params
+        sitelink_query = sitelink_params["query"] + " " + search_term
+        sitelink_params["query"] = sitelink_query
+        sitelink_params["category"] = "sitelinks"
+
+        # do another engine search
+        sitelink_results = self._search_basic(sitelink_query, sitelink_params)
+        self.logger.error(f"query: {sitelink_query}")
+        self.logger.error(f"risultati: {len(sitelink_results)}")
+
+        # remove first sitelinks result (same url as the current base result)
+        if len(sitelink_results) > 0:
+            del sitelink_results[0]
+
+        # remove sitelinks without an url (such as suggestions)
+        sitelink_results = list(
+            filter(lambda result: self._get_property(result, "url") is not None, sitelink_results)
+        )
+
+        return sitelink_results
+
+    def _get_property(self, thing, key, default=None):
+        if thing is None:
+            return default
+        elif isinstance(thing, dict):
+            value = thing.get(key, default)
+            return value if value is not None else default
+        else:
+            value = getattr(thing, key, default)
+            return value if value is not None else default

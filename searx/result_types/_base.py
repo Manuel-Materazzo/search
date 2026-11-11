@@ -92,6 +92,11 @@ def _normalize_url_fields(result: "Result | LegacyResult"):
                 path=_url.path,
             ).geturl()
 
+    # normalize sitelinks too, but only on classic search results
+    if isinstance(result, list) and len(result.get("sitelinks", [])) > 0:
+        for sitelink in result.get("sitelinks", []):
+            _normalize_url_fields(sitelink)
+
 
 def _normalize_text_field(text: str, field_name: str, max_length: int) -> str:
     if text and not isinstance(text, str):
@@ -273,6 +278,8 @@ class Result(msgspec.Struct, kw_only=True):
 
     The field is optional and is initialized from the context if necessary.
     """
+
+    sitelinks: list[t.Self] = []
 
     def normalize_result_fields(self):
         """Normalize fields ``url`` and ``parse_sql``.
@@ -527,6 +534,8 @@ class LegacyResult(dict[str, t.Any]):
         if "infobox" in self:
             self["urls"] = self.get("urls", [])
             self["attributes"] = self.get("attributes", [])
+
+        self.sitelinks = [LegacyResult(item) for item in self.get("sitelinks", [])]
 
         # Legacy types that have already been ported to a type ..
 

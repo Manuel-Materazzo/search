@@ -218,6 +218,16 @@ def parse_engine_data(form):
     return engine_data
 
 
+def parse_engine_cascade(preferences: Preferences, form: Dict[str, str]) -> bool:
+    if "engine_cascade" in preferences.cfg.lock:
+        return preferences.get_value('engine_cascade')
+
+    if 'engine_cascade' in form:
+        return form.get('engine_cascade') in ('1', 'on', 'true', 'True')
+
+    return preferences.get_value('engine_cascade')
+
+
 def get_search_query_from_webapp(
     preferences: Preferences, form: Dict[str, str]
 ) -> Tuple[SearchQuery, RawTextQuery, List[EngineRef], List[EngineRef], str]:
@@ -266,6 +276,8 @@ def get_search_query_from_webapp(
     if query_lang == 'auto':
         query_lang = preferences.client.locale_tag or 'all'
 
+    engine_cascade = parse_engine_cascade(preferences, form)
+
     if not "categories" in preferences.cfg.lock and raw_text_query.specific:
         # if engines are calculated from query,
         # set categories by using that information
@@ -274,6 +286,14 @@ def get_search_query_from_webapp(
         # otherwise, using defined categories to
         # calculate which engines should be used
         query_engineref_list = parse_generic(preferences, form, disabled_engines)
+
+    # apply engine order if specified in preferences
+    engine_order_str = preferences.get_value('engine_order')
+    if engine_order_str:
+        engine_order = [name.strip().lower() for name in engine_order_str.split(',') if name.strip()]
+        if engine_order:
+            order_map = {name: i for i, name in enumerate(engine_order)}
+            query_engineref_list.sort(key=lambda x: order_map.get(x.name.lower(), 999))
 
     query_engineref_list = deduplicate_engineref_list(query_engineref_list)
     query_engineref_list, query_engineref_list_unknown, query_engineref_list_notoken = validate_engineref_list(
@@ -292,6 +312,7 @@ def get_search_query_from_webapp(
             external_bang=external_bang,
             engine_data=engine_data,
             redirect_to_first_result=redirect_to_first_result,
+            engine_cascade=engine_cascade,
         ),
         raw_text_query,
         query_engineref_list_unknown,

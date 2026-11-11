@@ -1,0 +1,9 @@
+<fieldset>
+    <legend>{{ _('Engine order') }}</legend>
+    <div class="value">
+        <input type="text" name="engine_order" value="{{ preferences.get_value('engine_order') }}">
+    </div>
+    <div class="description">
+        {{ _('Comma separated list of engine names to define the search order.') }}
+    </div>
+</fieldset>

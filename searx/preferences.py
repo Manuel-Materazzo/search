@@ -499,6 +499,15 @@ class Preferences:
                 get_setting("ui.url_formatting"),
                 choices=["pretty", "full", "host"],
             ),
+            'engine_cascade': BooleanSetting(
+                get_setting("ui.engine_cascade"),
+                locked="engine_cascade" in self.cfg.lock,
+            ),
+            'engine_order': StringSetting(
+                get_setting("ui.engine_order"),
+                locked="engine_order" in self.cfg.lock,
+            ),
+            # fmt: on
         }
 
         self.engines = EnginesSetting('engines', engines=engines.values())

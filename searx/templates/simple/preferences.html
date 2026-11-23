@@ -189,6 +189,12 @@
     {% if 'safesearch' not in locked_preferences %}
       {%- include 'simple/preferences/safesearch.html' -%}
     {%- endif -%}
+    {%- if 'engine_cascade' not in locked_preferences -%}
+      {%- include 'simple/preferences/engine_cascade.html' -%}
+    {%- endif -%}
+    {%- if 'engine_order' not in locked_preferences -%}
+      {%- include 'simple/preferences/engine_order.html' -%}
+    {%- endif -%}
     {%- if engines_with_tokens -%}
       {%- include 'simple/preferences/tokens.html' -%}
     {%- endif -%}

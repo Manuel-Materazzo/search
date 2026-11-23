@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """WebApp"""
-
+import hashlib
+import hmac
 # pylint: disable=use-dict-literal
 
 import json
@@ -16,7 +17,7 @@ import typing
 
 import urllib
 import urllib.parse
-from urllib.parse import urlencode, urlparse, unquote
+from urllib.parse import urlencode, urlparse, unquote, quote
 
 import warnings
 from curl_cffi.requests.exceptions import RequestException
@@ -303,6 +304,25 @@ def custom_url_for(endpoint: str, **values):
     return url_for(endpoint, **values)
 
 
+def url_proxify(url: str):
+    if not url:
+        return url
+
+    if url.startswith('//'):
+        url = 'https:' + url
+
+    if not settings['result_proxy']['method'] or not settings['result_proxy']['url']:
+        return url
+
+    if settings.get('result_proxy', {}).get('key', None):
+        url = hmac.new(settings['result_proxy']['key'], url.encode(), hashlib.sha256).hexdigest()
+
+    if settings['result_proxy']['method'] == 'GET':
+        return '{0}{1}'.format(settings['result_proxy']['url'], quote(url))
+    else:
+        return url
+
+
 def image_proxify(url: str):
     if not url:
         return url
@@ -385,7 +405,11 @@ def get_pretty_url(parsed_url: urllib.parse.ParseResult):
         return [parsed_url.netloc]
 
     path = parsed_url.path
+    # remove trailing /
     path = path[:-1] if len(path) > 0 and path[-1] == '/' else path
+    # truncate string
+    path = (path[:60] + '...') if len(path) > 60 else path
+    # replace slashes with stylish character
     path = unquote(path.replace("/", " › "))
 
     # Keep the query argument for URLs like:
@@ -394,6 +418,19 @@ def get_pretty_url(parsed_url: urllib.parse.ParseResult):
     if not query_args and parsed_url.query:
         path += (" › .." if len(parsed_url.query) > 24 else " › ") + parsed_url.query[-24:]
     return [parsed_url.scheme + "://" + parsed_url.netloc, path]
+
+
+def get_pretty_host(parsed_url: urllib.parse.ParseResult):
+    url_formatting_pref = sxng_request.preferences.get_value('url_formatting')
+
+    # skip when showing only host
+    if url_formatting_pref == 'host':
+        return ''
+
+    # remove www
+    host = parsed_url.netloc
+    host = unquote(host.replace("www.", ""))
+    return host
 
 
 def get_client_settings():
@@ -455,6 +492,7 @@ def render(template_name: str, **kwargs):
     kwargs['enable_metrics'] = get_setting('general.enable_metrics')
     kwargs['get_setting'] = get_setting
     kwargs['get_pretty_url'] = get_pretty_url
+    kwargs['get_pretty_host'] = get_pretty_host
 
     # values from settings: donation_url
     donation_url = get_setting('general.donation_url')
@@ -466,6 +504,8 @@ def render(template_name: str, **kwargs):
     kwargs['url_for'] = custom_url_for  # override url_for function in templates
     kwargs['image_proxify'] = image_proxify
     kwargs['favicon_url'] = favicons.favicon_url
+    kwargs['proxify'] = url_proxify if settings.get('result_proxy', {}).get('url', None) is not None else None
+    kwargs['proxify_results'] = settings.get('result_proxy', {}).get('proxify_results', None)
     kwargs['cache_url'] = settings['ui']['cache_url']
     kwargs['get_result_template'] = get_result_template
     kwargs['opensearch_url'] = (
@@ -479,6 +519,9 @@ def render(template_name: str, **kwargs):
         )
     )
     kwargs['urlparse'] = urlparse
+    kwargs['proxy_method'] = settings.get('result_proxy', {}).get('method', None)
+    kwargs['proxy_url'] = settings.get('result_proxy', {}).get('url', None)
+    kwargs['proxy_post_params'] = settings.get('result_proxy', {}).get('post-form-body', None)
 
     start_time = default_timer()
     try:

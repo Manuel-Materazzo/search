@@ -64,6 +64,11 @@ class TrackerPatternsDB:
                 rule[self.Fields.url_ignore],
                 rule[self.Fields.del_args],
             )
+
+            # Modify existing Reddit rule to include tl parameter
+            if "reddit.com" in key:
+                value[1].append("tl")
+
             rows.append((key, value, None))
 
         self.cache.setmany(rows, ctx=self.ctx_name)

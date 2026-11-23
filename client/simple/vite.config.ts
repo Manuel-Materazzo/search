@@ -18,10 +18,10 @@ import { plg_svg2png, plg_svg2svg } from "./tools/plg.ts";
 const ROOT = "../../"; // root of the git repository
 
 const PATH = {
-  brand: "src/brand/",
+  brand: "src/brand",
   dist: resolve(ROOT, "searx/static/themes/simple/"),
   modules: "node_modules/",
-  src: "src/",
+  src: "src",
   templates: resolve(ROOT, "searx/templates/simple/")
 } as const;
 
@@ -124,12 +124,12 @@ export default {
     // SearXNG brand (static)
     plg_svg2png([
       {
-        src: `${PATH.brand}/searxng-wordmark.svg`,
+        src: `${PATH.brand}/vectevo-search-wordmark.svg`,
         dest: `${PATH.dist}/img/favicon.png`
       },
       {
-        src: `${PATH.brand}/searxng.svg`,
-        dest: `${PATH.dist}/img/searxng.png`
+        src: `${PATH.brand}/vectevo-search.svg`,
+        dest: `${PATH.dist}/img/vectevo-search.png`
       }
     ]),
 
@@ -137,7 +137,7 @@ export default {
     plg_svg2png(
       [
         {
-          src: `${PATH.brand}/searxng-wordmark.svg`,
+          src: `${PATH.brand}/vectevo-search.svg`,
           dest: `${PATH.dist}/img/512.png`
         }
       ],
@@ -147,7 +147,7 @@ export default {
     plg_svg2png(
       [
         {
-          src: `${PATH.brand}/searxng-wordmark.svg`,
+          src: `${PATH.brand}/vectevo-search.svg`,
           dest: `${PATH.dist}/img/192.png`
         }
       ],
@@ -159,8 +159,8 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/searxng.svg`,
-          dest: `${PATH.dist}/img/searxng.svg`
+          src: `${PATH.brand}/vectevo-search.svg`,
+          dest: `${PATH.dist}/img/vectevo-search.svg`
         },
         {
           src: `${PATH.brand}/img_load_error.svg`,
@@ -174,7 +174,7 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/searxng-wordmark.svg`,
+          src: `${PATH.brand}/vectevo-search-wordmark.svg`,
           dest: `${PATH.dist}/img/favicon.svg`
         }
       ],
@@ -185,8 +185,8 @@ export default {
     plg_svg2svg(
       [
         {
-          src: `${PATH.brand}/searxng-wordmark.svg`,
-          dest: `${PATH.templates}/searxng-wordmark.min.svg`
+          src: `${PATH.brand}/vectevo-search-wordmark.svg`,
+          dest: `${PATH.templates}/vectevo-wordmark.min.svg`
         }
       ],
       svg2svg_opts

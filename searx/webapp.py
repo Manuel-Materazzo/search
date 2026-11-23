@@ -244,9 +244,18 @@ def code_highlighter(codelines, language=None, hl_lines=None, strip_whitespace=T
 
 
 def get_result_template(theme_name: str, template_name: str):
+    # Try the requested theme first
     themed_path = theme_name + '/result_templates/' + template_name
     if themed_path in result_templates:
         return themed_path
+
+    # Fallback to simple theme if not using it already
+    if theme_name != 'simple':
+        simple_themed_path = 'simple/result_templates/' + template_name
+        if simple_themed_path in result_templates:
+            return simple_themed_path
+
+    # Final fallback to base result_templates directory
     return 'result_templates/' + template_name
 
 
@@ -472,7 +481,13 @@ def render(template_name: str, **kwargs):
     kwargs['urlparse'] = urlparse
 
     start_time = default_timer()
-    result = render_template('{}/{}'.format(kwargs['theme'], template_name), **kwargs)
+    try:
+        result = render_template('{}/{}'.format(kwargs['theme'], template_name), **kwargs)
+    except Exception as e:
+        logger.warning(
+            f"Template file not found, falling back to simple: {kwargs['theme']}/{template_name}"
+        )
+        result = render_template('{}/{}'.format("simple", template_name), **kwargs)
     sxng_request.render_time += default_timer() - start_time  # pylint: disable=assigning-non-slot
 
     return result

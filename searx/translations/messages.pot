@@ -1025,7 +1025,7 @@ msgstr ""
 
 #: searx/templates/simple/macros.html:63
 msgid "cached"
-msgstr ""
+msgstr "Internet Archive"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"
@@ -1134,7 +1134,7 @@ msgstr ""
 #: searx/templates/simple/search.html:9
 #: searx/templates/simple/simple_search.html:5
 msgid "Search for..."
-msgstr ""
+msgstr "Get to the point, or the goose will."
 
 #: searx/templates/simple/search.html:10
 #: searx/templates/simple/simple_search.html:6

@@ -1065,7 +1065,7 @@ msgstr "מחבר"
 
 #: searx/templates/simple/macros.html:63
 msgid "cached"
-msgstr "מוטמן"
+msgstr "Internet Archive"
 
 #: searx/templates/simple/preferences.html:65
 msgid "No HTTPS"

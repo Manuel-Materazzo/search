@@ -734,12 +734,24 @@ def search():
     if search_query.redirect_to_first_result and results:
         return redirect(results[0]['url'], 302)
 
+
+    def _get_property(thing, key, default=None):
+        if thing is None:
+            return default
+        elif isinstance(thing, dict):
+            return thing.get(key, default)
+        else:
+            return getattr(thing, key, default)
+
     for result in results:
         if output_format == 'html':
             if 'content' in result and result['content']:
                 result['content'] = highlight_content(escape(result['content'][:1024]), search_query.query)
             if 'title' in result and result['title']:
                 result['title'] = highlight_content(escape(result['title'] or ''), search_query.query)
+            if 'sitelinks' in result and result['sitelinks'] and len(result['sitelinks']) > 0:
+                for sitelink in _get_property(result, 'sitelinks', []):
+                    sitelink['title'] = highlight_content(escape(sitelink['title'] or ''), search_query.query)
 
         # set result['open_group'] = True when the template changes from the previous result
         # set result['close_group'] = True when the template changes on the next result
